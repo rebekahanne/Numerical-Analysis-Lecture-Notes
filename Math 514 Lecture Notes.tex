@@ -1,0 +1,165 @@
+\documentclass[12pt]{article}
+\usepackage{amsfonts, amsmath}
+\usepackage{amssymb, geometry}
+\usepackage{scalefnt}
+\usepackage{setspace}
+\usepackage{color,hyperref}
+%\usepackage{epsfig,subfigure,morefloats}
+\usepackage{natbib}
+\usepackage{dsfont}
+\usepackage{color,hyperref}
+\usepackage{epstopdf}
+\usepackage{amsthm}
+\usepackage{amssymb}
+%\usepackage{subcaption}
+\usepackage{graphicx}
+\usepackage{booktabs,siunitx}
+\usepackage{bm}
+\usepackage[section]{placeins}
+%\usepackage{hypcap}
+\usepackage{afterpage}
+
+
+\setcounter{MaxMatrixCols}{10}
+
+\providecommand{\u}[1]{\protect\rule{.1in}{.1in}}
+\providecommand{\u}[1]{\protect\rule{.1in}{.1in}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+%\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{corollary}{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{lemma}{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\geometry{left=1in,right=1in,top=1in,bottom=1in}
+%\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+%\hypersetup{pdftex,colorlinks=true,allcolors=black,citecolor=black}
+
+\usepackage{floatrow}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{float}
+\usepackage{indentfirst}
+
+\algnewcommand\algorithmicforeach{\textbf{for each}}
+\algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+%\graphicspath{{./Simulation_Graphs/}}
+
+\usepackage{listings}
+\usepackage{subcaption} 
+\usepackage[toc,page]{appendix}
+%\usepackage[extendedchars]{grffile}
+
+\usepackage{mathpazo} % math & rm
+\linespread{1.05}        % Palatino needs more leading (space between lines)
+\usepackage[scaled]{helvet} % ss
+\usepackage{courier} % tt
+\normalfont
+\usepackage[T1]{fontenc}
+
+\title{Numerical Analysis Lecture Notes}
+\author{Rebekah Dix}
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage 
+
+\section{Solution of equations by iteration}
+
+\begin{theorem}(Existence of Root)\label{zeroexists}
+Let $f$ be a real-valued function, defined and continuous on a bounded closed interval $[a,b]$ of the real line. Assume further, that $f(a)f(b) \leq 0$; then, there exists $\xi$ in $[a,b]$ such that $f(\xi) = 0$.
+\end{theorem}
+\begin{proof}
+The condition $f(a)f(b) \leq 0$ implies that $f(a)$ and $f(b)$ have opposite signs, or one of them is $0$. If either $f(a)$ or $f(b)$ is $0$, then we've found a root. Suppose that both endpoints are non-zero (in which case they have opposite signs). In this case, $0$ must belong to the open interval whose endpoints are $f(a)$ and $f(b)$. The intermediate value theorem gives the existence of a root in the open interval $(a,b)$. Thus, in both cases, a zero is guaranteed. 
+\end{proof}
+
+\begin{itemize}
+\item The converse of Theorem \ref{zeroexists} is clearly false.
+\end{itemize}
+
+\begin{theorem}(Brouwer's Fixed Point Theorem)
+Suppose that $g$ is a real-valued function, defined and continuous on a bounded closed interval $[a,b]$ of the real line, and let $g(x) \in [a,b]$ for all $x \in [a,b]$. Then, there exists $\xi \in [a,b]$ such that $\xi = g(\xi)$. $\xi$ is called a fixed point of the function $g$. 
+\end{theorem}
+\begin{proof}
+Define a function $f(x) = x - g(x)$. If we find a root $\xi$ of $f$, then $\xi$ is a fixed point of $g$. Then,
+\begin{equation}
+f(a)f(b) = (a - g(a))(b-g(b)) \leq 0
+\end{equation}
+By assumption, $a \leq g(a), g(b) \leq b$. Therefore, the first term is negative and the second term is positive. Therefore, $f(a)f(b) \leq 0$. By Theorem \ref{zeroexists}, there exists a $\xi \in [a,b]$ such that $f(\xi)=0$. Then, for this $\xi$, $g(\xi) = \xi$.
+\end{proof}
+
+\begin{definition}(Simple Iteration)
+Suppose that $g$ is a real-valued function, defined and continuous on a bounded closed interval $[a,b]$ of the real line, and let $g(x) \in [a,b]$ for all $x \in [a,b]$. Given that $x_0 \in [a,b]$, the recursion defined by 
+\begin{equation}
+x_{k+1} = g(x_k)
+\end{equation}
+is called simple iteration; the numbers $x_k$, $k \geq 0$, are referred to as iterates.
+\end{definition}
+
+\begin{itemize}
+\item If this sequence converges, the limit must be a fixed of $g$, since $g$ is continuous on a closed interval. Note that
+\begin{equation}
+\xi = \lim_{k \to \infty} x_{k+1} = \lim_{k \to \infty} g(x_k) = g\left( \lim_{k \to \infty} x_k \right) = g(\xi)
+\end{equation}
+\end{itemize}
+
+\begin{definition}(Contraction)
+Let $g$ be a real-valued function, defined and continuous on a bounded closed interval $[a,b]$ of the real line. Then, $g$ is said to be a contraction on $[a,b]$ if there exists a constant $L$ such that $0<L<1$ and 
+\begin{equation}
+|g(x)-g(y)| \leq L|x-y| \quad \forall x,y \in [a,b]
+\end{equation}
+\end{definition}
+
+\begin{theorem}(Contraction Mapping Theorem)
+Suppose that $g$ is a real-valued function, defined and continuous on a bounded closed interval $[a,b]$ of the real line, and let $g(x) \in [a,b]$ for all $x \in [a,b]$. Suppose $g$ is a contraction on $[a,b]$. Then, $g$ has a unique fixed point $\xi$ in the interval $[a,b]$. Moreover, the sequence $(x_k)$ defined by simple iteration converges to $\xi$ as $k \to \infty$ for any starting value $x_0$ in $[a,b]$. 
+
+Let $\epsilon > 0$ be a certain tolerance, and let $k_0 (\epsilon)$ denote the smallest positive integer such that $x_k$ is no more than $\epsilon$ away from the fixed point $\xi$ (i.e. $|x_k - \xi| \leq \epsilon$) for all $k \geq k_0 (\epsilon)$. Then,
+\begin{equation}
+k_0 (\epsilon) \leq \left\lfloor \frac{\ln|x_1 - x_0| - \ln(\epsilon (1 - L))}{\ln (1 / L)}\right\rfloor + 1
+\end{equation}
+\end{theorem}
+
+\begin{definition}(Stable, Unstable Fixed Point)
+Suppose that $g$ is a real-valued function, defined and continuous on a bounded closed interval $[a,b]$ of the real line, and let $g(x) \in [a,b]$ for all $x \in [a,b]$, and let $\xi$ denote a fixed point of $g$. $\xi$ is a stable fixed point of $g$ if the sequence $(x_k)$ defined by the iteration $x_{k+1} = g(x_k)$, $k\geq 0$, converges to $\xi$ whenever the starting value $x_0$ is sufficiently close to $\xi$. Conversely, if no sequence $(x_k)$ defined by this iteration converges to $\xi$ for any starting value $x_0$ close to $\xi$, except for $x_0 = \xi$, then we say that $\xi$ is an unstable fixed point of $g$. 
+\end{definition}
+\begin{itemize}
+\item With this definition, a fixed point may be neither stable nor unstable.
+\end{itemize}
+
+\begin{definition}(Rate of Convergence)
+Suppose $\xi = \lim_{k \to \infty} x_k$. Define $E_k = |x_k - \xi|$.
+\end{definition}
+\begin{itemize}
+\item The sequence $(x_k)$ converges to $\xi$ linearly if there exists a number $\mu \in (0,1)$ such that 
+\begin{equation}
+\lim_{k \to \infty} \frac{E_{k+1}}{E_k} = \mu
+\end{equation}
+\item The sequence $(x_k)$ converges to $\xi$ superlineraly if $\mu = 0$. That is, the sequence of $\mu_k$ generated at each step $\rightarrow 0$ as $k \rightarrow \infty$.
+\item The sequence $(x_k)$ converges to $\xi$ with order $q$ if there exists a $\mu > 0$ such that
+\begin{equation}
+\lim_{k \to \infty} \frac{E_{k+1}}{E_k^q} = \mu
+\end{equation}
+In particular, if $q=2$, then the sequence converges quadratically.
+\end{itemize}
+
+\section{Solution of systems of linear equations}
+\end{document}
