@@ -76,6 +76,18 @@
 \normalfont
 \usepackage[T1]{fontenc}
 
+%% Math commands
+\newcommand{\e}{\epsilon}
+%\newcommand{\d}{\delta}
+\newcommand{\D}{\Delta}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\usepackage{mathtools}
+\DeclarePairedDelimiterX{\inp}[2]{\langle}{\rangle}{#1, #2}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\usepackage{mathrsfs}
+
+
 \title{Numerical Analysis Lecture Notes}
 \author{Rebekah Dix}
 \begin{document}
@@ -138,6 +150,19 @@ k_0 (\epsilon) \leq \left\lfloor \frac{\ln|x_1 - x_0| - \ln(\epsilon (1 - L))}{\
 \end{equation}
 \end{theorem}
 
+\begin{proof}
+Let $E_k = |x_k - \xi|$ be the error at $k$. Then 
+\begin{align*}
+|x_{k+1} - \xi| &= |g(x_k) - g(\xi)| \\
+&< L |x_k - \xi|
+\end{align*}
+Therefore
+\begin{equation}
+	E_{k} \leq L^k E_0
+\end{equation}
+Since $L < 1$, $L^k \to 0$ as $k \to \infty$.
+\end{proof}
+
 \begin{definition}(Stable, Unstable Fixed Point)
 Suppose that $g$ is a real-valued function, defined and continuous on a bounded closed interval $[a,b]$ of the real line, and let $g(x) \in [a,b]$ for all $x \in [a,b]$, and let $\xi$ denote a fixed point of $g$. $\xi$ is a stable fixed point of $g$ if the sequence $(x_k)$ defined by the iteration $x_{k+1} = g(x_k)$, $k\geq 0$, converges to $\xi$ whenever the starting value $x_0$ is sufficiently close to $\xi$. Conversely, if no sequence $(x_k)$ defined by this iteration converges to $\xi$ for any starting value $x_0$ close to $\xi$, except for $x_0 = \xi$, then we say that $\xi$ is an unstable fixed point of $g$. 
 \end{definition}
@@ -162,4 +187,282 @@ In particular, if $q=2$, then the sequence converges quadratically.
 \end{itemize}
 
 \section{Solution of systems of linear equations}
+
+\subsection{Least Squares}
+Given a system of equations $Ax = b$, the least squares problem is
+\begin{equation}
+	\min_{x \in \R^n} \norm{Ax - b}^2_2 
+\end{equation}
+We can expand the objective function out as
+\begin{align*}
+	\norm{Ax - b}^2_2 &= (Ax - b)^T (Ax - b) \\
+	&= x^T A^T A x - 2 b^T A x + b^T b 
+\end{align*}
+To find the $x$ that minimizes this expression we find the $x$ that satisfies $\nabla_x F = 0$. That is
+\begin{equation}
+	\nabla_x F = 0 = 2 A^T A x - 2 A^T b
+\end{equation}
+Therefore the minimizer is $x = (A^T A)^{-1} A^T b$. $(A^T A)^{-1} A^T$ is called the pseudo-inverse of $A$. If $A$ is square and invertible, then the pseudo-inverse equals $A^{-1}$.
+
+\subsection{Gram-Schimdt Orthogonalization}
+Algorithm: Denote the columns of $A$ by $a_i$. 
+\begin{enumerate}
+	\item $q_1 = a_1$. Then normalized by $q_1 = \frac{q_1}{\norm{q_1}}$.
+	\item $q_2 = a_2 - \inp{q_1}{a_2}q_1$. Then normalize by $q_2 = \frac{q_2}{\norm{q_2}}$. It's simple to verify that $q_2 \perp q_1$. 
+	\item For an arbitrary $k$, $q_k = a_k - \inp{a_k}{q_1}q_1 - \inp{a_k}{q_2}q_2 - \ldots - \inp{a_k}{q_{k-1}}q_{k-1}$. Then normalize by $q_k = \frac{q_k}{\norm{q_k}}$.
+\end{enumerate}
+
+We can observe the following properties:
+\begin{enumerate}
+	\item $\norm{q_i} = 1$ (this follows directly)
+	\item $q_i \perp q_j$ for all $i \neq j$
+	\item $q_k \in span(a_1, \ldots, a_k)$ and $a_k \in span(q_1, \ldots, q_k)$ so that $span(a_1, \ldots, a_k) = span(q_1, \ldots, q_k)$.
+\end{enumerate}
+
+[[Write proof for 2]].
+
+\subsection{QR Factorization}
+\begin{definition}(Unitary Matrix)
+A matrix $Q = [q_1 \ldots q_n] \in \R^{m\times n}$ is unitary if and only if $\inp{q_i}{q_j} = \delta_{ij}$.
+\end{definition}
+
+Observations about this definition:
+\begin{enumerate}
+	\item $Q^T Q = I$
+	\item If $Q$ is square, then $Q^T = Q^{-1}$.
+\end{enumerate}
+
+\subsubsection{Application to Least Squares}
+Suppose that we can write $A = QR$, where $A \in \R^{ m \times n}$, $Q \in \R^{ m \times n}$ and unitary, and $R \in \R^{n \times n}$ and upper triangular. Then the least squares solution to $Ax = b$ is given by
+\begin{align*}
+x &= (A^T A)^{-1} A^T b \\
+&= (R^T Q^T Q R)^{-1} R^T Q^T b \\
+&= (R^T R)^{-1} R^T Q^T b \\
+\implies (R^T R) x &= R^T Q^T b \\
+R x &= Q^T b \tag{assume $R$ is invertible (i.e. no zeros on the diagonal)}
+\end{align*}
+We can then solve for $x$ using back substitution, which is $\mathcal{O}(n^2)$.
+
+
+\subsection{Norms and Condition Numbers}
+\begin{definition}(Norm)\label{norm}
+Suppose that $\mathcal{V}$ is a linear space over the field $\R$. The \textit{nonnegative} real-valued function $\norm{\cdot}$ is a norm on $\mathcal{V}$ if the following axioms are satisfied: Fix $v \in \mathcal{V}$
+\begin{enumerate}
+	\item Positivity: $\norm{v} = 0$ if and only if $v = 0$
+	\item Scale Preservation: $\norm{\alpha v} = |\alpha| \norm{v}$ for all $\alpha \in \R$
+	\item Triangle Inequality: $\norm{v + w} \leq \norm{v} + \norm{w}$.
+\end{enumerate}
+\end{definition}
+
+\begin{example}(Examples of Norms)
+\begin{enumerate}
+	\item 1-norm:
+	\begin{equation}
+		\norm{v}_1 = \sum_{i=1}^n |v_i| = |v_1| + \cdots + |v_n|
+	\end{equation}
+	\item 2-norm:
+	\begin{equation}
+		\norm{v}_2 = \left( \sum_{i=1}^n v_i^2 \right)^{\frac{1}{2}} = \sqrt{v_1^2 + \cdots + v_n^2} = \sqrt{v^T v}
+	\end{equation}
+	\item $\infty$-norm
+	\begin{equation}
+		\norm{x}_{\infty} = \max_{i=1, \ldots, n} |v_i|
+	\end{equation}
+	\item $p$-norm
+	\begin{equation}
+		\norm{v}_p = \left( \sum_{i=1}^n |v_i|^p \right)^{\frac{1}{p}}
+	\end{equation}
+	For the $p$-norm, proving the triangle inequality follows from the Minkowski's inequality.
+\end{enumerate}
+\end{example}
+
+\begin{definition}(Operator Norm)
+Let $A$ be an $m \times n$ matrix. That is, $A$ is a linear transformation form $\R^n$ to $\R^m$. Then the operator norm (or subordinate matrix norm) of $A$ is
+\begin{equation}
+	\norm{A}_{p,q} = \sup_{x \in \R^n, x\neq 0} \frac{\norm{Ax}_q}{\norm{x}_p}.
+\end{equation}
+\end{definition}
+
+Observations about this definition:
+\begin{enumerate}
+	\item It's easy to check that this definition of the operator norm satisfies the properties of a norm given in Definition \ref{norm}. For the triangle inequality, observe that
+	\begin{align*}
+		&\norm{(A + B)x}_p \leq \norm{Ax}_p + \norm{Bx}_p \tag{from Minkowski's inequality} \\
+		\implies & \frac{\norm{(A + B)x}_p}{\norm{x}_p} \leq \frac{\norm{Ax}_p}{\norm{x}_p} + \frac{\norm{Bx}_p}{\norm{x}_p}
+	\end{align*}
+	Taking the supremum of both sides over $x$ shows that $\norm{A + B}_p \leq \norm{A}_p + \norm{B}_p$.
+	\item The definition immediately implies that for an arbitrary $x \in \mathbb{R}^n$, $x \neq 0$, 
+	\begin{equation}
+		\norm{Ax}_q \leq \norm{A}_{p,q} \norm{x}_p
+	\end{equation}
+	We can generalize this inequality to claim that
+	\begin{equation}
+		\norm{AB} \leq \norm{A} \norm{B}
+	\end{equation}
+	for conformable matrices $A, B$. Indeed, fix $0 \neq x \in R^n$. Then
+	\begin{equation}
+		\norm{ABx} \leq \norm{A} \norm{Bx} \leq \norm{A}\norm{B}\norm{x}
+	\end{equation}
+	We can divide all inequalities by $\norm{x}$ to see that for all $x \neq 0$,
+	\begin{equation}
+		\frac{\norm{ABx}}{\norm{x}} \leq \norm{A}\norm{B}
+	\end{equation}
+	Taking the supremum over $x$ on the left hand side shows that $\norm{AB} \leq \norm{A} \norm{B}$.
+\end{enumerate}
+
+\begin{theorem}(The $1$-norm of a matrix is the largest absolute-value column sum)
+Let $A \in \R^{m \times n }$ and denote the columns of $A$ by $a_j$, $j=1, \ldots, n$. Then $\norm{A}_1 = \max_{j=1, \ldots, n} \sum_{i=1}^{m} |a_{ij}| =  \max_{j=1, \ldots, n} \norm{a_j}$.
+\end{theorem}
+\begin{proof}
+Fix $x \in \R^n$. Let $C = \max_{j=1, \ldots, n} \sum_{i=1}^{m} |a_{ij}|$. First consider the product $A\cdot x$. The $i$th element is $\sum_{j=1}^n a_{ij} x_j$. Then
+\begin{align*}
+	\norm{Ax}_1 &= \sum_{i=1}^m |(Ax)_i | = \sum_{i=1}^m |\sum_{j=1}^n a_{ij} x_j| \\
+	&\leq \sum_{i=1}^m \sum_{j=1}^n |a_{ij}| |x_j| \tag{triangle inequality} \\
+	&= \sum_{j=1}^n |x_j| \left(\sum_{i=1}^m |a_{ij}| \right) \tag{interchange order of summation, assumed finite} \\
+	&\leq C \norm{x}_1
+\end{align*}
+Therefore $\frac{\norm{Ax}_1}{\norm{x}_1} \leq C$ for all $x$. Next, we find an $x$ such we achieve equality with $C$. Call index $J$ the index such that $\norm{a_J}_1 = C = \max_{j=1, \ldots, n} \sum_{i=1}^{m} |a_{ij}|$. Then let $e_J$ be the $n$-vector of zeros with a $1$ in the $J$th entry. Clearly $\norm{e_J}_1 = 1$. But then
+\begin{equation}
+ 	\norm{A e_J}_1 = \norm{a_J}_1 = C
+\end{equation} 
+In sum, we first showed that for all $x \in \R^n$
+\begin{equation}
+	\frac{\norm{Ax}_1}{\norm{x}_1} \leq C
+\end{equation}
+We then found an $x \in \R^n$ such that $\frac{\norm{Ax}_1}{\norm{x}_1} = C$. Therefore 
+\begin{equation}
+	\norm{A}_1 = \sup_{x \in \R^n, x\neq 0} \frac{\norm{Ax}_1}{\norm{x}_1} = C = \max_{j=1, \ldots, n} \sum_{i=1}^{m} |a_{ij}| =  \max_{j=1, \ldots, n} \norm{a_j}
+\end{equation}
+\end{proof}
+
+\begin{theorem}(The $\infty$-norm of a matrix is the largest absolute-value row sum)
+Let $A \in \R^{m \times n }$ and denote the rows of $A$ by $b_i$, $i=1, \ldots, m$. Then $\norm{A}_{\infty} = \max_{i=1, \ldots, m} \sum_{j=1}^{n} |a_{ij}| =  \max_{i=1, \ldots, m} \norm{b_i}$.
+\end{theorem}
+\begin{proof}
+Fix $x \in \R^n$. Let $C = \max_{i=1, \ldots, m} \sum_{j=1}^{n} |a_{ij}|$.
+\begin{align*}
+	\norm{Ax}_{\infty} &= \max_{i=1,\ldots,m} |\sum_{j=1}^n a_{ij} x_j| \\
+	&\leq \max_{i=1,\ldots,m} \sum_{j=1}^n |a_{ij}| |x_j| \tag{by the triangle inequality} \\
+	&\leq  \max_{i=1,\ldots,m} \sum_{j=1}^n |a_{ij}| \norm{x}_{\infty} \tag{since $|x_j| \leq \norm{x}_{\infty}$ for all $j$}\\
+	&= C \norm{x}_{\infty}
+\end{align*}
+
+Next, we find an $x$ such we achieve equality with $C$. Call $I$ the index for which $\norm{b_I}_\infty = C$. Define
+\begin{equation}
+	x_j = 
+	\begin{cases} 
+      1 & a_{Ij} > 0 \\
+      -1 & a_{Ij} < 0
+   \end{cases}
+\end{equation}
+Observe that $\norm{x}_\infty = 1$. Then
+\begin{align*}
+	|A\cdot x|_I &= |b_I^T \cdot x| \\
+	&=  |\sum_{j=1}^m a_{Ij} x_j | \\
+	&= |\sum_{j=1}^m a_{Ij}| \\
+	&= C
+\end{align*}
+We then found an $x \in \R^n$ such that $\frac{\norm{Ax}_\infty}{\norm{x}_\infty} = C$. Therefore 
+\begin{equation}
+	\norm{A}_\infty = \sup_{x \in \R^n, x\neq 0} \frac{\norm{Ax}_\infty}{\norm{x}_\infty} = C = \max_{i=1, \ldots, m} \sum_{j=1}^{n} |a_{ij}| =  \max_{i=1, \ldots, m} \norm{b_i}
+\end{equation}
+\end{proof}
+
+\begin{theorem}(The $2$-norm of a symmetric positive definite matrix is the maximum absolute value of its eigenvalues)
+Let $A$ be a positive definite $n \times n$ matrix. Then 
+\begin{equation}
+	\norm{A}_2 = \max_{i=1,\ldots, n} |\lambda_i|
+\end{equation}
+\end{theorem}
+\begin{proof}
+Since $A$ is positive definite, $A$ has $n$ distinct eigenvalues, which implies that it has $n$ linearly independent eigenvectors. Therefore, for an arbitrary $x \in \R^n$, we can write $x$ as a linearly combination of the eigenvectors $x_1$, $\ldots$, $x_n$. Then
+\begin{align*}
+	x &= c_1 x_1 + \cdots + c_n x_n \\
+	A x &= c_1 A x_1 + \cdots + c_n A x_n \\
+	&= c_1 \lambda_1 x_2 + \cdots + c_n \lambda_n x_n 
+\end{align*}
+We can normalize the eigenvectors of $A$ so that $x_i^T x_i = 1$. Then $\norm{Ax}_2 = \sqrt{\sum_{i=1}^n c_i^2 \lambda_i^2}$ and $\norm{x}_2 = \sqrt{\sum_{i=1}^n c_i^2}$. Therefore 
+\begin{equation}
+	\frac{\norm{Ax}_2}{\norm{x}_2} = \sqrt{\frac{\sum_{i=1}^n c_i^2 \lambda_i^2}{\sum_{i=1}^n c_i^2}} \leq \max_i |\lambda_i| = |\lambda_I|
+\end{equation}
+Now we'll find an $x$ such that we actually achieve equality. Call $I$ the index of the maximum absolute value of an eigenvalue. Then, consider the eigenvector associated with this eigenvalue, called $x_i$. Then
+\begin{equation}
+	\frac{\norm{Ax_I}_2}{\norm{x_I}_2} = \frac{|\lambda_I|\norm{x_I}}{\norm{x_I}} = |\lambda_I|
+\end{equation}
+This shows that $\norm{A}_2 =  \max_i |\lambda_i|$.
+\end{proof}
+
+\begin{theorem}(The $2$-norm of a matrix $A_{m \times n}$ equals its largest singular value)
+Let $A$ be an $m \times n$ matrix and denote the eigenvalues of the matrix $B = A^TA$ by $\lambda_i$, $i=1,\ldots, n$. Then 
+\begin{equation}
+	\norm{A}_2 = \max_i \sqrt{\lambda_i}
+\end{equation}
+The square roots of the (nonnegative) eigenvalues of $A^TA$ are referred to as the singular values of $A$.
+\end{theorem}
+
+\subsubsection{Conditioning}
+Conditioning helps us quantify the sensitivity of the output to perturbations of the input. In what follows, let $f$ be a mapping from a subset $D$ of a normed linear space $\mathcal{V}$ to another normed linear space $\mathcal{W}$. 
+\begin{definition}(Absolute Condition Number)
+\begin{equation}
+	Cond(f) = \sup_{x,y \in D, x\neq y} \frac{\norm{f(x) - f(y)}}{\norm{x - y}}
+\end{equation}
+\end{definition}
+
+\begin{definition}(Absolute Local Condition Number)
+\begin{equation}
+	Cond_x(f) = \sup_{x + \delta x \in D, \delta x \neq 0} \frac{\norm{f(x + \delta x) - f(x)}}{\norm{\delta x}}
+\end{equation}
+\end{definition}
+
+The previous two definitions depend on the magnitudes of $f(x)$ and $x$. In applications, it's often better to rescale as follows
+\begin{definition}(Relative Local Condition Number)
+\begin{equation}
+	cond_x(f) = \sup_{x + \delta x \in D, \delta x \neq 0} \frac{\norm{f(x + \delta x) - f(x)} / \norm{f(x)}}{\norm{\delta x} / \norm{x}}
+\end{equation}
+\end{definition}
+
+In these definitions, if $f$ is differentiable then we can replace the differences with the appropriate derivatives. 
+
+\begin{example}(Example of conditions numbers)
+Let $D$ be a subinterval of $[0, \infty)$ and $f(x) = \sqrt{x}$. Then $f'(x) = \frac{1}{2 \sqrt{x}}$. 
+\begin{enumerate}
+	\item If $D = [1,2]$, then $Cond(f) = \frac{1}{2}$.
+	\item If $D = [0, 1]$, then $Cond(f) = \infty$.
+	\item If $D = (0, \infty)$, then the the absolute local condition number of $f$ at $x \in D$ is 
+	\begin{equation}
+		Cond_x(f) = \frac{1}{2 \sqrt{x}}
+	\end{equation}
+	Thus as $x \to $, $Cond_x(f) \to \infty$, and as $x \to \infty$, $Cond_x(f) \to 0$.
+	\item If $D = (0, \infty)$, then the relative local condition number of $f$ is $cond_x(f) = 1/2$ for all $x \in D$. 
+\end{enumerate}
+\end{example}
+
+\begin{definition}(Condition Number of a Nonsingular Matrix)
+The condition number of a nonsingular matrix $A$ is defined by 
+\begin{equation}
+	\kappa(A) = \norm{A} \Vert A^{-1} \Vert
+\end{equation}
+If $\kappa(A) \gg 1$, the matrix is said to be ill-conditioned.
+\end{definition}
+Observations about this definition:
+\begin{enumerate}
+	\item $\kappa(A) = \kappa(A^{-1})$ 
+	\item For all $A$, $\kappa(A) \geq 1$. This follows because
+	\begin{equation}
+		1 = \norm{I} = \Vert A A^{-1} \Vert \leq \norm{A} \Vert A^{-1} \Vert
+	\end{equation}
+	\item The condition number of a matrix is unaffected by scaling all its elements by multiplying by a nonzero constant.
+	\item There is a condition number for each norm, and the size of the condition number is strongly dependent on the choice of norm.
+\end{enumerate}
+
+\section{Special Matrices}
+\subsection{Symmetric Positive Definite Matrices}
+\begin{definition}
+The matrix $A$ is said to be symmetric if $A = A^T$. A square $n \times n$ matrix is called positive definite if 
+\begin{equation}
+ 	x^T A x > 0
+\end{equation}
+for all $x \in \R^n$. 
+\end{definition}
+
 \end{document}
