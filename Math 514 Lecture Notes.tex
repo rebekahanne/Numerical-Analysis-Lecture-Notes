@@ -84,7 +84,9 @@
 \newcommand{\Z}{\mathbb{Z}}
 \usepackage{mathtools}
 \DeclarePairedDelimiterX{\inp}[2]{\langle}{\rangle}{#1, #2}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+\newcommand{\x}{\bm{x}}
+\newcommand{\xib}{\bm{\xi}}
 \usepackage{mathrsfs}
 
 
@@ -185,6 +187,24 @@ Suppose $\xi = \lim_{k \to \infty} x_k$. Define $E_k = |x_k - \xi|$.
 \end{equation}
 In particular, if $q=2$, then the sequence converges quadratically.
 \end{itemize}
+
+\subsection{Newton's Method}
+
+\begin{definition}(Newton's Method)
+Newton's method for the solution of $f(x) = 0$ is defined by 
+\begin{equation}
+	x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}
+\end{equation}
+\end{definition}
+
+Geometrically, $(x_{n+1}, 0)$ is the intersection of the $x$-axis and the tangent of the graph of $f$ at $(x_n, f(x_n))$. 
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=.5]{newton_method.png}
+	\end{center}
+	\caption{Geometric Interpretation of Newton's Method in $\R$}
+\end{figure}
 
 \section{Solution of systems of linear equations}
 
@@ -456,13 +476,120 @@ Observations about this definition:
 \end{enumerate}
 
 \section{Special Matrices}
-\subsection{Symmetric Positive Definite Matrices}
-\begin{definition}
-The matrix $A$ is said to be symmetric if $A = A^T$. A square $n \times n$ matrix is called positive definite if 
+\subsection{Symmetric Positive Definite Matrices }
+\begin{definition}(Symmetric, Positive Definite, spd)
+The real matrix $A$ is said to be symmetric if $A = A^T$. A square $n \times n$ matrix is called positive definite if 
 \begin{equation}
- 	x^T A x > 0
+ 	\x^T A \x > 0
 \end{equation}
-for all $x \in \R^n$. 
+for all $\x \in \R^n$, $\x \neq 0$. 
 \end{definition}
+
+\begin{theorem}(Properties of spd matrices)
+Let $A$ be an $n \times n$ real, spd matrix. Then
+\begin{enumerate}
+	\item $a_{ii} > 0$ for all $i=1, \ldots, n$ (the diagonal elements of $A$ are positive). 
+	\item $A x_i \ = \lambda_i x_i \implies \lambda_i \in \R_{>0}, \x \in \R^n \setminus \{0\}$ (the eigenvalues of $A$ are real and positive, and the eigenvectors of $A$ belong to $\R^n \setminus \{0\}$).
+	\item $x_i \perp x_j$ if $\lambda_i \neq \lambda_j$ (the eigenvectors of distinct eigenvalues of $A$ are orthogonal)
+	\item $\det(A) > 0$ (the determinant of $A$ is positive)
+	\item Every submatrix $B$ of $A$ obtained by deleting any set of rows and the corresponding set of columns from $A$ is symmetric and positive definite (in particular, every principal submatrix is positive definite). 
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+We prove each claim in the theorem as follows
+\begin{enumerate}
+	\item Let $e_i$ be the $i$th canonical basis vector in $\R^n$. Then
+	\begin{equation}
+		a_{ii} = e_i^T A e_i > 0
+	\end{equation}
+	since $A$ is pd. A few observations: this only relies on $A$ being pd. $e_i^T A$ picks out the $i$th row of $A$. $A e_i$ picks out the $i$th column of $A$. 
+	\item We'll first show that the eigenvalues of $A$ are real. Suppose $\lambda$, $\x$ are an eigenvalue/vector pair of $A$. Thus $A \x = \lambda \x$. We can conjugate this equation to find that $\bar A \bar \x = A \bar \x = \bar \lambda \bar x$ (thus complex eigenvalues of real valued matrices come in conjugate pairs). Then
+	\begin{align*}
+	\x^T A \bar\x &= \bar \lambda \x^T \bar \x \\
+	\x^T A^T \bar\x &= (A\x)^T \bar \x = \lambda \x^T \bar \x
+	\end{align*}
+	Since $A = A^T$, we know that $\lambda \x^T \bar \x = \lambda \x^T \bar \x$. As long as $\x \neq 0$, then $\x^T \bar \x \neq 0$. Therefore $\bar \lambda = \lambda$, which shows $\lambda \in \R$. 
+
+	The fact that the eigenvector associated with $\lambda$ has real elements follows by noting that all elements of the singular matrix $A - \lambda I$ are real numbers. Therefore, the columns of $A - \lambda I$ are linearly dependent in $\R^n$. Hence there exists an $\x \in \R^n$ such that $(A - \lambda I)\x = 0$. 
+
+	This proof only requires that $A$ is symmetric -- therefore any real, symmetric matrix has real eigenvalues/vectors. 
+
+	Next we'll show the eigenvalues of $A$ are positive. Suppose $\lambda$, $\x$ are an eigenvalue/vector pair of $A$. Then
+	\begin{equation}
+		0 < \x^T A \x = \lambda \x^T \x
+	\end{equation}
+	Since $\x \neq 0$ and $\x^T \x$ is positive (it's actually the squared $2$-norm of $\x$), then $\lambda > 0$. Note that this part of the proves requires $A$ be pd.
+
+	\item Let $\lambda_i, \lambda_j$ be distinct eigenvalues of $A$, and $\x_i, \x_j$ the corresponding eigenvectors. Then
+	\begin{align*}
+		\x_i^T A \x_j &= \lambda_j \x_i^T \x_j \\
+		\x_i^T A^T \x_j &= (A\x_i)^T x_j = \lambda_i \x_i^T \x_j 
+	\end{align*}
+	Since $A$ is symmetric, these two string of equalities must be equal. We can subtract them to find that 
+	\begin{equation}
+		(\lambda_i - \lambda_j)\x_i^T \x_j = 0
+	\end{equation}
+	Since we assumed $\lambda_i \neq \lambda_j$, then it must be that $\x_i^T \x_j$. Therefore $x_i \perp x_j$. This proof again only relies on the symmetry of $A$. 
+	\item This follows from the fact that the determinant of $A$ is equal to the product of its eigenvalues. 
+
+	\item 
+
+\end{enumerate}
+\end{proof}
+
+
+\section{Simultaneous nonlinear equations}
+
+\subsection{Analysis Preliminaries}
+\begin{definition}(Cauchy Sequence)
+A sequence $(\x^{(k)}) \subset \R^n$ is called a Cauchy sequence in $\R^n$ if for any $\e > 0$ there exists a positive integer $k_0 = k_0(\e)$ such that
+\begin{equation}
+	\norm{\x^{(k)} - \x^{(m)}}_{\infty} < \e \quad \forall k, m \geq k_0(\e)
+\end{equation}
+\end{definition}
+
+\begin{remark}
+$\R^n$ is \textbf{complete} in the sense that every Cauchy sequence $(\x^{(k)})$ converges to some $\xi \in \R^n$. 
+\end{remark}
+
+\begin{definition}(Continuous function)
+Let $D \subset \R^n$ be nonempty and $f: D \to \R^n$. Given $\xib \in D$, $f$ is continuous at $\xib$ if for every $\e > 0$, there exists a $\delta = \delta(\e) > 0$ such that for every $\x \in B(\xib; \delta) \cap D$
+\begin{equation}
+ 	\norm{f(\x) - f(\xib)}_\infty < \e
+ \end{equation} 
+\end{definition}
+
+\begin{lemma}
+Let $D \subset \R^n$ be nonempty and $f: D \to \R^n$ be defined and continuous on $D$. If $(\x^{(k)}) \subset D$ converges in $\R^n$ to $\xib \in D$, then $f(\x^{(k)})$ also converges to $f(\xib)$. 
+\end{lemma}
+
+\subsection{Simultaneous iteration}
+
+\begin{definition}(Lipschitz condition, constant, and contraction)
+Let $D$ be a closed subset of $\R^n$ and $g: D \to D$. If there exists a positive constant $L$ such that
+\begin{equation}
+	\norm{g(x) - g(y)}_\infty \leq L \norm{x - y}_\infty
+\end{equation}
+for all $x, y \in D$, then $g$ satisfies the Lipschitz condition on $D$ in the $\infty$-norm. $L$ is called the Lipschitz constant. If $L \in (0,1)$, then $g$ is called a contraction on $D$ in the $\infty$-norm. 
+\end{definition}
+
+Observations about this definition:
+\begin{itemize}
+	\item Any function $g$ that satisfies the Lipschitz condition on $D$ is continuous on $D$ (to see this, set $\delta = \frac{\e}{L}$). 
+	\item If $g$ satisfies the Lipschitz condition on $D$ in the $\infty$-norm, then it also does in the $p$-norm for $p \in [1, \infty)$ and vice-versa. However the size of $L$ depends on the choice of norm. 
+\end{itemize}
+
+\begin{theorem}(Contraction Mapping Theorem in $\R^n$)
+Suppose $D$ is a closed subset of $\R^n$ and $g: \R^n \to \R^n$ is defined on $D$, and $g(D) \subset D$. Suppose further that $g$ is a contraction on $D$ in the $\infty$-norm. Then,
+\begin{enumerate}
+	\item $g$ has a unique fixed point $\xib \in D$
+	\item The sequence $(\x^{(k)})$ defined by $\x^{(k+1)} = g(\x^{k})$ converges to $\xib$ for any starting value $x^{(0)} \in D$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+
+\end{proof}
 
 \end{document}
