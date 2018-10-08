@@ -97,6 +97,14 @@
 \tableofcontents
 \newpage 
 
+\section{Results from Real Analysis}
+\begin{theorem}(The Mean Value Theorem)
+Suppose $f$ is a real-valued function, defined and continuous on the closed interval $[a,b] \in \R$ and $f$ differentiable on the open interval $(a,b)$. Then there exists a number $\xi \in (a,b)$ such that
+\begin{equation}
+	f(b) - f(a) = f'(\xi) (b - a)
+\end{equation}
+\end{theorem}
+
 \section{Solution of equations by iteration}
 
 \begin{theorem}(Existence of Root)\label{zeroexists}
@@ -205,6 +213,34 @@ Geometrically, $(x_{n+1}, 0)$ is the intersection of the $x$-axis and the tangen
 	\end{center}
 	\caption{Geometric Interpretation of Newton's Method in $\R$}
 \end{figure}
+
+\subsection{Secant Method}
+Observe that Newton's method requires us to know the first derivative $f'$ of $f$. In applications, we might not know $f'$ or it could be expensive to calculate. This motivates approximating the $f'(x_k)$ in Newton's method with
+\begin{equation}
+	f'(x_k) \approx \frac{f(x_k) - f(x_{k-1})}{x_k - x_{k-1}}
+\end{equation}
+
+\begin{definition}(Secant Method)
+The secant method is defined by 
+\begin{equation}
+	x_{k+1} = x_k - f(x_k) \frac{x_k - x_{k-1}}{f(x_k) - f(x_{k-1})}
+\end{equation}
+\end{definition}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=.5]{secant_method.png}
+	\end{center}
+	\caption{Geometric Interpretation of Secant Method in $\R$}
+\end{figure}
+
+\begin{theorem}(Convergence of Secant Method)
+Suppose that $f$ is a real-valued function, defined and continuously differentiable on an interval $I = [\xi - h, \xi + h]$, $h > 0$, with center point $\xi$. Suppose further that $f(\xi) = 0$, $f'(\xi) \neq 0$. Then, the sequence $(x_k)$ defined by the secant method converges at least linearly to $\xi$ provided that $x_0$ and $x_1$ are sufficiently close to $\xi$. 
+\end{theorem}
+
+\begin{proof}
+
+\end{proof}
 
 \section{Solution of systems of linear equations}
 
@@ -538,6 +574,7 @@ We prove each claim in the theorem as follows
 \end{enumerate}
 \end{proof}
 
+\subsection{Banded Matrices}
 
 \section{Simultaneous nonlinear equations}
 
