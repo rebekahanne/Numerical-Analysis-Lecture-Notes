@@ -626,7 +626,75 @@ Suppose $D$ is a closed subset of $\R^n$ and $g: \R^n \to \R^n$ is defined on $D
 \end{theorem}
 
 \begin{proof}
+The proof has three parts:
+\begin{enumerate}
+	\item First prove uniqueness, assuming existence of a fixed point.
+	\item Prove the iteration generates a Cauchy sequence (then convergence to some $\xib$ follows from the completeness of the space).
+	\item Show $\xib$ is indeed the fixed point.
+\end{enumerate}
 
+Uniqueness: Suppose $\xib, \bm \eta$ are both fixed points of $g$ in $D$. Then,
+\begin{align*}
+	\norm{\xib - \bm \eta}_\infty &= \norm{g(\xib) - g(\bm \eta)} \tag{$\xib, \bm \eta$ are fixed points} \\
+	&\leq L \norm{\xib - \bm \eta}_\infty \tag{$g$ is a contraction on $D$}
+\end{align*}
+We can rearrange this to see that $(1-L)\norm{\xib - \bm \eta}_\infty \leq 0$. By assumption, $L\in (0,1)$, and the norm of a quantity is always weakly positive. Therefore, $\norm{\xib - \bm \eta}_\infty = 0$ which implies $\xib = \bm \eta$. 
+
+Existence: First observe that if $\x^{(0)}$ belongs to $D$, then $\x^{(k+1)} = g(\x^{k}) \in D$ for all $k \geq 1$ since $g(D) \subset D$ (this is important since the proof relies on $g$ being a contraction on $D$). Next, consider the distance between two adjacent terms on the sequence $\x^{(k+1)} = g(\x^{k})$
+\begin{align*}
+	\norm{\x^{(k)} - \x^{(k-1)}}_\infty &= \norm{g(\x^{(k-1)}) - g(\x^{(k-2)})}_\infty \tag{definition of $g$} \\
+	&\leq L \norm{\x^{(k-1)} - \x^{(k-2)}}_\infty \tag{$g$ is a contraction on $D$} \\
+	&\leq L^{k-1} \norm{\x^{(1)} - \x^{(0)}}_\infty \tag{induction}
+\end{align*}
+
+Now, fix positive integers $m,k$ such that $m > k$. Then
+\begin{align*}
+	\norm{\x^{(m)} - \x^{(k)}}_\infty &= \norm{\x^{(m)} - \x^{(m-1)} + \x^{(m-1)} + \cdots + \x^{(k-1)} - \x^{(k)}}_\infty \\
+	&\leq \norm{\x^{(m)} - \x^{(m-1)}}_\infty + \cdots + \norm{\x^{(k+1)} - \x^{(k)}}_\infty \tag{triangle inequality} \\
+	&\leq (L^{m-1} + \cdots + L^k) \norm{\x^{(1)} - \x^{(0)}}_\infty \\
+	&= L^k (L^{m-k-1} + \cdots + 1) \norm{\x^{(1)} - \x^{(0)}}_\infty \\
+	&\leq L^k \frac{1}{1-L} \norm{\x^{(1)} - \x^{(0)}}_\infty \tag{geometric series}
+\end{align*}
+
+Since $L \in (0,1)$, $\lim_{k\to\infty} L^k = 0$. Therefore, $\x^{(k)}$ is a Cauchy sequence in $\R^n$, that is for all $\e > 0$, there exists a $k_0$ such that 
+\begin{equation}
+	\norm{\x^{(m)} - \x^{(k)}}_\infty < \e \quad \forall m,k \geq k_0
+\end{equation}
+
+$\xib$ is indeed the fixed point: Since $g$ satisfies the Lipschitz condition on $D$, $g$ is continuous on $D$. Therefore, 
+\begin{equation}
+	\xib = \lim_{k \to \infty} \x^{(k+1)} = \lim_{k \to \infty} g(\x^{(k)}) = g \left( \lim_{k \to \infty} \x^{(k)} \right) = g(\xib)
+\end{equation}
+therefore $\xib$ is a fixed point of $g$, and observe that $\xib \in D$ since $D$ is closed. 
 \end{proof}
+
+\begin{definition}(Jacobian)
+Let $g = (g_1, \ldots, g_n)^T : \R^n \to \R^n$ be a function defined and continuous in an (open) neighborhood of $\xib \in \R^n$. Suppose the first partial derivatives of each $g_i$ exist at $\xib$. The Jacobian matrix $J_g(\xib)$ of $g$ at $\xib$ is the $n \times n$ matrix with elements
+\begin{equation}
+	J_g(\xib)_{ij} = \frac{\partial g_i}{\partial x_j} (\xib) 
+\end{equation}
+\end{definition}
+
+\begin{theorem}
+Let $g = (g_1, \ldots, g_n)^T : \R^n \to \R^n$ be a function defined and continuous on a closed set $D \subset \R^n$. Let $\xib \in D$ be a fixed point of $g$. Suppose the first partial derivatives of each $g_i$ are defined and continuous in some (open) neighborhood $N(\xib) \in D$ of $\xib$, with 
+\begin{equation}
+	\norm{J_g(\xib)}_\infty < 1  	
+\end{equation}
+Then there exists $\e > 0$ such that $g (\bar B_\e(\xib)) \subset \bar B_\e(\xib)$, and the sequence $\x^{(k+1)} = g(\x^{k})$ converges to $\xib$ for all $\x^{(0)} \in \bar B_\e(\xib)$ (in other words, the sequence converges to $\xib$ as long as $\x^{(0)}$ is close enough to $\xib$).
+\end{theorem}
+
+\begin{example}
+
+\end{example}
+
+\subsection*{Newton's Method}
+\begin{definition}(Newton's Method)
+	The sequence defined by
+	\begin{equation}
+		\x^{(k+1)} = \x^{(k)} - [J_f(\x^{(k)})]^{-1} f(\x^{(k)})
+	\end{equation}
+	where $\x^{(0)} \in \R^n$, is called Newton's method. 
+\end{definition}
+
 
 \end{document}
