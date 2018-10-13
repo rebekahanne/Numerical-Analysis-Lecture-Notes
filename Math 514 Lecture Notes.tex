@@ -52,9 +52,17 @@
 
 \usepackage{floatrow}
 \usepackage{algorithm}
-\usepackage{algpseudocode}
 \usepackage{float}
 \usepackage{indentfirst}
+
+\usepackage{algpseudocode,algorithm,algorithmicx}
+
+
+\newcommand*\Let[2]{\State #1 $\gets$ #2}
+% \algrenewcommand\alglinenumber[1]{
+%     {\sf\footnotesize\addfontfeatures{Colour=888888,Numbers=Monospaced}#1}}
+% \algrenewcommand\algorithmicrequire{\textbf{Precondition:}}
+%\algrenewcommand\algorithmicensure{\textbf{Postcondition:}}
 
 \algnewcommand\algorithmicforeach{\textbf{for each}}
 \algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
@@ -107,6 +115,7 @@ Suppose $f$ is a real-valued function, defined and continuous on the closed inte
 
 \section{Solution of equations by iteration}
 
+\subsection{Simple Iteration}
 \begin{theorem}(Existence of Root)\label{zeroexists}
 Let $f$ be a real-valued function, defined and continuous on a bounded closed interval $[a,b]$ of the real line. Assume further, that $f(a)f(b) \leq 0$; then, there exists $\xi$ in $[a,b]$ such that $f(\xi) = 0$.
 \end{theorem}
@@ -243,6 +252,8 @@ Suppose that $f$ is a real-valued function, defined and continuously differentia
 \end{proof}
 
 \section{Solution of systems of linear equations}
+
+\subsection{LU Decomposition}
 
 \subsection{Least Squares}
 Given a system of equations $Ax = b$, the least squares problem is
@@ -574,7 +585,28 @@ We prove each claim in the theorem as follows
 \end{enumerate}
 \end{proof}
 
-\subsection{Banded Matrices}
+\subsection{Banded Matrices and Differential Equations}
+
+\subsection{Cholesky Factorization}
+Notation:
+\begin{itemize}
+	\item $L_{k-1}$: the first $k-1 \times k-1$ upper left corner of $L$
+	\item $a_k$: the first $k-1$ entries in column $k$ of $A$
+	\item $l_k$: the first $k-1$ entries in column $k$ of $L^T$ [[?]]
+	\item $a_{kk}, l_{kk}$: the $kk$ entries of $A$ and $L$, respectively
+\end{itemize}
+\begin{algorithm}
+  \caption{Cholesky Factorization}
+  \begin{algorithmic}[1]
+    \Require{$A \in \R^{n \times n}$, SPD}
+    \Let{$L_1$}{$\sqrt{a_{11}}$}
+    \For{$k \gets 2, 3, \ldots, n$}
+    	\State Solve $L_{k-1} l_k = a_k$ for $l_k$
+    	\Let{$l_{kk}$}{$\sqrt{a_{kk} - l_k^T l_k}$}
+    	\Let{$L_k$}{$\begin{pmatrix} L_{k-1} & 0 \\ l_k^T & l_{kk} \end{pmatrix}$}
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
 
 \section{Simultaneous nonlinear equations}
 
@@ -640,6 +672,15 @@ Uniqueness: Suppose $\xib, \bm \eta$ are both fixed points of $g$ in $D$. Then,
 \end{align*}
 We can rearrange this to see that $(1-L)\norm{\xib - \bm \eta}_\infty \leq 0$. By assumption, $L\in (0,1)$, and the norm of a quantity is always weakly positive. Therefore, $\norm{\xib - \bm \eta}_\infty = 0$ which implies $\xib = \bm \eta$. 
 
+Convergence: Assuming $g$ has a fixed point $\xib \in D$, the sequence $\x^{(k+1)} = g(\x^{k})$ will converge to $\xib$ for any $\x^{(0)} \in D$. This follows because
+\begin{equation}
+	\norm{\x^{(k)} - \xib}_\infty \leq L^k \frac{1}{1-L} \norm{\x^{(1)} - \x^{(0)}}_\infty
+\end{equation}
+Since $L \in (0,1)$, $\lim_{k\to\infty} L^k = 0$, and therefore
+\begin{equation}
+	\lim_{k \to \infty} \norm{\x^{(k)} - \xib}_\infty = 0
+\end{equation}
+
 Existence: First observe that if $\x^{(0)}$ belongs to $D$, then $\x^{(k+1)} = g(\x^{k}) \in D$ for all $k \geq 1$ since $g(D) \subset D$ (this is important since the proof relies on $g$ being a contraction on $D$). Next, consider the distance between two adjacent terms on the sequence $\x^{(k+1)} = g(\x^{k})$
 \begin{align*}
 	\norm{\x^{(k)} - \x^{(k-1)}}_\infty &= \norm{g(\x^{(k-1)}) - g(\x^{(k-2)})}_\infty \tag{definition of $g$} \\
@@ -651,7 +692,7 @@ Now, fix positive integers $m,k$ such that $m > k$. Then
 \begin{align*}
 	\norm{\x^{(m)} - \x^{(k)}}_\infty &= \norm{\x^{(m)} - \x^{(m-1)} + \x^{(m-1)} + \cdots + \x^{(k-1)} - \x^{(k)}}_\infty \\
 	&\leq \norm{\x^{(m)} - \x^{(m-1)}}_\infty + \cdots + \norm{\x^{(k+1)} - \x^{(k)}}_\infty \tag{triangle inequality} \\
-	&\leq (L^{m-1} + \cdots + L^k) \norm{\x^{(1)} - \x^{(0)}}_\infty \\
+	&\leq (L^{m-1} + \cdots + L^k) \norm{\x^{(1)} - \x^{(0)}}_\infty \tag{$g$ a contraction} \\
 	&= L^k (L^{m-k-1} + \cdots + 1) \norm{\x^{(1)} - \x^{(0)}}_\infty \\
 	&\leq L^k \frac{1}{1-L} \norm{\x^{(1)} - \x^{(0)}}_\infty \tag{geometric series}
 \end{align*}
@@ -660,6 +701,8 @@ Since $L \in (0,1)$, $\lim_{k\to\infty} L^k = 0$. Therefore, $\x^{(k)}$ is a Cau
 \begin{equation}
 	\norm{\x^{(m)} - \x^{(k)}}_\infty < \e \quad \forall m,k \geq k_0
 \end{equation}
+
+Any Cauchy sequence in $\R^n$ is convergent in $\R^n$. Thus, there exists some $\xib \in \R^n$ such that $\xib = \lim_{k \to \infty} \x^{(k)}$. 
 
 $\xib$ is indeed the fixed point: Since $g$ satisfies the Lipschitz condition on $D$, $g$ is continuous on $D$. Therefore, 
 \begin{equation}
@@ -696,5 +739,157 @@ Then there exists $\e > 0$ such that $g (\bar B_\e(\xib)) \subset \bar B_\e(\xib
 	where $\x^{(0)} \in \R^n$, is called Newton's method. 
 \end{definition}
 
+\begin{theorem}
+Suppose $f(\xib) = 0$, that in some (open) neighborhood $N(\xib)$ of $\xib$, where $f$ is defined and continuous, all the second-order partial derivatives of $f$ are defined and continuous, and that the Jacobian matrix $J_f(\x^{(k)})$ of $f$ at the point $\xib$ is nonsingular. Then the sequence defined by Newton's method converges to $\xib$ provided that $\x^{(0)}$ is sufficiently close to $\xib$. 
+\end{theorem}
+
+\section{Eigenvalues of Eigenvectors of a symmetric matrix}
+
+\subsection{Why we use iteration to calculate eigenvalues/eigenvectors}
+We call $\lambda$ an eigenvalue and $x \neq 0$ an eigenvector of $A$ if $Ax = \lambda x$. Thus, $(Ax - \lambda I) = 0$. Therefore, $x \in Null(A - \lambda I)$. Since $x \neq 0$, $A - \lambda I$ has a non-trivial nullspace, so we must have $\det(A - \lambda I) = 0$. This suggests a way to transform an eigenvalue finding problem to a root finding problem. Define
+\begin{equation}
+	\rho(\lambda) = \det(A - \lambda I)
+\end{equation}
+Recall that the determinant of a matrix is the product of its eigenvalues. If $A$ is a $n \times n$ real, symmetric matrix, then $\rho(\lambda)$ is an $n$-th order polynomial in $\lambda$, whose roots are the eigenvalues of $A$. 
+
+\begin{theorem}(Abel(-Ruffini) Theorem, or ``No-go Theorem'')
+There is no algebraic solution (that is, a solution expressed in terms of radicals) to general polynomial equations of degree five or higher with arbitrary coefficients.  
+\end{theorem}
+
+Therefore, there is no finite-number operation procedure that provides an eigenvalue decomposition. 
+
+\subsection{Power Iteration}
+\textbf{Find the biggest eigenvalue/vector.}
+
+\begin{algorithm}[H]
+  \caption{Power Iteration}
+  \begin{algorithmic}[1]
+    \Require{$v^{(0)} =$ some vector with $\norm{v^{(0)}} = 1$}
+    \For{$k \gets 1, 2, \ldots$}
+	    \Let{$w$}{$Av^{(k-1)}$} \Comment{Apply $A$}
+	    \Let{$v^{(k)}$}{$w/ \norm{w}$} \Comment{Normalize}
+	    \Let{$\lambda^{(k)}$}{$(v^{(k)})^T Av^{(k)} = \inp{v^{(k)}}{Av^{(k)}}$} \Comment{Rayleigh Quotient}
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{theorem}(Convergence of Power Iteration)
+Suppose $|\lambda_1|  > |\lambda_2| \geq \ldots \geq |\lambda_n|$ and $q_1^T v^{(0)} \neq 0$. Then the iterates of power iteration satisfy
+\begin{align}
+	\norm{v^{(k)} - (\pm q_1)} &= \mathcal{O}\left( \left\vert \frac{\lambda_2}{\lambda_1} \right\vert^k \right) \tag{error of eigenvector} \\
+	|\lambda^{(k)} - \lambda_1 | &= \mathcal{O}\left( \left\vert \frac{\lambda_2}{\lambda_1} \right\vert^2k \right) \tag{error of eigenvalue}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+
+Convergence of eigenvector: Write $v^{(0)} = v$ as a linear combination of the orthonormal eigenvectors $q_i$:
+\begin{equation}
+	v = c_1 q_1 + \cdots + c_nq_n
+\end{equation}
+
+$v^{(k)}$ is a scalar multiple of $A^k v^{(0)}$. Therefore
+
+\begin{align*}
+	v^{(k)} &= \alpha_k A^k v^{(0)} \tag{$\alpha_k$ a normalization constant} \\
+	&= \alpha_k \left(\sum_{i=1}^n \lambda_i^k a_i q_i \right) \\
+	&= \alpha_k \lambda_1^k \left( c_1q_1 + c_2 \left(\frac{\lambda_2}{\lambda_1} \right)^k q_2 + \ldots + c_n \left(\frac{\lambda_n}{\lambda_1} \right)^k q_n \right) \\
+\end{align*}
+We can choose $\alpha_k$ such that $\alpha_k \lambda_1^k$ is 1. Therefore, $c_1 q_1$ is dominating (as long as $c_1 \neq 0$). The other terms are of order $\mathcal{O}\left( \left\vert \frac{\lambda_2}{\lambda_1} \right\vert^k \right)$.
+
+Convergence of eigenvalue: [[Incomplete]]
+\end{proof}
+
+\begin{theorem}(Error of Rayleigh Quotient)
+Let $x_1$ be the eigenvector that corresponds to the largest (in absolute value) eigenvalue. If $\norm{x - x_1} = \mathcal{O}(\e)$, then
+\begin{equation}
+	\left\vert \frac{\inp{x}{Ax}}{\inp{x}{x}}  - \lambda_1 \right\vert = \mathcal{O}(\e^2)
+\end{equation}
+\end{theorem}
+
+\subsection{Inverse Iteration}
+\textbf{Find the smallest eigenvalue/vector}. 
+
+\subsection{Simultaneous Iteration}
+\textbf{Obtain the full set of eigenvalues/vectors simultaneously.}
+
+\begin{algorithm}[H]
+  \caption{Simultaneous Iteration}
+  \begin{algorithmic}[1]
+    \Require{$Q^{(0)} = V = I$, a list of vectors $V$, which we choose to be the identity}
+    \For{$k \gets 1, 2, \ldots$}
+	    \Let{$Z$}{$A \underline Q^{(k-1)}$} \Comment{Apply $A$}
+	    \Let{$Z$}{$\underline Q^{(k)} R^{(k)}$} \Comment{$QR$ factorization of $Z$}
+	    \Let{$A^{(k)}$}{$(\underline Q^{(k)})^T A \underline Q^{(k)}$} 
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
+
+\subsection{Shifted Power Iteration}
+\textbf{Find the eigenvalue close to a specific number.}
+
+\subsection{QR Algorithm}
+The $QR$ can be viewed as a stable procedure for computing $QR$ factorizations of the matrix powers $A$, $A^2$, $A^3$, $\ldots$
+\begin{algorithm}[H]
+  \caption{QR Algorithm (without shifts)}
+  \begin{algorithmic}[1]
+    \Require{$A^{(0)} = A$}
+    \For{$k \gets 1, 2, \ldots$}
+	    \Let{$Q^{(k)}R^{(k)}$}{$A^{(k-1)}$} \Comment{$QR$ factorization of $A^{(k-1)}$}
+	    \Let{$A^{(k)}$}{$R^{(k)}Q^{(k)}$} \Comment{Recombine factors in reverse order}
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
+
+\subsection{Simultaneous Iteration equivalent to QR Algorithm}
+The $QR$ algorithm is equivalent to simultaneous iteration applied to a full set of initial vectors, namely, $\hat Q^{(0)} = I$. Summary of each algorithm:
+
+\subsubsection*{Simultaneous Iteration}
+\begin{align}
+	\underline Q^{(0)} &= I \tag{initial condition} \\
+	Z &= A \underline Q^{(k-1)} \tag{apply $A$}\\
+	Z &= \underline Q^{(k)} R^{(k)} \tag{resemblence of normalization, $QR$ factorization of $Z$} \\
+	A^{(k)} &= (\underline Q^{(k)})^T A \underline Q^{(k)} \tag{resemblence of Rayleigh quotient}
+\end{align}
+
+\subsubsection*{QR Algorithm}
+\begin{align}
+	A^{(0)} &= A \tag{initial condition}\\
+	A^{(k-1)} &= Q^{(k)}R^{(k)} \tag{compute $QR$ factorization}\\
+	A^{(k)} &= R^{(k)}Q^{(k)} \tag{reverse order of factors}\\
+	\underline Q^{(k)} &= Q^{(1)} Q^{(2)} \cdots Q^{(k)} \tag{definition of $\underline Q^{(k)}$}
+\end{align} 
+and 
+\begin{equation}
+	\underline R^{(k)} = R^{(k)} R^{(k-1)} \cdots R^{(1)} \tag{definition of $\underline R^{(k)}$}
+\end{equation}
+
+\begin{theorem}(Equivalence of Simultaneous Iteration and the QR Algorithm)
+Simultaneous Iteration and the QR Algorithm generate identical sequences of matrices $\underline R^{(k)}, \underline Q^{(k)}, A^{(k)}$. Both give
+\begin{align}
+	(a): A^{(k)} &= \underline Q^{(k)} \underline R^{(k)} \tag{$QR$ factorization of the $k$th power of $A$}\\
+	(b): A^{(k)} &= (\underline Q^{(k)})^T A \underline Q^{(k)} \tag{projection}
+\end{align}
+\end{theorem}
+\begin{proof}
+By induction on $k$ (number of iterations). The base case $k=0$ is trivial. 
+\begin{enumerate}
+	\item $QR$ gives $(a)$: Assume $A^{(k-1)} = \underline Q^{(k-1)} \underline R^{(k-1)}$. The inductive hypothesis for $(b)$ gives that $A^{(k-1)} = (\underline Q^{(k-1)})^T A \underline Q^{(k-1)}$ or that $ \underline Q^{(k-1)} A^{(k-1)} = A \underline Q^{(k-1)}$. Then
+	\begin{align*}
+		A^{(k)} &= A A^{(k-1)} \tag{decompose to use inductive hypothesis}\\
+		&= A \underline Q^{(k-1)} \underline R^{(k-1)} \tag{inductive hypothesis}\\
+		&= \underline Q^{(k-1)} A^{(k-1)} \underline R^{(k-1)} \tag{inductive hypothesis from $(b)$}\\
+		&= \underline Q^{(k-1)} R^{(k-1)}Q^{(k-1)} \underline R^{(k-1)} \tag{from algorithm} \\
+		&= \underline Q^{(k)} \underline R^{(k)} \tag{from definitions of $\underline Q^{(k)}, \underline R^{(k)}$}
+	\end{align*}
+	\item $QR$ gives $(b)$: Assume $A^{(k-1)} = (\underline Q^{(k-1)})^T A \underline Q^{(k-1)}$. From the relationship $A^{(k-1)} = Q^{(k)}R^{(k)}$ and the fact that $Q^{(k)}$ is orthogonal, we can apply $(Q^{(k)})^T$ to both sides (on the left) to get that $(Q^{(k)})^T A^{(k-1)} = R^{(k)}$. Then
+	\begin{align*}
+		A^{(k)} &= R^{(k)}Q^{(k)} \\
+		&= (Q^{(k)})^T A^{(k-1)} Q^{(k)} \\
+		&= (Q^{(k)})^T (\underline Q^{(k-1)})^T A \underline Q^{(k-1)} Q^{(k)} \tag{inductive hypothesis} \\
+		&= (\underline Q^{(k)})^T A \underline Q^{(k)} \tag{definition of $\underline Q^{(k)}$}
+	\end{align*}
+\end{enumerate}
+\end{proof}
 
 \end{document}
