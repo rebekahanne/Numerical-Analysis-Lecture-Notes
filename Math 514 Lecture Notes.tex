@@ -1,5 +1,39 @@
 \documentclass[12pt]{article}
-\usepackage{amsfonts, amsmath}
+\usepackage[active,
+            generate=Math_514_Definitions,
+            %extract-cmd={section},
+            extract-env={definition,algorithm}]{extract}
+
+\begin{extract*}
+  \usepackage{amsthm}
+  \usepackage{amsfonts, amsmath}
+  \usepackage[dvipsnames]{xcolor}
+  %\newtheorem{theorem}{Theorem}
+  \theoremstyle{definition}
+  \definecolor{Tm}{rgb}{0,0,0.80}
+  %\newtheorem{definition}{Definition}
+  \newtheorem{definition}{\color{NavyBlue}{\textbf{Definition}}}
+  %\newtheorem{example}{Example}
+  	\usepackage{bm}
+	\newcommand{\e}{\epsilon}
+	%\newcommand{\d}{\delta}
+	\newcommand{\D}{\Delta}
+	\newcommand{\R}{\mathbb{R}}
+	\newcommand{\Z}{\mathbb{Z}}
+	\usepackage{mathtools}
+	\DeclarePairedDelimiterX{\inp}[2]{\langle}{\rangle}{#1, #2}
+	\newcommand{\norm}[1]{\lVert#1\rVert}
+	\newcommand{\x}{\bm{x}}
+	\newcommand{\xib}{\bm{\xi}}
+	\usepackage{mathrsfs}
+	\usepackage{algpseudocode,algorithm,algorithmicx}
+	\algnewcommand\algorithmicforeach{\textbf{for each}}
+	\algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
+	\newcommand*\Let[2]{\State #1 $\gets$ #2}
+\end{extract*}
+
+\usepackage{algpseudocode,algorithm,algorithmicx}
+%\usepackage{amsfonts, amsmath}
 \usepackage{amssymb, geometry}
 \usepackage{scalefnt}
 \usepackage{setspace}
@@ -9,7 +43,7 @@
 \usepackage{dsfont}
 \usepackage{color,hyperref}
 \usepackage{epstopdf}
-\usepackage{amsthm}
+%\usepackage{amsthm}
 \usepackage{amssymb}
 %\usepackage{subcaption}
 \usepackage{graphicx}
@@ -24,53 +58,48 @@
 
 \providecommand{\u}[1]{\protect\rule{.1in}{.1in}}
 \providecommand{\u}[1]{\protect\rule{.1in}{.1in}}
-\newtheorem{theorem}{Theorem}
+\newtheorem{theorem}{\color{ForestGreen}{\textbf{Theorem}}}
 \newtheorem{acknowledgement}[theorem]{Acknowledgement}
 %\newtheorem{algorithm}[theorem]{Algorithm}
 \newtheorem{axiom}[theorem]{Axiom}
 \newtheorem{case}[theorem]{Case}
-\newtheorem{claim}{Claim}
+\newtheorem{claim}{\color{JungleGreen}Claim}
 \newtheorem{conclusion}[theorem]{Conclusion}
 \newtheorem{condition}[theorem]{Condition}
 \newtheorem{conjecture}{Conjecture}
 \newtheorem{corollary}{Corollary}
 \newtheorem{criterion}[theorem]{Criterion}
-\newtheorem{definition}{Definition}
-\theoremstyle{definition}
-\newtheorem{example}{Example}
-\newtheorem{exercise}{Exercise}
+% \newtheorem{definition}{Definition}
+% \theoremstyle{definition}
+\newtheorem{example}{\color{WildStrawberry}Example}
+\newtheorem{exercise}{\color{YellowOrange}Exercise}
 \newtheorem{lemma}{Lemma}
 \newtheorem{notation}[theorem]{Notation}
 \newtheorem{problem}[theorem]{Problem}
 \newtheorem{proposition}{Proposition}
 \newtheorem{remark}{Remark}
-\newtheorem{solution}[theorem]{Solution}
+\theoremstyle{definition}
+%\newtheorem{solution}[theorem]{Solution}
+\newtheorem{solution}{\color{Goldenrod}Solution}
 \newtheorem{summary}[theorem]{Summary}
 \geometry{left=1in,right=1in,top=1in,bottom=1in}
 %\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
 %\hypersetup{pdftex,colorlinks=true,allcolors=black,citecolor=black}
 
-\usepackage{floatrow}
-\usepackage{algorithm}
+%\usepackage{floatrow}
 \usepackage{float}
 \usepackage{indentfirst}
 
-\usepackage{algpseudocode,algorithm,algorithmicx}
-
-
-\newcommand*\Let[2]{\State #1 $\gets$ #2}
 % \algrenewcommand\alglinenumber[1]{
 %     {\sf\footnotesize\addfontfeatures{Colour=888888,Numbers=Monospaced}#1}}
 % \algrenewcommand\algorithmicrequire{\textbf{Precondition:}}
 %\algrenewcommand\algorithmicensure{\textbf{Postcondition:}}
 
-\algnewcommand\algorithmicforeach{\textbf{for each}}
-\algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
 
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 
-%\graphicspath{{./Simulation_Graphs/}}
+\graphicspath{{./figures/}}
 
 \usepackage{listings}
 \usepackage{subcaption} 
@@ -85,17 +114,17 @@
 \usepackage[T1]{fontenc}
 
 %% Math commands
-\newcommand{\e}{\epsilon}
-%\newcommand{\d}{\delta}
-\newcommand{\D}{\Delta}
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\Z}{\mathbb{Z}}
-\usepackage{mathtools}
-\DeclarePairedDelimiterX{\inp}[2]{\langle}{\rangle}{#1, #2}
-\newcommand{\norm}[1]{\lVert#1\rVert}
-\newcommand{\x}{\bm{x}}
-\newcommand{\xib}{\bm{\xi}}
-\usepackage{mathrsfs}
+% \newcommand{\e}{\epsilon}
+% %\newcommand{\d}{\delta}
+% \newcommand{\D}{\Delta}
+% \newcommand{\R}{\mathbb{R}}
+% \newcommand{\Z}{\mathbb{Z}}
+% \usepackage{mathtools}
+% \DeclarePairedDelimiterX{\inp}[2]{\langle}{\rangle}{#1, #2}
+% \newcommand{\norm}[1]{\lVert#1\rVert}
+% \newcommand{\x}{\bm{x}}
+% \newcommand{\xib}{\bm{\xi}}
+% \usepackage{mathrsfs}
 
 
 \title{Numerical Analysis Lecture Notes}
@@ -488,9 +517,9 @@ The previous two definitions depend on the magnitudes of $f(x)$ and $x$. In appl
 \end{equation}
 \end{definition}
 
-In these definitions, if $f$ is differentiable then we can replace the differences with the appropriate derivatives. 
+\textbf{In these definitions, if $f$ is differentiable then we can replace the differences with the appropriate derivatives.} 
 
-\begin{example}(Example of conditions numbers)
+\begin{example}(Example of condition numbers)
 Let $D$ be a subinterval of $[0, \infty)$ and $f(x) = \sqrt{x}$. Then $f'(x) = \frac{1}{2 \sqrt{x}}$. 
 \begin{enumerate}
 	\item If $D = [1,2]$, then $Cond(f) = \frac{1}{2}$.
@@ -597,7 +626,7 @@ Notation:
 \end{itemize}
 \begin{algorithm}
   \caption{Cholesky Factorization}
-  \begin{algorithmic}[1]
+  \begin{algorithmic}[ht]
     \Require{$A \in \R^{n \times n}$, SPD}
     \Let{$L_1$}{$\sqrt{a_{11}}$}
     \For{$k \gets 2, 3, \ldots, n$}
@@ -634,6 +663,11 @@ Let $D \subset \R^n$ be nonempty and $f: D \to \R^n$ be defined and continuous o
 \end{lemma}
 
 \subsection{Simultaneous iteration}
+
+\begin{example}
+
+\end{example}
+
 
 \begin{definition}(Lipschitz condition, constant, and contraction)
 Let $D$ be a closed subset of $\R^n$ and $g: D \to D$. If there exists a positive constant $L$ such that
@@ -745,6 +779,12 @@ Suppose $f(\xib) = 0$, that in some (open) neighborhood $N(\xib)$ of $\xib$, whe
 
 \section{Eigenvalues of Eigenvectors of a symmetric matrix}
 
+Another matrix decomposition is
+\begin{equation}
+	A = X \Lambda X^{-1}
+\end{equation}
+where $X$ is a matrix of the eigenvectors and $\Lambda$ is a diagonal matrix with the eigenvalues. 
+
 \subsection{Why we use iteration to calculate eigenvalues/eigenvectors}
 We call $\lambda$ an eigenvalue and $x \neq 0$ an eigenvector of $A$ if $Ax = \lambda x$. Thus, $(Ax - \lambda I) = 0$. Therefore, $x \in Null(A - \lambda I)$. Since $x \neq 0$, $A - \lambda I$ has a non-trivial nullspace, so we must have $\det(A - \lambda I) = 0$. This suggests a way to transform an eigenvalue finding problem to a root finding problem. Define
 \begin{equation}
@@ -761,7 +801,7 @@ Therefore, there is no finite-number operation procedure that provides an eigenv
 \subsection{Power Iteration}
 \textbf{Find the biggest eigenvalue/vector.}
 
-\begin{algorithm}[H]
+\begin{algorithm}[ht]
   \caption{Power Iteration}
   \begin{algorithmic}[1]
     \Require{$v^{(0)} =$ some vector with $\norm{v^{(0)}} = 1$}
@@ -777,7 +817,7 @@ Therefore, there is no finite-number operation procedure that provides an eigenv
 Suppose $|\lambda_1|  > |\lambda_2| \geq \ldots \geq |\lambda_n|$ and $q_1^T v^{(0)} \neq 0$. Then the iterates of power iteration satisfy
 \begin{align}
 	\norm{v^{(k)} - (\pm q_1)} &= \mathcal{O}\left( \left\vert \frac{\lambda_2}{\lambda_1} \right\vert^k \right) \tag{error of eigenvector} \\
-	|\lambda^{(k)} - \lambda_1 | &= \mathcal{O}\left( \left\vert \frac{\lambda_2}{\lambda_1} \right\vert^2k \right) \tag{error of eigenvalue}
+	|\lambda^{(k)} - \lambda_1 | &= \mathcal{O}\left( \left\vert \frac{\lambda_2}{\lambda_1} \right\vert^{2k} \right) \tag{error of eigenvalue}
 \end{align}
 \end{theorem}
 
@@ -797,7 +837,8 @@ $v^{(k)}$ is a scalar multiple of $A^k v^{(0)}$. Therefore
 \end{align*}
 We can choose $\alpha_k$ such that $\alpha_k \lambda_1^k$ is 1. Therefore, $c_1 q_1$ is dominating (as long as $c_1 \neq 0$). The other terms are of order $\mathcal{O}\left( \left\vert \frac{\lambda_2}{\lambda_1} \right\vert^k \right)$.
 
-Convergence of eigenvalue: [[Incomplete]]
+Convergence of eigenvalue: see proposition below.
+
 \end{proof}
 
 \begin{theorem}(Error of Rayleigh Quotient)
@@ -806,6 +847,10 @@ Let $x_1$ be the eigenvector that corresponds to the largest (in absolute value)
 	\left\vert \frac{\inp{x}{Ax}}{\inp{x}{x}}  - \lambda_1 \right\vert = \mathcal{O}(\e^2)
 \end{equation}
 \end{theorem}
+\begin{proof}
+\color{Red}{TODO}. 
+\end{proof}
+
 
 \subsection{Inverse Iteration}
 \textbf{Find the smallest eigenvalue/vector}. 
@@ -813,24 +858,44 @@ Let $x_1$ be the eigenvector that corresponds to the largest (in absolute value)
 \subsection{Simultaneous Iteration}
 \textbf{Obtain the full set of eigenvalues/vectors simultaneously.}
 
-\begin{algorithm}[H]
+\begin{algorithm}[ht]
   \caption{Simultaneous Iteration}
   \begin{algorithmic}[1]
     \Require{$Q^{(0)} = V = I$, a list of vectors $V$, which we choose to be the identity}
     \For{$k \gets 1, 2, \ldots$}
 	    \Let{$Z$}{$A \underline Q^{(k-1)}$} \Comment{Apply $A$}
 	    \Let{$Z$}{$\underline Q^{(k)} R^{(k)}$} \Comment{$QR$ factorization of $Z$}
-	    \Let{$A^{(k)}$}{$(\underline Q^{(k)})^T A \underline Q^{(k)}$} 
+	    \Let{$A^{(k)}$}{$(\underline Q^{(k)})^T A \underline Q^{(k)}$}  \Comment{$A^{(k)}_{ii} = \inp{q_i^{(k)}}{Aq_i^{(k)}}$}
     \EndFor
   \end{algorithmic}
 \end{algorithm}
+
+Intuitively, 
+\begin{equation}
+	A^K \cdot V = 
+	\begin{bmatrix}
+	\sum_i \lambda_i^k c_{1i} \tilde{q_i} &\vert & \sum_i \lambda_i^k c_{2i} \tilde{q_i}&\vert & \cdots
+	\end{bmatrix}
+\end{equation}
+The first column vector will converge to $\tilde{q}_1$. The second vector will converge to $\tilde{q}_1 + \mathcal{O}\left( \left\vert \frac{\lambda_2}{\lambda_1} \right\vert^k \right) \tilde{q}_2$. 
+
+$\underline Q^{(k)}$ will converge to the matrix of eigenvectors:
+\begin{equation}
+	X = 
+	\begin{bmatrix}
+	x_1 &|& x_2 &|& \cdots &|&x_n 
+	\end{bmatrix}
+\end{equation}
+
+$\underline A^{(k)}$ will converge to a diagonal matrix containing the eigenvalues.
 
 \subsection{Shifted Power Iteration}
 \textbf{Find the eigenvalue close to a specific number.}
 
 \subsection{QR Algorithm}
 The $QR$ can be viewed as a stable procedure for computing $QR$ factorizations of the matrix powers $A$, $A^2$, $A^3$, $\ldots$
-\begin{algorithm}[H]
+
+\begin{algorithm}[ht]
   \caption{QR Algorithm (without shifts)}
   \begin{algorithmic}[1]
     \Require{$A^{(0)} = A$}

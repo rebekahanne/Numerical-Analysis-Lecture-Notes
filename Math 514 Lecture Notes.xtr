@@ -1,0 +1,10 @@
+\begin{XTRalgorithm}[ht]
+  \caption{QR Algorithm (without shifts)}
+  \begin{algorithmic}[1]
+    \Require{$A^{(0)} = A$}
+    \For{$k \gets 1, 2, \ldots$}
+    \Let{$Q^{(k)}R^{(k)}$}{$A^{(k-1)}$} \Comment{$QR$ factorization of $A^{(k-1)}$}
+    \Let{$A^{(k)}$}{$R^{(k)}Q^{(k)}$} \Comment{Recombine factors in reverse order}
+    \EndFor
+  \end{algorithmic}
+\end{XTRalgorithm}
