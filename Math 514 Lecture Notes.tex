@@ -142,6 +142,13 @@ Suppose $f$ is a real-valued function, defined and continuous on the closed inte
 \end{equation}
 \end{theorem}
 
+\begin{theorem}(Taylor's Theorem)
+Suppose that $n$ is a nonnegative integer, and $f$ is a real-valued function, defined and continuous on the closed interval $[a,b]$ of $\R$, such that the derivatives of $f$ of order up to and including $n$ are defined and continuous on the closed interval $[a,b]$. Suppose further that $f^{(n)}$ is differentiable on the open interval $(a,b)$. Then, for each value of $x \in [a,b]$, there exists a number $\xi = \xi(x)$ in the open interval $(a,b)$ such that 
+\begin{equation}
+	f(x) = f(a) + (x-a)f'(a) + \cdots + \frac{(x-a)^n}{n!} f^{(n)}(a) + \frac{(x-a)^{n+1}}{(n+1)!} f^{(n+1)}(\xi)
+\end{equation}
+\end{theorem}
+
 \section{Solution of equations by iteration}
 
 \subsection{Simple Iteration}
@@ -252,6 +259,63 @@ Geometrically, $(x_{n+1}, 0)$ is the intersection of the $x$-axis and the tangen
 	\caption{Geometric Interpretation of Newton's Method in $\R$}
 \end{figure}
 
+Intuitively, the fixed points of this iteration $g$ will be stable. 
+
+We can show that $|g'(\xi)| < 1$. 
+\begin{align*}
+	g'(x) &= 1 - \frac{f'\cdot f' - f\cdot f''}{(f')^2} \\
+	&= 1 - \left( 1 - \frac{f(x)\cdot f''(x)}{(f'(x))^2}\right) \\
+	&= \frac{f(x)\cdot f''(x)}{(f'(x))^2}
+\end{align*}
+Therefore
+\begin{equation}
+	|g'(\xi)| = \left\vert \frac{f(\xi)\cdot f''(\xi)}{(f'(\xi))^2} \right\vert = 0 < 1
+\end{equation}
+
+\begin{theorem}(Convergence of Newton's Method)
+Suppose that $f$ is a continuous real-valued function with continuous second derivative $f''$ defined on the closed interval $I_\delta = [\xi - \delta, \xi + \delta]$, $\delta > 0$, such that $f(\xi) = 0$ and $f''(\xi) \neq 0$. Additionally suppose that there exists a positive constant $A$ such that 
+\begin{equation}
+	\frac{|f''(x)|}{|f'(y)|} \leq A \quad \forall x,y, \in I_\delta
+\end{equation}
+If initially
+\begin{equation}
+	|\xi - x_0| \leq h = \min(\delta, \frac{1}{A})
+\end{equation}
+then the sequence $(x_k)$ defined by Newton's method converges quadratically to $\xi$. 
+\end{theorem}
+
+\begin{proof}
+We first compute the Taylor expansion of $f(\xi)$, expanding about the point $x_k \in I_\delta$, where $|\xi - x_k| \leq h = \min(\delta, \frac{1}{A})$. Thus
+\begin{equation}
+	f(\xi) = f(x_k) + (\xi - x_k)f'(x_k) + \frac{(\xi - x_k)^2}{2} f''(\eta_k)
+\end{equation}
+where $\eta_k$ is between $\xi$ and $x_k$. Recall that $f(\xi) = 0$. We can use this fact and the definition of Newton's iteration to rearrange the above expansion as
+\begin{equation}
+	\xi - x_{k+1} = - \frac{(\xi - x_k)^2 f''(\eta_k) }{2f'(x_k)}
+\end{equation}
+A small modification to this equation allows us to derive a relationship between adjacent errors
+\begin{equation}
+	E_{k+1} = \frac{f''(\eta_k)}{2f'(x_k)} E_k^2
+\end{equation}
+Recall by assumption we have that $|\xi - x_k| \leq h = \min(\delta, \frac{1}{A})$ and $\frac{|f''(x)|}{|f'(y)|} \leq A \quad \forall x,y, \in I_\delta$. Therefore, 
+\begin{equation}
+ 	|E_{k+1}| = \frac{1}{2} \left\vert \frac{f''(\eta_k)}{f'(x_k)} \right\vert |E_k|^2 \leq \frac{1}{2} |E_k|
+\end{equation} 
+We are given that $|\xi - x_0| \leq h = \min(\delta, \frac{1}{A})$, so that induction gives that 
+\begin{equation}
+	|E_k| = |\xi - x_k| \leq \frac{1}{2^k} h
+\end{equation}
+Therefore $(x_k)$ converges to $\xi$ as $k \to \infty$. 
+
+
+To show convergence is quadratic, notice that
+\begin{align*}
+	\lim_{k \to \infty} \frac{|E_{k+1}|}{|E_k|} &= \lim_{k \to \infty} \frac{1}{2} \frac{|f''(\eta_k)|}{|f'(x_k)|} \\
+	&= \frac{1}{2} \frac{|f''(\xi)|}{|f'(\xi)|} = \mu \leq \frac{A}{2}. 
+\end{align*}
+This shows that convergence is quadratic. 
+\end{proof}
+
 \subsection{Secant Method}
 Observe that Newton's method requires us to know the first derivative $f'$ of $f$. In applications, we might not know $f'$ or it could be expensive to calculate. This motivates approximating the $f'(x_k)$ in Newton's method with
 \begin{equation}
@@ -277,7 +341,47 @@ Suppose that $f$ is a real-valued function, defined and continuously differentia
 \end{theorem}
 
 \begin{proof}
+Without loss of generality, assume that $\alpha = f'(\xi) > 0$ in a small neighborhood of $\xi$. We'll choose this neighborhood such that
+\begin{equation}
+	0 < \frac{3}{4}\alpha < f'(x) < \frac{5}{4}\alpha
+\end{equation}
+for all $x$ in the interval.
 
+Recall that the secant method is defined by 
+\begin{equation}
+	x_{k+1} = x_k - f(x_k) \frac{x_k - x_{k-1}}{f(x_k) - f(x_{k-1})}
+\end{equation}
+
+We can repeatedly use the mean value theorem to approximate each of these terms. First observe that
+\begin{equation}
+	\frac{f(x_k) - f(\xi)}{x_k - \xi} = f'(\eta_k)
+\end{equation}
+for some $\eta_k$ between $x_k$ and $\xi$. Since $f(\xi) = 0$, this equation implies that
+\begin{equation}
+	f'(x_k) = f'(\eta_k)(x_k - \xi)
+\end{equation}
+Next observe that
+\begin{equation}
+	\frac{f(x_k) - f(x_{k-1})}{x_k - x_{k-1}} = f'(\theta_k) 
+\end{equation}
+for some $\theta_k$ between $x_k$ and $x_{k-1}$. Therefore, we can put these pieces together to observe that,
+\begin{equation}
+	_{k+1} = x_k - \frac{f'(\eta_k)(x_k - \xi)}{f'(\theta_k)}
+\end{equation}
+To show convergence, we can compare successive error terms.
+\begin{align*}
+	E_{k+1} &= x_{k+1} - \xi \\
+	&= E_k - \frac{f'(\eta_k)}{f'(\theta_k)}E_k  \\
+	&= \left( 1 - \frac{f'(\eta_k)}{f'(\theta_k)} \right) E_k
+\end{align*}
+Therefore
+\begin{align*}
+	\frac{E_{k+1}}{E_k} &= 1 - \frac{f'(\eta_k)}{f'(\theta_k)} \\
+	&< 1 - \frac{5\alpha/4}{3\alpha/4} \\
+	&= \frac{2}{3} \\
+	&< 1
+\end{align*}	
+Therefore the secant method converges at least linearly. 
 \end{proof}
 
 \section{Solution of systems of linear equations}
@@ -607,23 +711,32 @@ We prove each claim in the theorem as follows
 		(\lambda_i - \lambda_j)\x_i^T \x_j = 0
 	\end{equation}
 	Since we assumed $\lambda_i \neq \lambda_j$, then it must be that $\x_i^T \x_j$. Therefore $x_i \perp x_j$. This proof again only relies on the symmetry of $A$. 
-	\item This follows from the fact that the determinant of $A$ is equal to the product of its eigenvalues. 
-
-	\item 
-
+ 	which is the product of the diagonal elements of the matrix (the eigenvalues). 
+	\item This follows from the fact that the determinant of $A$ is equal to the product of its eigenvalues. Or, we can write $A$ in terms of its eigenvalue decomposition. Thus
+	\begin{equation}
+		A = X \Lambda X^{-1}
+	\end{equation}
+	Therefore
+	\begin{equation}
+		\det(A) = \det(X) \det(\Lambda) \det(X)^{-1} = \det(\Lambda) 
+ 	\end{equation}Or, we can write $A$ in terms of its eigenvalue decomposition. Thus
+	\begin{equation}
+		A = X \Lambda X^{-1}
+	\end{equation}
+	Therefore
+	\begin{equation}
+		\det(A) = \det(X) \det(\Lambda) \det(X)^{-1} = \det(\Lambda) 
+ 	\end{equation}
+	\item Let $I \subset \{1,2,\ldots, n\}$ be a subset of indices and let $B = A_{II}$. $A$ is symmetric, so that $A_{II} = A_{II}^T$. Therefore $B$ is symmetric. Let $x \in \R^n$ and define a vector $y$ that is $0$ for the indices not included in $I$ and follows the value of $x$ for the indices included in $I$. Therefore, $x^TBx = y^TAy > 0$ since $A$ is pd. 
 \end{enumerate}
 \end{proof}
 
-\subsection{Banded Matrices and Differential Equations}
-
 \subsection{Cholesky Factorization}
-Notation:
-\begin{itemize}
-	\item $L_{k-1}$: the first $k-1 \times k-1$ upper left corner of $L$
-	\item $a_k$: the first $k-1$ entries in column $k$ of $A$
-	\item $l_k$: the first $k-1$ entries in column $k$ of $L^T$ [[?]]
-	\item $a_{kk}, l_{kk}$: the $kk$ entries of $A$ and $L$, respectively
-\end{itemize}
+
+\begin{theorem}
+If $A$ is spd, then there exists a lower diagonal matrix $L$ such that $A = L L^T$. This is called the Cholesky decomposition. 
+\end{theorem}
+
 \begin{algorithm}
   \caption{Cholesky Factorization}
   \begin{algorithmic}[ht]
@@ -636,6 +749,62 @@ Notation:
     \EndFor
   \end{algorithmic}
 \end{algorithm}
+Notation:
+\begin{itemize}
+	\item $L_{k-1}$: the first $k-1 \times k-1$ upper left corner of $L$
+	\item $a_k$: the first $k-1$ entries in column $k$ of $A$
+	\item $l_k$: the first $k-1$ entries in column $k$ of $L^T$ [[?]]
+	\item $a_{kk}, l_{kk}$: the $kk$ entries of $A$ and $L$, respectively
+\end{itemize}
+
+\subsection{Banded Matrices and Differential Equations}
+Consider the two-point boundary value problem
+\begin{equation}
+	u'' + 2u' = -1, \quad u(x=0)=0, u(x=1)= 0
+\end{equation}
+where $x\in [0,1]$.
+
+Define a sequence of grid points $\{x_i\}_{i=0}^{N+1}$. We can approximate the derivative of $u$ at each point on the grid as follows
+\begin{align*}
+	u'(x_j) &= \lim_{\delta \to 0} \frac{u(x_j + \delta) - u(x_j - \delta)}{2\delta} \\
+	&\approx \frac{u(x_{j-1}) - u(x_{j+1})}{2\Delta x}
+\end{align*}
+where we use the centered difference quotient of order $2$. Similarly, we can approximate the second derivative of $u$ each each point in the domain as
+\begin{align*}
+	u''(x_j) &= \lim_{\delta \to 0} \frac{u'(x_j + \delta) - u'(x_j - \delta)}{2\delta} \\
+	&\approx \frac{u'(x_{j+1}) - u'(x_{j-1})}{2\Delta x} \\
+	&= \frac{\frac{u(x_{j+2}) - u(x_j)}{2\Delta x} - \frac{u(x_j) - u(x_{j-2})}{2\Delta x}}{2\Delta x} \\
+	&= \frac{u(x_{j+2}) - 2u(x_j) + u(x_{j-2})}{4\Delta x}
+\end{align*}
+Let's instead use the grid points adjacent to $x_j$:
+\begin{equation}
+	u''(x_j) \approx \frac{u(x_{j+1}) - 2u(x_j) + u(x_{j-1})}{\Delta x}
+\end{equation}
+Then, going back to the initial differential equation, for $x_j$, we have
+\begin{equation}
+	\frac{u(x_{j+1}) - 2u(x_j) + u(x_{j-1})}{\Delta x} + 2 \frac{u(x_{j-1}) - u(x_{j+1})}{2\Delta x} = -1
+\end{equation}
+Let
+\begin{equation}
+	U = 
+	\begin{bmatrix}
+	u(x_1) \\ u(x_2) \\ \vdots \\ u(x_N)
+	\end{bmatrix}
+\end{equation}
+and let $u_i = u(x_i)$. In this notation, the differential equation at $x_j$ can be written as
+\begin{equation}
+	\frac{u_{j+1} - 2u_j + u_{j-1}}{\Delta x^2} + \frac{u_{j-1} - u_{j+1}}{\Delta x} = -1
+\end{equation}
+We can put these equations together into a matrix. Each row will only have $3$ non-zero entries at $j-1$, $j$, and $j+1$. Thus the $j$th row is
+\begin{equation}
+	\begin{pmatrix}
+	0 & 0 & \hdots & \frac{1}{\Delta x^2} + \frac{1}{\Delta x} & \frac{-2}{\Delta x^2} & \frac{1}{\Delta x^2} - \frac{1}{\Delta x} & 0 & 0 & \hdots
+	\end{pmatrix}
+\end{equation}
+Thus stacking these rows together will give a tridiagonal matrix. Call this matrix $A$. Then we have that
+\begin{equation}
+	AU = \bm{-1}
+\end{equation}
 
 \section{Simultaneous nonlinear equations}
 
@@ -661,6 +830,40 @@ Let $D \subset \R^n$ be nonempty and $f: D \to \R^n$. Given $\xib \in D$, $f$ is
 \begin{lemma}
 Let $D \subset \R^n$ be nonempty and $f: D \to \R^n$ be defined and continuous on $D$. If $(\x^{(k)}) \subset D$ converges in $\R^n$ to $\xib \in D$, then $f(\x^{(k)})$ also converges to $f(\xib)$. 
 \end{lemma}
+
+We want to find a vector $\x\in \R^n$ such that $f(\x) = 0$.
+
+\begin{example}
+Consider the linear system
+\begin{equation}
+	Ax = b
+\end{equation}
+Then $A: \R^n \to \R^m$. Let $f(\bm x) = A\x - b$.
+\end{example}
+
+\begin{example}
+Let 
+\begin{equation}
+	f = 
+	\begin{bmatrix}
+	x_1^2 + x_2^2 - 1 \\
+	5x_1^2 + 21x_2^2 - 9
+	\end{bmatrix}
+\end{equation}
+Note that $x_1^2 + x_2^2 = 1$ is the $0$ level set of $f$, and is the unit circle. $5x_1^2 + 21x_2^2 = 9$ is the $0$ level set of $f$ and is an ellipse. 
+
+This function has four zeros
+\begin{equation}
+	\begin{bmatrix}
+	x_1 \\ x_2
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+	\pm \sqrt{3}/2 \\
+	\pm \frac{1}{2}
+	\end{bmatrix}
+\end{equation}
+\end{example}
 
 \subsection{Simultaneous iteration}
 
@@ -776,6 +979,7 @@ Then there exists $\e > 0$ such that $g (\bar B_\e(\xib)) \subset \bar B_\e(\xib
 \begin{theorem}
 Suppose $f(\xib) = 0$, that in some (open) neighborhood $N(\xib)$ of $\xib$, where $f$ is defined and continuous, all the second-order partial derivatives of $f$ are defined and continuous, and that the Jacobian matrix $J_f(\x^{(k)})$ of $f$ at the point $\xib$ is nonsingular. Then the sequence defined by Newton's method converges to $\xib$ provided that $\x^{(0)}$ is sufficiently close to $\xib$. 
 \end{theorem}
+
 
 \section{Eigenvalues of Eigenvectors of a symmetric matrix}
 
