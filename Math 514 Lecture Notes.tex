@@ -208,22 +208,31 @@ k_0 (\epsilon) \leq \left\lfloor \frac{\ln|x_1 - x_0| - \ln(\epsilon (1 - L))}{\
 \begin{proof}
 Let $E_k = |x_k - \xi|$ be the error at $k$. Then 
 \begin{align*}
-|x_{k+1} - \xi| &= |g(x_k) - g(\xi)| \\
-&< L |x_k - \xi|
+|x_{k+1} - \xi| &= |g(x_k) - g(\xi)| \tag{definition of $g$ and $\xi$ a fixed point}\\
+&< L |x_k - \xi| \tag{$g$ a contraction}
 \end{align*}
-Therefore
+Therefore by induction
 \begin{equation}
 	E_{k} \leq L^k E_0
 \end{equation}
-Since $L < 1$, $L^k \to 0$ as $k \to \infty$.
+Since $L < 1$, $L^k \to 0$ as $k \to \infty$, so that $\lim_{k \to \infty} |x_k - \xi| = 0$. 
 \end{proof}
+
+\begin{theorem}(Contraction Mapping Theorem when Differentiable)
+Suppose that $g$ is a real-valued function, defined and continuous on a bounded closed interval $[a,b]$ of the real line, and let $g(x) \in [a,b]$ for all $x \in [a,b]$. Let $\xi= g(\xi) \in [a,b]$ be a fixed point of $g$ (the existence of this point is guaranteed by Brouwer's fixed point theorem). Assume $g$ has a continuous derivative in some neighborhood of $\xi$ with $|g'(\xi)| < 1$. Then the sequence $(x_k)$ defined by simple iteration $x_{k+1} = g(x_k)$, $k \geq 0$, converges to $\xi$ as $k \to \infty$, provided that $x_0$ is close to $\xi$. 
+\end{theorem}
 
 \begin{definition}(Stable, Unstable Fixed Point)
 Suppose that $g$ is a real-valued function, defined and continuous on a bounded closed interval $[a,b]$ of the real line, and let $g(x) \in [a,b]$ for all $x \in [a,b]$, and let $\xi$ denote a fixed point of $g$. $\xi$ is a stable fixed point of $g$ if the sequence $(x_k)$ defined by the iteration $x_{k+1} = g(x_k)$, $k\geq 0$, converges to $\xi$ whenever the starting value $x_0$ is sufficiently close to $\xi$. Conversely, if no sequence $(x_k)$ defined by this iteration converges to $\xi$ for any starting value $x_0$ close to $\xi$, except for $x_0 = \xi$, then we say that $\xi$ is an unstable fixed point of $g$. 
 \end{definition}
 \begin{itemize}
-\item With this definition, a fixed point may be neither stable nor unstable.
+	\item With this definition, a fixed point may be neither stable nor unstable.
+	\item If $|g'(\xi)| < 1$, then $\xi$ is a stable fixed point (provided $g$ is continuous, differentiable etc.)
 \end{itemize}
+
+\begin{theorem}(Unstable Fixed Points)
+	Suppose that $\xi = g(\xi)$, where the function $g$ has a continuous derivative in some neighborhood of $\xi$, and let $|g'(\xi)| > 1$ (thus $\xi$ is an unstable fixed point). Then the sequence $(x_k)$ defined by simple iteration $x_{k+1} = g(x_k)$, $k \geq 0$, does not converge to $\xi$ from any starting value $x_0$, $x_0 \neq \xi$. 
+\end{theorem}
 
 \begin{definition}(Rate of Convergence)
 Suppose $\xi = \lim_{k \to \infty} x_k$. Define $E_k = |x_k - \xi|$.
@@ -431,6 +440,17 @@ Observations about this definition:
 	\item $Q^T Q = I$
 	\item If $Q$ is square, then $Q^T = Q^{-1}$.
 \end{enumerate}
+
+To calculate the $QR$ decomposition, we can find $Q$ by using the Gram-Schmidt process. Then $R$ can be found as
+\begin{equation}
+	R = 
+	\begin{pmatrix}
+	\inp{e_1}{a_1} & \inp{e_1}{a_2} & \inp{e_1}{a_3} & \hdots \\
+	0 & \inp{e_2}{a_2} & \inp{e_2}{a_3} & \hdots \\
+	0 & 0 & \inp{e_3}{a_3} & \hdots \\
+	\vdots & \vdots & \vdots & \ddots
+	\end{pmatrix}
+\end{equation}
 
 \subsubsection{Application to Least Squares}
 Suppose that we can write $A = QR$, where $A \in \R^{ m \times n}$, $Q \in \R^{ m \times n}$ and unitary, and $R \in \R^{n \times n}$ and upper triangular. Then the least squares solution to $Ax = b$ is given by
