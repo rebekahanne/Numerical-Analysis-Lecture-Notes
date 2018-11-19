@@ -2,7 +2,7 @@
 %% This is file, `math_514_definitions.tex',
 %% generated with the extract package.
 %% 
-%% Generated on :  2018/10/18,15:34
+%% Generated on :  2018/11/18,19:41
 %% From source  :  "Math 514 Lecture Notes".tex
 %% Using options:  active,generate=Math_514_Definitions,extract-env={definition,algorithm}
 %% 
@@ -35,7 +35,7 @@
 
 \begin{document}
 
-\begin{definition}(Simple Iteration)
+\begin{definition}[Simple Iteration]
 Suppose that $g$ is a real-valued function, defined and continuous on a bounded closed interval $[a,b]$ of the real line, and let $g(x) \in [a,b]$ for all $x \in [a,b]$. Given that $x_0 \in [a,b]$, the recursion defined by
 \begin{equation}
 x_{k+1} = g(x_k)
@@ -50,22 +50,22 @@ Let $g$ be a real-valued function, defined and continuous on a bounded closed in
 \end{equation}
 \end{definition}
 
-\begin{definition}(Stable, Unstable Fixed Point)
+\begin{definition}[Stable, Unstable Fixed Point]
 Suppose that $g$ is a real-valued function, defined and continuous on a bounded closed interval $[a,b]$ of the real line, and let $g(x) \in [a,b]$ for all $x \in [a,b]$, and let $\xi$ denote a fixed point of $g$. $\xi$ is a stable fixed point of $g$ if the sequence $(x_k)$ defined by the iteration $x_{k+1} = g(x_k)$, $k\geq 0$, converges to $\xi$ whenever the starting value $x_0$ is sufficiently close to $\xi$. Conversely, if no sequence $(x_k)$ defined by this iteration converges to $\xi$ for any starting value $x_0$ close to $\xi$, except for $x_0 = \xi$, then we say that $\xi$ is an unstable fixed point of $g$.
 \end{definition}
 
-\begin{definition}(Rate of Convergence)
+\begin{definition}[Rate of Convergence]
 Suppose $\xi = \lim_{k \to \infty} x_k$. Define $E_k = |x_k - \xi|$.
 \end{definition}
 
-\begin{definition}(Newton's Method)
+\begin{definition}[Newton's Method]
 Newton's method for the solution of $f(x) = 0$ is defined by
 \begin{equation}
 x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}
 \end{equation}
 \end{definition}
 
-\begin{definition}(Secant Method)
+\begin{definition}[Secant Method]
 The secant method is defined by
 \begin{equation}
 x_{k+1} = x_k - f(x_k) \frac{x_k - x_{k-1}}{f(x_k) - f(x_{k-1})}
@@ -85,32 +85,32 @@ Suppose that $\mathcal{V}$ is a linear space over the field $\R$. The \textit{no
 \end{enumerate}
 \end{definition}
 
-\begin{definition}(Operator Norm)
+\begin{definition}[Operator Norm]
 Let $A$ be an $m \times n$ matrix. That is, $A$ is a linear transformation form $\R^n$ to $\R^m$. Then the operator norm (or subordinate matrix norm) of $A$ is
 \begin{equation}
 \norm{A}_{p,q} = \sup_{x \in \R^n, x\neq 0} \frac{\norm{Ax}_q}{\norm{x}_p}.
 \end{equation}
 \end{definition}
 
-\begin{definition}(Absolute Condition Number)
+\begin{definition}[Absolute Condition Number]
 \begin{equation}
 Cond(f) = \sup_{x,y \in D, x\neq y} \frac{\norm{f(x) - f(y)}}{\norm{x - y}}
 \end{equation}
 \end{definition}
 
-\begin{definition}(Absolute Local Condition Number)
+\begin{definition}[Absolute Local Condition Number]
 \begin{equation}
 Cond_x(f) = \sup_{x + \delta x \in D, \delta x \neq 0} \frac{\norm{f(x + \delta x) - f(x)}}{\norm{\delta x}}
 \end{equation}
 \end{definition}
 
-\begin{definition}(Relative Local Condition Number)
+\begin{definition}[Relative Local Condition Number]
 \begin{equation}
 cond_x(f) = \sup_{x + \delta x \in D, \delta x \neq 0} \frac{\norm{f(x + \delta x) - f(x)} / \norm{f(x)}}{\norm{\delta x} / \norm{x}}
 \end{equation}
 \end{definition}
 
-\begin{definition}(Condition Number of a Nonsingular Matrix)
+\begin{definition}[Condition Number of a Nonsingular Matrix]
 The condition number of a nonsingular matrix $A$ is defined by
 \begin{equation}
 \kappa(A) = \norm{A} \Vert A^{-1} \Vert
@@ -118,7 +118,7 @@ The condition number of a nonsingular matrix $A$ is defined by
 If $\kappa(A) \gg 1$, the matrix is said to be ill-conditioned.
 \end{definition}
 
-\begin{definition}(Symmetric, Positive Definite, spd)
+\begin{definition}[Symmetric, Positive Definite, spd]
 The real matrix $A$ is said to be symmetric if $A = A^T$. A square $n \times n$ matrix is called positive definite if
 \begin{equation}
   \x^T A \x > 0
@@ -139,21 +139,21 @@ for all $\x \in \R^n$, $\x \neq 0$.
   \end{algorithmic}
 \end{algorithm}
 
-\begin{definition}(Cauchy Sequence)
+\begin{definition}[Cauchy Sequence]
 A sequence $(\x^{(k)}) \subset \R^n$ is called a Cauchy sequence in $\R^n$ if for any $\e > 0$ there exists a positive integer $k_0 = k_0(\e)$ such that
 \begin{equation}
 \norm{\x^{(k)} - \x^{(m)}}_{\infty} < \e \quad \forall k, m \geq k_0(\e)
 \end{equation}
 \end{definition}
 
-\begin{definition}(Continuous function)
+\begin{definition}[Continuous function]
 Let $D \subset \R^n$ be nonempty and $f: D \to \R^n$. Given $\xib \in D$, $f$ is continuous at $\xib$ if for every $\e > 0$, there exists a $\delta = \delta(\e) > 0$ such that for every $\x \in B(\xib; \delta) \cap D$
 \begin{equation}
   \norm{f(\x) - f(\xib)}_\infty < \e
  \end{equation}
 \end{definition}
 
-\begin{definition}(Lipschitz condition, constant, and contraction)
+\begin{definition}[Lipschitz condition, constant, and contraction]
 Let $D$ be a closed subset of $\R^n$ and $g: D \to D$. If there exists a positive constant $L$ such that
 \begin{equation}
 \norm{g(x) - g(y)}_\infty \leq L \norm{x - y}_\infty
@@ -161,14 +161,14 @@ Let $D$ be a closed subset of $\R^n$ and $g: D \to D$. If there exists a positiv
 for all $x, y \in D$, then $g$ satisfies the Lipschitz condition on $D$ in the $\infty$-norm. $L$ is called the Lipschitz constant. If $L \in (0,1)$, then $g$ is called a contraction on $D$ in the $\infty$-norm.
 \end{definition}
 
-\begin{definition}(Jacobian)
+\begin{definition}[Jacobian]
 Let $g = (g_1, \ldots, g_n)^T : \R^n \to \R^n$ be a function defined and continuous in an (open) neighborhood of $\xib \in \R^n$. Suppose the first partial derivatives of each $g_i$ exist at $\xib$. The Jacobian matrix $J_g(\xib)$ of $g$ at $\xib$ is the $n \times n$ matrix with elements
 \begin{equation}
 J_g(\xib)_{ij} = \frac{\partial g_i}{\partial x_j} (\xib)
 \end{equation}
 \end{definition}
 
-\begin{definition}(Newton's Method)
+\begin{definition}[Newton's Method]
 The sequence defined by
 \begin{equation}
 \x^{(k+1)} = \x^{(k)} - [J_f(\x^{(k)})]^{-1} f(\x^{(k)})
@@ -210,5 +210,31 @@ where $\x^{(0)} \in \R^n$, is called Newton's method.
     \EndFor
   \end{algorithmic}
 \end{algorithm}
+
+\begin{definition}[Lagrange basis polynomial]
+Given the data $\{x_i\}_{i=0}^n$, define
+\begin{equation}
+l_j(x) = \frac{\prod_{i\neq j} (x-x_i)}{\prod_{i\neq j} (x_j-x_i)}
+\end{equation}
+which satisfies
+\begin{equation}
+l_j(x_i) = \delta_{ij} =
+\begin{cases}
+1 & i=j \\
+0 & i\neq j
+\end{cases}
+\end{equation}
+\end{definition}
+
+\begin{definition}[Lagrange interpolation polynomial]
+Given the data $\{x_i\}_{i=0}^n$ and corresponding function values Given the data $\{f(x_i)\}_{i=0}^n$ the Lagrange interpolation polynomial is
+\begin{equation}
+p(x) = \sum_{i=0}^n f(x_i) l_i(x)
+\end{equation}
+\end{definition}
+
+\begin{definition}(Orthogonal polynomials)
+
+\end{definition}
 
 \end{document}
