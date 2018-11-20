@@ -2,7 +2,7 @@
 %% This is file, `math_514_definitions.tex',
 %% generated with the extract package.
 %% 
-%% Generated on :  2018/11/18,19:41
+%% Generated on :  2018/11/20,16:38
 %% From source  :  "Math 514 Lecture Notes".tex
 %% Using options:  active,generate=Math_514_Definitions,extract-env={definition,algorithm}
 %% 
@@ -15,6 +15,8 @@
   \definecolor{Tm}{rgb}{0,0,0.80}
   %\newtheorem{definition}{Definition}
   \newtheorem{definition}{\color{NavyBlue}{\textbf{Definition}}}
+  \newtheorem{theorem}{\color{ForestGreen}{\textbf{Theorem}}}
+  \newtheorem{corollary}{Corollary}
   %\newtheorem{example}{Example}
    \usepackage{bm}
 \newcommand{\e}{\epsilon}
@@ -224,17 +226,40 @@ l_j(x_i) = \delta_{ij} =
 0 & i\neq j
 \end{cases}
 \end{equation}
+(note that $\prod_{i\neq j} (x-x_i)$ is an $n$th order polynomial (1 less degree than the number of data points) and $\prod_{i\neq j} (x_j-x_i)$ is a constant).
 \end{definition}
 
 \begin{definition}[Lagrange interpolation polynomial]
-Given the data $\{x_i\}_{i=0}^n$ and corresponding function values Given the data $\{f(x_i)\}_{i=0}^n$ the Lagrange interpolation polynomial is
+Given the data $\{x_i\}_{i=0}^n$ and corresponding function values $\{f(x_i)\}_{i=0}^n$ the Lagrange interpolation polynomial is
 \begin{equation}
 p(x) = \sum_{i=0}^n f(x_i) l_i(x)
 \end{equation}
 \end{definition}
 
-\begin{definition}(Orthogonal polynomials)
+\begin{definition}[Orthogonal polynomials]
+Given a domain $[a,b]$ and a weight function $w(x)$ on the domain, a set of orthogonal polynomials is a list of polynomials $\phi_0, \phi_1, \ldots, \phi_N, \ldots$ such that
+\begin{equation}
+\inp{\phi_i}{\phi_j} = \int_a^b \phi_i(x)\phi_j(x)w(x)dx = \delta_{ij}
+\end{equation}
+\end{definition}
 
+\begin{definition}[Autonomous]
+If the force $\bm f$ has no explicit dependence on $t$, then we call the ODE (system) autonomous.
+\end{definition}
+
+\begin{definition}[Lipshitz continuous]
+If
+\begin{equation}
+|f(u) - f(u^*)| \leq L|u-u^*|
+\end{equation}
+for $u$ in a small neighborhood of $u^*$, then $f$ is Lipshitz continuous at $u^*$. Note that if $f'$ exists, then
+\begin{equation}
+L = |f'(u^*)|
+\end{equation}
+\end{definition}
+
+\begin{definition}[Uniformly Lipshitz continuous]
+If $L_u$ has an upper bound in the domain of $f$, then $f$ is uniformly Lipshitz continuous.
 \end{definition}
 
 \end{document}
