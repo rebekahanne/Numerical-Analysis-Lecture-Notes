@@ -2,7 +2,7 @@
 %% This is file, `math_514_theorems.tex',
 %% generated with the extract package.
 %% 
-%% Generated on :  2018/11/18,19:47
+%% Generated on :  2018/11/19,23:15
 %% From source  :  "Math 514 Lecture Notes".tex
 %% Using options:  active,generate=Math_514_Theorems,extract-env={theorem,corollary,claim}
 %% 
@@ -37,7 +37,7 @@
 
 \begin{document}
 
-\begin{theorem}(The Mean Value Theorem)
+\begin{theorem}[The Mean Value Theorem]
 Suppose $f$ is a real-valued function, defined and continuous on the closed interval $[a,b] \in \R$ and $f$ differentiable on the open interval $(a,b)$. Then there exists a number $\xi \in (a,b)$ such that
 \begin{equation}
 f(b) - f(a) = f'(\xi) (b - a)
@@ -51,7 +51,7 @@ f(x) = f(a) + (x-a)f'(a) + \cdots + \frac{(x-a)^n}{n!} f^{(n)}(a) + \frac{(x-a)^
 \end{equation}
 \end{theorem}
 
-\begin{theorem}(Existence of Root)\label{zeroexists}
+\begin{theorem}[Existence of Root]\label{zeroexists}
 Let $f$ be a real-valued function, defined and continuous on a bounded closed interval $[a,b]$ of the real line. Assume further, that $f(a)f(b) \leq 0$; then, there exists $\xi$ in $[a,b]$ such that $f(\xi) = 0$.
 \end{theorem}
 
@@ -107,7 +107,7 @@ Let $A$ be a positive definite $n \times n$ matrix. Then
 \end{equation}
 \end{theorem}
 
-\begin{theorem}(The $2$-norm of a matrix $A_{m \times n}$ equals its largest singular value)
+\begin{theorem}[The $2$-norm of a matrix $A_{m \times n}$ equals its largest singular value]
 Let $A$ be an $m \times n$ matrix and denote the eigenvalues of the matrix $B = A^TA$ by $\lambda_i$, $i=1,\ldots, n$. Then
 \begin{equation}
 \norm{A}_2 = \max_i \sqrt{\lambda_i}
@@ -126,7 +126,7 @@ Let $A$ be an $n \times n$ real, spd matrix. Then
 \end{enumerate}
 \end{theorem}
 
-\begin{theorem}
+\begin{theorem}[Cholesky]
 If $A$ is spd, then there exists a lower diagonal matrix $L$ such that $A = L L^T$. This is called the Cholesky decomposition.
 \end{theorem}
 
@@ -138,7 +138,7 @@ Suppose $D$ is a closed subset of $\R^n$ and $g: \R^n \to \R^n$ is defined on $D
 \end{enumerate}
 \end{theorem}
 
-\begin{theorem}
+\begin{theorem}[Jacobian and Fixed Point Stability]
 Let $g = (g_1, \ldots, g_n)^T : \R^n \to \R^n$ be a function defined and continuous on a closed set $D \subset \R^n$. Let $\xib \in D$ be a fixed point of $g$. Suppose the first partial derivatives of each $g_i$ are defined and continuous in some (open) neighborhood $N(\xib) \in D$ of $\xib$, with
 \begin{equation}
 \norm{J_g(\xib)}_\infty < 1
@@ -150,7 +150,7 @@ Then there exists $\e > 0$ such that $g (\bar B_\e(\xib)) \subset \bar B_\e(\xib
 Suppose $f(\xib) = 0$, that in some (open) neighborhood $N(\xib)$ of $\xib$, where $f$ is defined and continuous, all the second-order partial derivatives of $f$ are defined and continuous, and that the Jacobian matrix $J_f(\x^{(k)})$ of $f$ at the point $\xib$ is nonsingular. Then the sequence defined by Newton's method converges to $\xib$ provided that $\x^{(0)}$ is sufficiently close to $\xib$.
 \end{theorem}
 
-\begin{theorem}(Abel(-Ruffini) Theorem, or ``No-go Theorem'')
+\begin{theorem}[Abel(-Ruffini) Theorem, or ``No-go Theorem'']
 There is no algebraic solution (that is, a solution expressed in terms of radicals) to general polynomial equations of degree five or higher with arbitrary coefficients.
 \end{theorem}
 
@@ -169,7 +169,7 @@ Let $x_1$ be the eigenvector that corresponds to the largest (in absolute value)
 \end{equation}
 \end{theorem}
 
-\begin{theorem}(Equivalence of Simultaneous Iteration and the QR Algorithm)
+\begin{theorem}[Equivalence of Simultaneous Iteration and the QR Algorithm]
 Simultaneous Iteration and the QR Algorithm generate identical sequences of matrices $\underline R^{(k)}, \underline Q^{(k)}, A^{(k)}$. Both give
 \begin{align}
 (a): A^{(k)} &= \underline Q^{(k)} \underline R^{(k)} \tag{$QR$ factorization of the $k$th power of $A$}\\
@@ -182,10 +182,24 @@ Suppose that $n\geq 0$ and the $f$ is a real-valued function, defined and contin
 \begin{equation}
 f(x) - p(x) = \frac{f^{(n+1)}(\xi)}{n!} \prod_{k=0}^n (x-x_k)
 \end{equation}
+is the interpolation error, where $p(x)$ is $n$-th order.
 \end{theorem}
 
-\begin{theorem}[Chebyshev grid]
+\begin{theorem}[Chebyshev grid to minimize polynomial interpolation error]
+The solution to
+\begin{equation}
+\min_{\{x_i\}} \sup_{t \in [a,b]} \bigg\lvert \prod_{k=0}^n (x-x_k) \bigg\rvert
+\end{equation}
+is given by a Chebyshev grid:
+\begin{equation}
+x_i = \cos (\theta_i), \quad \theta_i = \frac{i\pi}{N}
+\end{equation}
+\end{theorem}
 
+\begin{theorem}[Orthogonal polynomials form a basis for the space of polynomials]
+\begin{equation}
+\mathbb{P}_k = span(\phi_0,\ldots,\phi_k)
+\end{equation}
 \end{theorem}
 
 \begin{theorem}[OP Recurrence Relation]
@@ -195,7 +209,7 @@ A set of orthogonal polynomials $\{\phi\}_{i=0}^\infty$ satisfies
 \end{equation}
 \end{theorem}
 
-\begin{theorem}
+\begin{theorem}[Roots of Orthogonal Polynomials]
 If $\{\phi\}_{i=0}^\infty$, then $\phi_n(x)$ has $n$ real roots, called Gaussian quadratures.
 \end{theorem}
 
@@ -253,7 +267,7 @@ w_k = \int_a^b l_k(x)w(x)dx
 where $l_k(x)$ is a Lagrange polynomial.
 \end{theorem}
 
-\begin{theorem}
+\begin{theorem}[Projection Coefficients Equivalent to Numerical Representation]
 Let $f(x) \in \mathbb{P}_{N+1}$. Then
 \begin{equation}
 \alpha_i = \inp{f}{\phi_i} = \int_a^b f(x)\phi_i(x)w(x)dx = \sum_{k=0}^N f(x_k)\phi_i(x_k)w_k = c_i
@@ -261,7 +275,7 @@ Let $f(x) \in \mathbb{P}_{N+1}$. Then
 That is the projection coefficients $c_i$ are equal to the numerical representation $\alpha_i$, where the grid points are the GQ of $\phi_{N+1}$.
 \end{theorem}
 
-\begin{theorem}
+\begin{theorem}[Interpolation with Orthogonal Polynomials (Almost Unitary Matrix)]
 We interpolate $f$ as follows:
 \begin{equation}
 p(x) = \sum_{n=0}^N c_n \phi_n(x)
@@ -297,6 +311,30 @@ $p_N(x)$ is the best approximation in the $L^2$-norm:
 for all $q \in \mathbb{P_N}$.
 \end{theorem}
 
+\begin{theorem}[Error from Approximation by Projection]
+Suppose $f \in \mathcal{C}^\infty$ and $\{\phi_i\}_{i=0}^{\infty}$ is a set orthogonal polynomials. We can write
+\begin{equation}
+f(x) = \sum_{k=0}^\infty c_k \phi_k(x)
+\end{equation}
+and define the projection
+\begin{equation}
+p_N(x) = \sum_{k=0}^N \alpha_k \phi_k(x)
+\end{equation}
+Then the error of this approximation is
+\begin{equation}
+error = \sum_{k=N+1}^\infty \alpha_k \phi_k(x)
+\end{equation}
+which depends on $\{\alpha_{N+1}, \alpha_{N+2}, \ldots \}$. In particular, if $f(x) \in \mathcal{C}^\gamma$, then
+\begin{equation}
+\alpha_n = \mathcal{O}(n^{-\gamma})
+\end{equation}
+for $n > N$ and
+\begin{equation}
+\alpha_n = \mathcal{O}\left(\frac{1}{N^\gamma}\right)
+\end{equation}
+for $n < N$.
+\end{theorem}
+
 \begin{theorem}
 If $f \in \mathbb{P}_{2N+1}$
 \begin{equation}
@@ -309,6 +347,14 @@ If $f:[a,b] \to \R$ is continuous and $g$ is an integrable function that does no
 \begin{equation}
 \int_a^b f(x)g(x) dx = f(c)\int_a^b g(x)dx
 \end{equation}
+\end{theorem}
+
+\begin{theorem}[ODE reduction]
+Any high order, non-autonomous ODE can be reduced to a 1st order, autonomous ODE (system).
+\end{theorem}
+
+\begin{theorem}[Uniqueness]
+If the force term $f(u)$ is uniformly Lipshitz, then the equation has a unique solution.
 \end{theorem}
 
 \end{document}

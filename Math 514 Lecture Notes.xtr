@@ -1,6 +1,3 @@
-\begin{XTRtheorem}[First mean value theorem for definite integrals]
-If $f:[a,b] \to \R$ is continuous and $g$ is an integrable function that does not change sign on $[a,b]$, then there exists $c \in [a,b]$ such that
-\begin{equation}
-\int_a^b f(x)g(x) dx = f(c)\int_a^b g(x)dx
-\end{equation}
+\begin{XTRtheorem}[Uniqueness]
+If the force term $f(u)$ is uniformly Lipshitz, then the equation has a unique solution.
 \end{XTRtheorem}

@@ -1,4 +1,6 @@
 \documentclass[12pt]{article}
+%\usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}
+
 % \usepackage[active,
 %             generate=Math_514_Definitions,
 %             %extract-cmd={section},
@@ -38,7 +40,6 @@
 	\algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
 	\newcommand*\Let[2]{\State #1 $\gets$ #2}
 \end{extract*}
-
 \usepackage{algpseudocode,algorithm,algorithmicx}
 %\usepackage{amsfonts, amsmath}
 \usepackage{amssymb, geometry}
@@ -142,7 +143,7 @@
 \newpage 
 
 \section{Results from Real Analysis}
-\begin{theorem}(The Mean Value Theorem)
+\begin{theorem}[The Mean Value Theorem]
 Suppose $f$ is a real-valued function, defined and continuous on the closed interval $[a,b] \in \R$ and $f$ differentiable on the open interval $(a,b)$. Then there exists a number $\xi \in (a,b)$ such that
 \begin{equation}
 	f(b) - f(a) = f'(\xi) (b - a)
@@ -159,7 +160,7 @@ Suppose that $n$ is a nonnegative integer, and $f$ is a real-valued function, de
 \section{Solution of equations by iteration}
 
 \subsection{Simple Iteration}
-\begin{theorem}(Existence of Root)\label{zeroexists}
+\begin{theorem}[Existence of Root]\label{zeroexists}
 Let $f$ be a real-valued function, defined and continuous on a bounded closed interval $[a,b]$ of the real line. Assume further, that $f(a)f(b) \leq 0$; then, there exists $\xi$ in $[a,b]$ such that $f(\xi) = 0$.
 \end{theorem}
 \begin{proof}
@@ -619,7 +620,7 @@ Now we'll find an $x$ such that we actually achieve equality. Call $I$ the index
 This shows that $\norm{A}_2 =  \max_i |\lambda_i|$.
 \end{proof}
 
-\begin{theorem}(The $2$-norm of a matrix $A_{m \times n}$ equals its largest singular value)
+\begin{theorem}[The $2$-norm of a matrix $A_{m \times n}$ equals its largest singular value]
 Let $A$ be an $m \times n$ matrix and denote the eigenvalues of the matrix $B = A^TA$ by $\lambda_i$, $i=1,\ldots, n$. Then 
 \begin{equation}
 	\norm{A}_2 = \max_i \sqrt{\lambda_i}
@@ -760,7 +761,7 @@ We prove each claim in the theorem as follows
 
 \subsection{Cholesky Factorization}
 
-\begin{theorem}
+\begin{theorem}[Cholesky]
 If $A$ is spd, then there exists a lower diagonal matrix $L$ such that $A = L L^T$. This is called the Cholesky decomposition. 
 \end{theorem}
 
@@ -982,7 +983,7 @@ Let $g = (g_1, \ldots, g_n)^T : \R^n \to \R^n$ be a function defined and continu
 \end{equation}
 \end{definition}
 
-\begin{theorem}
+\begin{theorem}[Jacobian and Fixed Point Stability]
 Let $g = (g_1, \ldots, g_n)^T : \R^n \to \R^n$ be a function defined and continuous on a closed set $D \subset \R^n$. Let $\xib \in D$ be a fixed point of $g$. Suppose the first partial derivatives of each $g_i$ are defined and continuous in some (open) neighborhood $N(\xib) \in D$ of $\xib$, with 
 \begin{equation}
 	\norm{J_g(\xib)}_\infty < 1  	
@@ -1023,7 +1024,7 @@ We call $\lambda$ an eigenvalue and $x \neq 0$ an eigenvector of $A$ if $Ax = \l
 \end{equation}
 Recall that the determinant of a matrix is the product of its eigenvalues. If $A$ is a $n \times n$ real, symmetric matrix, then $\rho(\lambda)$ is an $n$-th order polynomial in $\lambda$, whose roots are the eigenvalues of $A$. 
 
-\begin{theorem}(Abel(-Ruffini) Theorem, or ``No-go Theorem'')
+\begin{theorem}[Abel(-Ruffini) Theorem, or ``No-go Theorem'']
 There is no algebraic solution (that is, a solution expressed in terms of radicals) to general polynomial equations of degree five or higher with arbitrary coefficients.  
 \end{theorem}
 
@@ -1161,7 +1162,7 @@ and
 \end{equation}
 
 [[WRONG]]
-\begin{theorem}(Equivalence of Simultaneous Iteration and the QR Algorithm)
+\begin{theorem}[Equivalence of Simultaneous Iteration and the QR Algorithm]
 Simultaneous Iteration and the QR Algorithm generate identical sequences of matrices $\underline R^{(k)}, \underline Q^{(k)}, A^{(k)}$. Both give
 \begin{align}
 	(a): A^{(k)} &= \underline Q^{(k)} \underline R^{(k)} \tag{$QR$ factorization of the $k$th power of $A$}\\
@@ -1194,17 +1195,17 @@ By induction on $k$ (number of iterations). The base case $k=0$ is trivial.
 
 \noindent\textbf{Problem:} Let $n\geq 1$, and suppose that $\{x_i\}_{i=0}^n$ are distinct real numbers and $\{y_i\}_{i=0}^n$ are real numbers. We wish to find $p_n \in \mathbb{P}_n$ such that $p_n(x_i) = y_i$ for $i=0,1,\ldots,n$.
 
-\subsubsection{Vandermounde Matrix}
+\subsubsection{Vandermonde Matrix}
 
 \noindent We'll consider a slightly more general version of the problem here: \\
 
-\noindent\textbf{Problem:} Let $n\geq 1$, and suppose that $\{x_i\}_{i=0}^n$ are distinct real numbers and $\{y_i\}_{i=0}^n$ are real numbers. We wish to find $p_k \in \mathbb{P}_k$ such that $p_k(x_i) = y_i$ for $i=0,1,\ldots,n$. \\
+\noindent\textbf{Problem:} Let $n\geq 1$, and suppose that $\{x_i\}_{i=0}^n$ are distinct real numbers and $\{f(x_i) = y_i\}_{i=0}^n$ are real numbers. We wish to find $p_k \in \mathbb{P}_k$ such that $p_k(x_i) = y_i$ for $i=0,1,\ldots,n$. \\
 
 Let $\{a_i\}_{i=0}^k$ be the coefficients of the polynomial we're solving for. We place the data $\{x_i\}_{i=0}^n$ in a Vandermonde Matrix $X$ and solve the following system
 \begin{equation}
 	\begin{bmatrix}
-	1 & x_1 & x_1^2 & \ldots & x_1^k \\
-	1 & x_2 & x_2^2 & \ldots & x_2^k \\ \\
+	1 & x_0 & x_0^2 & \ldots & x_0^k \\
+	1 & x_1 & x_1^2 & \ldots & x_1^k \\ \\
 	\vdots & \vdots & \vdots & \ddots & \vdots \\ \\
 	1 & x_n & x_n^2 & \ldots & x_n^k \\
 	\end{bmatrix}
@@ -1213,7 +1214,7 @@ Let $\{a_i\}_{i=0}^k$ be the coefficients of the polynomial we're solving for. W
 	\end{bmatrix}
 	=
 	\begin{bmatrix}
-	f(x_1) \\ f(x_2) \\ \\ \vdots \\ \\ f(x_n)
+	f(x_0) \\ f(x_1) \\ \\ \vdots \\ \\ f(x_n)
 	\end{bmatrix}
 \end{equation}
 There are three cases:
@@ -1243,10 +1244,11 @@ which satisfies
 	0 & i\neq j
 	\end{cases}
 \end{equation}
+(note that $\prod_{i\neq j} (x-x_i)$ is an $n$th order polynomial (1 less degree than the number of data points) and $\prod_{i\neq j} (x_j-x_i)$ is a constant).
 \end{definition}
 
 \begin{definition}[Lagrange interpolation polynomial]
-	Given the data $\{x_i\}_{i=0}^n$ and corresponding function values Given the data $\{f(x_i)\}_{i=0}^n$ the Lagrange interpolation polynomial is 
+	Given the data $\{x_i\}_{i=0}^n$ and corresponding function values $\{f(x_i)\}_{i=0}^n$ the Lagrange interpolation polynomial is 
 	\begin{equation}
 		p(x) = \sum_{i=0}^n f(x_i) l_i(x)
 	\end{equation}
@@ -1263,10 +1265,54 @@ Notice that $p(x)$ does indeed interpolate $f$ at the data:
 	\begin{equation}
 		f(x) - p(x) = \frac{f^{(n+1)}(\xi)}{n!} \prod_{k=0}^n (x-x_k)
 	\end{equation}
+	is the interpolation error, where $p(x)$ is $n$-th order. 
 \end{theorem}
 \begin{proof}
-Todo.
+We denote the error as a function of $x$ as:
+\begin{equation}
+	E(x) = \frac{f^{(n+1)}(\xi)}{n!} \prod_{k=0}^n (x-x_k)
+\end{equation}
+Define an auxiliary function $G(x)$ (and a fixed $t$) as 
+\begin{equation}
+	G_t(x) = E(x) - \frac{\prod_{k=0}^n (x-x_k)}{\prod_{k=0}^n (t-x_k)}E(t)
+\end{equation}
+Note that at a grid point the auxiliary function is $0$:
+\begin{equation}
+	0 = G_t(x_j) 
+\end{equation}
+Further, evaluated at $t$, we have that
+\begin{equation}
+	G_t(t) = E(t) - E(t) = 0
+\end{equation}
+Thus $G_t(x)$ has $n+2$ zeros.
+
+We then use the following lemma:
+\begin{lemma}
+	If a function $f(x)$ has $k$ zeros, then its derivative $f'(x)$ has $k-1$ zeros. Similarly, $f''(x)$ has $k-2$ zeros, an so on.
+\end{lemma}
+\begin{proof}
+	Between every two zeros of the original function, the derivative must have a $0$.
 \end{proof}
+
+Thus, applying this lemma repeatedly, we have that $G^{(n+1)}$ has one zero, call it $\xi$, so that $G^{(n+1)}(\xi) = 0$. Further, by direct calculation,
+\begin{equation}
+	0 = G^{(n+1)}(\xi) = E^{(n+1)}(\xi) - \frac{n!}{\prod_{k=0}^n (t-x_k)}E(t)
+\end{equation}
+Then notice that 
+\begin{equation}
+	E^{(n+1)}(\xi) = f^{(n+1)}(\xi)
+\end{equation}
+so that
+\begin{equation}
+	f^{(n+1)}(\xi) - \frac{(n!}{\prod_{k=0}^n (t-x_k)}E(t) = 0
+\end{equation}
+rearranging this equation gives the required expression for the error function.
+\end{proof}
+
+Observations:
+\begin{enumerate}
+	\item If $f(x) \in \mathbb{P}_{N-1}(x)$, then $f^{(N)}(\xi) = 0$, so that $E(t) = 0$ for all $t$.
+\end{enumerate}
 
 This error depends on
 \begin{enumerate}
@@ -1274,14 +1320,30 @@ This error depends on
 \end{enumerate}
 
 We can use Chebyshev grid points to minimize error.
-\begin{theorem}[Chebyshev grid]
-
+\begin{theorem}[Chebyshev grid to minimize polynomial interpolation error]
+	The solution to 
+	\begin{equation}
+		\min_{\{x_i\}} \sup_{t \in [a,b]} \bigg\lvert \prod_{k=0}^n (x-x_k) \bigg\rvert
+	\end{equation}
+	is given by a Chebyshev grid:
+	\begin{equation}
+		x_i = \cos (\theta_i), \quad \theta_i = \frac{i\pi}{N}
+	\end{equation}
 \end{theorem}
 \subsection{Polynomial Projection}
 
-\begin{definition}(Orthogonal polynomials)
-	
+\begin{definition}[Orthogonal polynomials]
+	Given a domain $[a,b]$ and a weight function $w(x)$ on the domain, a set of orthogonal polynomials is a list of polynomials $\phi_0, \phi_1, \ldots, \phi_N, \ldots$ such that
+	\begin{equation}
+		\inp{\phi_i}{\phi_j} = \int_a^b \phi_i(x)\phi_j(x)w(x)dx = \delta_{ij}
+	\end{equation}
 \end{definition}
+
+\begin{theorem}[Orthogonal polynomials form a basis for the space of polynomials]
+	\begin{equation}
+		\mathbb{P}_k = span(\phi_0,\ldots,\phi_k)
+	\end{equation}
+\end{theorem}
 
 \begin{example}[Examples of Orthogonal Polynomials]
 The following are examples of Orthogonal Polynomials:
@@ -1356,7 +1418,7 @@ The following are examples of Orthogonal Polynomials:
 	\end{align*}
 \end{proof}
 
-\begin{theorem}
+\begin{theorem}[Roots of Orthogonal Polynomials]
 	If $\{\phi\}_{i=0}^\infty$, then $\phi_n(x)$ has $n$ real roots, called Gaussian quadratures. 
 \end{theorem}
 \begin{proof}
@@ -1489,7 +1551,7 @@ where we approximate the coefficients
  	\end{align*}
 \end{proof}
 
-\begin{theorem}
+\begin{theorem}[Projection Coefficients Equivalent to Numerical Representation]
 	Let $f(x) \in \mathbb{P}_{N+1}$. Then 
 	\begin{equation}
 		\alpha_i = \inp{f}{\phi_i} = \int_a^b f(x)\phi_i(x)w(x)dx = \sum_{k=0}^N f(x_k)\phi_i(x_k)w_k = c_i
@@ -1500,7 +1562,7 @@ where we approximate the coefficients
 	Notice that $f(x) \in \mathbb{P}_{N+1}$, $\phi_i \in \mathbb{P}_{i} \subsetneq \mathbb{P}_N$ so that $ f(x)\phi_i(x) \in \mathbb{P}_{2N+1}$.
 \end{proof}
 
-\begin{theorem}
+\begin{theorem}[Interpolation with Orthogonal Polynomials (Almost Unitary Matrix)]
 We interpolate $f$ as follows:
 \begin{equation}
 	p(x) = \sum_{n=0}^N c_n \phi_n(x)
@@ -1543,7 +1605,6 @@ where $W$ is a diagonal matrix with elements $w_0, w_1, \ldots, w_N$.
 	Then the condition number of $A$ is approximately $\frac{\max w_i}{\min w_i} \approx \mathcal{O}(1)$.
 \end{proof}
 
-
 \begin{theorem}[Projection the best approximation in the $L^2$-norm:]
 	$p_N(x)$ is the best approximation in the $L^2$-norm:
 	\begin{equation}
@@ -1564,6 +1625,33 @@ Since $\norm{p-q}^2_2 \geq 0$, we have that
 \begin{equation}
 	\norm{f-p_N(x)}^2_2 \leq \norm{f-q(x)}^2_2
 \end{equation}
+\end{proof}
+
+\begin{theorem}[Error from Approximation by Projection]
+Suppose $f \in \mathcal{C}^\infty$ and $\{\phi_i\}_{i=0}^{\infty}$ is a set orthogonal polynomials. We can write
+\begin{equation}
+	f(x) = \sum_{k=0}^\infty c_k \phi_k(x)
+\end{equation}
+and define the projection
+\begin{equation}
+	p_N(x) = \sum_{k=0}^N \alpha_k \phi_k(x)
+\end{equation}
+Then the error of this approximation is
+\begin{equation}
+	error = \sum_{k=N+1}^\infty \alpha_k \phi_k(x)
+\end{equation}
+which depends on $\{\alpha_{N+1}, \alpha_{N+2}, \ldots \}$. In particular, if $f(x) \in \mathcal{C}^\gamma$, then 
+\begin{equation}
+	\alpha_n = \mathcal{O}(n^{-\gamma})
+\end{equation}
+for $n > N$ and
+\begin{equation}
+	\alpha_n = \mathcal{O}\left(\frac{1}{N^\gamma}\right) 
+\end{equation}
+for $n < N$.
+\end{theorem}
+\begin{proof}
+Todo.
 \end{proof}
 
 \subsection{Approximation in the infinity norm}
@@ -1647,7 +1735,31 @@ In sum, when $p(x)$ is the piecewise linear interpolation of $f(x)$ derived abov
 \end{align*}
 
 \subsubsection{Richardson Extrapolation}
-
+We can define the error on the $i$th interval in the domain as
+\begin{equation}
+	E_i = \int_{x_i}^{x_{i+1}} f(x)dx - \frac{\Delta x}{2}\left(f(x_i) + f(x_{i+1}) \right)
+\end{equation}
+which, by applying the MVT, equals
+\begin{equation}
+	E_i= f''(\eta) \int_{x_i}^{x_{i+1}} (x - x_i)(x - x_{i+1}) dx
+\end{equation}
+for some $\eta \in [x_i, x_{i+1}]$. Then we define the total error $E^{(N)}$ as
+\begin{align*}
+	E^{(N)} &= \int_a^b f(x)dx - Tr(f;N) = \sum_{i=0}^{N-1}E_i \\
+	&= c \sum_{i=0}^{N-1} f''(\eta_i) \Delta x^3 \\
+	&= c\left[\sum_{i=0}^{N-1} f''(\eta_i) \Delta x \right] \Delta x^2 
+\end{align*}
+Then
+\begin{align*}
+	f''(\eta_i) \Delta x &\approx f'(x_{i+1}) - f'(x_i) \\
+	&\approx \int_{x_i}^{x_{i+1}} f''(x) dx \tag{\textcolor{red}{?}}
+\end{align*}
+Continuing,
+\begin{align*}
+	E^{(N)} &= c \Delta x^2 ( f'(x_1) - f'(x_0) + f'(x_2) - f'(x_1) + \cdots) + \mathcal{O}(\Delta x^4)\\
+	&= c \Delta x^2 (f'(x_N) - f'(x_0)) + \mathcal{O}(\Delta x^4)\\
+	&= c \Delta x^2 (f'(b) - f'(a)) + \mathcal{O}(\Delta x^4) 
+\end{align*}
 \subsection{Midpoint Rule}
 We will approximate $f(x)$ on the interval $[x_k,x_{k+1}]$ by a $0$th order polynomial (i.e.\ a constant function), which interpolates $f(x)$ at $x_{k + \frac{1}{2}}$. Thus we use
 \begin{equation}
@@ -1693,6 +1805,179 @@ We will approximate $f(x)$ on the interval $[x_{2i},x_{2i+2}]$ by a second order
 
 \section{Numerical ODE}
 
+\subsection{Preliminaries}
 
+\section{Initial Value Problems}
+Our model equation is
+\begin{equation}
+	\bm u' = \bm f (\bm u)
+\end{equation}
+where
+\begin{equation}
+	\bm u' 
+	= 
+	\begin{pmatrix}
+	u_1 \\ \vdots \\ u_n
+	\end{pmatrix}, \quad
+	\bm f (\bm u) = 
+	\begin{pmatrix}
+	f_1(u_1, \ldots, u_n) \\ \vdots \\ f_n(u_1, \ldots, u_n)
+	\end{pmatrix}
+\end{equation}
 
+\subsection{Preparation}
+\begin{theorem}[ODE reduction]
+	Any high order, non-autonomous ODE can be reduced to a 1st order, autonomous ODE (system).
+\end{theorem}
+
+\begin{example}[Reduction of ODE]
+	Consider the 3rd order ODE
+	\begin{equation}
+		u''' = u'u - 2t(u')^2
+	\end{equation}
+	with the initial conditions
+	\begin{align*}
+	&u(t=0) = u_0 \\
+	&u'(t=0) = u_1 \\
+	&u''(t=0) = u_2
+	\end{align*}
+	We can reduce this ODE to a 1st order system. Define the change of variables
+	\begin{align*}
+	&y_0(t) = u(t) \\
+	&y_1(t) = u'(t) \\
+	&y_2(t) = u''(t)
+	\end{align*} 
+	which also gives that
+	\begin{align*}
+	&y'_0(t) = y_1(t) \\
+	&y'_1(t) = y_2(t)
+	\end{align*}
+	We substitute these terms into the original ODE to get
+	\begin{equation}
+		y_2' =y1y_0 - 2t(y_1)^2
+	\end{equation}
+	with the initial condition
+	\begin{align*}
+	&y_0(t=0) = u_0 \\
+	&y_1(t=0) = u_1 \\
+	&y_2(t=0) = u_2
+	\end{align*}
+	Now we have a 1st order ODE system
+	\begin{equation}
+		\bm y = \bm f(\bm y, t)
+	\end{equation}
+\end{example}
+
+\begin{definition}[Autonomous]
+	If the force $\bm f$ has no explicit dependence on $t$, then we call the ODE (system) autonomous.
+\end{definition}
+
+\begin{example}[Autonomous ODE]
+	Continuing the above example. To reduce a non-autonomous ODE to and autonomous ODE, we can introduce another function $y_3(t) = t$. Notice that
+	\begin{align*}
+	&y'_0 = y_1 \\
+	&y'_1 = y_2 \\
+	&y'_2 = y_1y_0 0 2y_3(y_1)^2 \\
+	&y'_3 = 1
+	\end{align*}
+	with the respective initial conditions
+	\begin{equation}
+		\begin{pmatrix}
+		u_0 \\ u_1 \\ u_2 \\ 0
+		\end{pmatrix}
+	\end{equation}
+\end{example}
+
+Thus, numerically, we only study 1st order autonomous ODEs since it's always possible to reduce a given problem to this context. 
+
+\subsection{Well-posedness}
+We study the existence and uniqueness of 1st order ODEs.
+
+\begin{definition}[Lipshitz continuous]
+	If 
+	\begin{equation}
+		|f(u) - f(u^*)| \leq L|u-u^*|
+	\end{equation}
+	for $u$ in a small neighborhood of $u^*$, then $f$ is Lipshitz continuous at $u^*$. Note that if $f'$ exists, then 
+	\begin{equation}
+		L = |f'(u^*)|
+	\end{equation}
+\end{definition}
+
+\begin{definition}[Uniformly Lipshitz continuous]
+	If $L_u$ has an upper bound in the domain of $f$, then $f$ is uniformly Lipshitz continuous.
+\end{definition}
+
+\begin{theorem}[Uniqueness]
+	If the force term $f(u)$ is uniformly Lipshitz, then the equation has a unique solution.
+\end{theorem}
+
+\subsection{Difference Operator}
+Given a differential operator, we need to construct a difference operator to be able to compute numerical solutions to ODEs. 
+
+\subsubsection{Second Order Forward Difference Approximation}
+
+We want to find $a,b,c$ such that
+\begin{equation}
+	f'(x_0) \approx af(x_0) + bf(x_0 + h) + cf(x_0 + 2h)
+\end{equation}
+We will compute the Taylor expansion of $f$ around $x_0 + 0h, x_0+h, x_0+2h$. Thus
+\begin{align*}
+	x_0 &: f(x_0) \\
+	x_0 + h &: f(x_0 + h) = f(x_0) + h f'(x_0) + \frac{h^2}{2}f''(x_0) + \frac{h^3}{6}f'''(x_0) + \ldots \\
+	x_0 + 2h &: f(x_0 + 2h) = f(x_0) + 2h f'(x_0) + \frac{(2h)^2}{2}f''(x_0) + \frac{(2h)^3}{6}f'''(x_0) + \ldots 
+\end{align*}
+We'll ignore the terms above order 2 (these will be our approximation error). Then we compute the following sum
+\begin{equation}
+	f'(x_0) \approx af(x_0) + bf(x_0 + h) + cf(x_0 + 2h)
+\end{equation}
+and match coefficients to determine a systems of equations to solve for $a,b,c$.
+\begin{align*}
+	f(x_0) &: 0 = a + b + c \\
+	f'(x_0) &: 1 = bh + 2hc \\
+	f''(x_0) &: 0 + b\frac{h^2}{2} + c \frac{(2h)^2}{2}
+\end{align*}
+Solving this system gives
+\begin{equation}
+	a = -\frac{3}{2h}, \quad b = \frac{2}{h}, \quad c = \frac{-1}{2h}
+\end{equation}
+In sum, our second order forward difference operator is
+\begin{equation}
+	f'(x_0) \approx -\frac{3}{2h} f(x_0) + \frac{2}{h} f(x_0 + h) - \frac{1}{2h}f(x_0 + 2h)
+\end{equation}
+where the LHS and RHS differ by $\mathcal{O}(h^2)$. 
+
+\subsubsection{First Order Forward Difference Approximation}
+
+Following the method above gives that
+\begin{equation}
+	f'(x_0) \approx -\frac{1}{h} f(x_0) + \frac{1}{h}f(x_0 + h)
+\end{equation}
+where the LHS and RHS differ by $\mathcal{O}(h)$.
+
+\subsubsection{Centered Difference Approximation to Second Derivative}
+
+We want to find $a,b,c$ such that
+\begin{equation}
+	f''(x_0) \approx af(x_0 -h) + bf(x_0) + cf(x_0 + h)
+\end{equation}
+
+Following the method aboves results in the following system of equations:
+\begin{align*}
+	f(x_0) &: 0 = a + b + c \\
+	f'(x_0) &: 1 = h(a-c) \\
+	f''(x_0) &: h^2\left(\frac{1}{2}a + \frac{1}{2}c\right)
+\end{align*}
+which has solution
+\begin{equation}
+	a = \frac{1}{h^2}, \quad b = -\frac{2}{h^2}, \quad c = \frac{1}{h^2}
+\end{equation}
+However, this solution also satisfies the condition for the third derivative:
+\begin{equation}
+	f'''(x_0) = \frac{h^3}{6}(a-c)
+\end{equation}
+We did not explicitly impose/include 3rd order terms, but if we did, our solution would not change. \textcolor{red}{Check}. Thus, the error of approximation is
+\begin{equation}
+	f'' - Df = \mathcal{O}(h^2)
+\end{equation}
 \end{document}
