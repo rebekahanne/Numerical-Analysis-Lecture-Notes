@@ -29,6 +29,7 @@
 	\newcommand{\D}{\Delta}
 	\newcommand{\R}{\mathbb{R}}
 	\newcommand{\Z}{\mathbb{Z}}
+	\newcommand{\U}{\mathcal{U}}
 	\usepackage{mathtools}
 	\DeclarePairedDelimiterX{\inp}[2]{\langle}{\rangle}{#1, #2}
 	\newcommand{\norm}[1]{\lVert#1\rVert}
@@ -1980,4 +1981,136 @@ We did not explicitly impose/include 3rd order terms, but if we did, our solutio
 \begin{equation}
 	f'' - Df = \mathcal{O}(h^2)
 \end{equation}
+
+\subsection{Forward Euler (FE)}
+We continue studying the initial value problem 
+\begin{equation}
+	\begin{cases}
+	u' = f(u) \\
+	u(t=0) = u_0
+	\end{cases}
+\end{equation}
+
+Let $u_n = u(t_n)$ be the true solution. Let $\mathcal{U}_n$ be the numerical solution. Then the forward euler method is
+\begin{equation}
+ 	u'(t_n) \to \frac{\mathcal{U}_n - \mathcal{U}_n}{\Delta t}
+\end{equation} 
+Thus at $t_n$, we have
+\begin{equation}
+	\begin{cases}
+		\frac{1}{\Delta t}(\U_{n+1} - \U_n) = f(\U_n) \\
+		\U_0 = u_0
+	\end{cases}
+\end{equation}
+Rearranging gives that 
+\begin{equation}
+	\U_{n+1} = \U_n + \Delta t f(\U_n)
+\end{equation}
+
+\begin{example}[Linear ODE]
+\begin{equation}
+	\begin{cases}
+		u' = \lambda u \\
+		u(t=0) = u_0
+	\end{cases}
+\end{equation}
+We know that the analytical solution to this IVP is
+\begin{equation}
+	u(t) = u_0 e^{\lambda t}
+\end{equation}
+FE is
+\begin{equation}
+	\frac{1}{\Delta t}(\U_{n+1} - \U_n) = \lambda \U_n
+\end{equation}
+Gathering terms gives that
+\begin{equation}
+	\frac{1}{\Delta t}\U_{n+1} - \left(\lambda + \frac{1}{\Delta t} \right)\U_n = 0
+\end{equation}
+Define
+\begin{equation}
+	\bm \U = 
+	\begin{pmatrix}
+	\U_1 \\ \U_2 \\ \vdots \\ \U_n
+	\end{pmatrix}
+\end{equation}
+We can combine these equations into matrix form
+\begin{equation}
+	\frac{1}{\Delta t}
+	\begin{pmatrix}
+	1 & 0 \\
+	- \left(1 + \lambda \Delta t \right) & 1 \\
+	0 & - \left(1 + \lambda \Delta t \right) & 1 \\
+	& & \ddots & \ddots \\
+	& & & - \left(1 + \lambda \Delta t \right) & 1
+	\end{pmatrix}
+	\begin{pmatrix}
+	\U_1 \\ \U_2 \\ \vdots \\ \\\vdots \\ \U_n
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+	\left(\lambda + \frac{1}{\Delta t} \right) u_0 \\ \vdots \\ \\\vdots \\ 0
+	\end{pmatrix}
+\end{equation}
+(notice this is a subdiagonal matrix, call it $A$). Then we have a linear system $AU = S$, $U = A^{-1}S$. For this particular example, we have an explicit formula for $A^{-1}$. Let $\mu = \left(1 + \lambda \Delta t \right)$.
+\begin{equation}
+	A^{-1} = 
+	\Delta t
+	\begin{pmatrix}
+	1 \\
+	\mu & 1 \\
+	\mu^2 & \mu & 1 \\
+	\vdots & \mu^2 & \mu & 1 \\
+	\vdots & & \ddots & \ddots &\ddots \\
+	\mu^{n-1} &\hdots & &\mu^2 & \mu & 1
+	\end{pmatrix}
+\end{equation}
+At the final time, $n$, we have that
+\begin{equation}
+	\U_n = (A^{-1} \cdot S)_n = \Delta t \left(1 + \lambda \Delta t \right)^{n-1} \cdot \left(\lambda + \frac{1}{\Delta t} \right) u_0
+\end{equation}
+which simplifies to
+\begin{equation}
+	\U_n = \left(1 + \lambda \Delta t \right)^{n} \cdot u_0
+\end{equation}
+Now assume that
+\begin{equation}
+	T = n \Delta t
+\end{equation}
+which means that
+\begin{equation}
+	\U_n = \left(1 + \frac{\lambda T}{n} \right)^{n} \cdot u_0 \to e^{\lambda T}, \quad n \to \infty
+\end{equation}
+
+\end{example}
+
+\begin{definition}[Local Truncation Error (LTE)]
+	The local truncation error is by how much the true solution fails to satisfy the approximation scheme, which can be written as
+	\begin{equation}
+		\tau_n = \frac{u_{n+1} - u_n}{\Delta t} - f(u_n)
+	\end{equation}
+\end{definition}
+
+\begin{definition}[Consistency]
+	We say a method is consistent is the LTE goes to 0 as $\Delta \to 0$.
+\end{definition}
+
+\begin{theorem}[Forward Euler (one-step) is consistent]
+	We take the equation for LTE 
+	\begin{equation}
+		\tau_n = \frac{u_{n+1} - u_n}{\Delta t} - f(u_n)
+	\end{equation}
+	and substitute in the Taylor expansion of $u_{n+1} = u(t_{n+1})$ around $u_n = u(t_n)$. This Taylor expansion is
+	\begin{equation}
+		u_{n+1} = u_n + 
+	\end{equation}
+	\textcolor{red}{Incomplete}
+\end{theorem}
+
+\subsection{Stability}
+
+\begin{example}[Stability of Linear ODE]
+	Using the Forward Euler method, our approximation to the solution of the linear ODE is $A \bm \U = \bm S$.
+	\textcolor{red}{Incomplete}
+\end{example}
+
 \end{document}

@@ -1,3 +1,11 @@
-\begin{XTRtheorem}[Uniqueness]
-If the force term $f(u)$ is uniformly Lipshitz, then the equation has a unique solution.
+\begin{XTRtheorem}[Forward Euler (one-step) is consistent]
+We take the equation for LTE
+\begin{equation}
+\tau_n = \frac{u_{n+1} - u_n}{\Delta t} - f(u_n)
+\end{equation}
+and substitute in the Taylor expansion of $u_{n+1} = u(t_{n+1})$ around $u_n = u(t_n)$. This Taylor expansion is
+\begin{equation}
+u_{n+1} = u_n +
+\end{equation}
+\textcolor{red}{Incomplete}
 \end{XTRtheorem}
