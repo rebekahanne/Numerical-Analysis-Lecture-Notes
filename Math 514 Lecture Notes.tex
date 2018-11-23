@@ -29,6 +29,7 @@
 	\newcommand{\D}{\Delta}
 	\newcommand{\R}{\mathbb{R}}
 	\newcommand{\Z}{\mathbb{Z}}
+	\newcommand{\U}{\mathcal{U}}
 	\usepackage{mathtools}
 	\DeclarePairedDelimiterX{\inp}[2]{\langle}{\rangle}{#1, #2}
 	\newcommand{\norm}[1]{\lVert#1\rVert}
@@ -197,7 +198,7 @@ is called simple iteration; the numbers $x_k$, $k \geq 0$, are referred to as it
 \end{equation}
 \end{itemize}
 
-\begin{definition}(Contraction)
+\begin{definition}[Contraction]
 Let $g$ be a real-valued function, defined and continuous on a bounded closed interval $[a,b]$ of the real line. Then, $g$ is said to be a contraction on $[a,b]$ if there exists a constant $L$ such that $0<L<1$ and 
 \begin{equation}
 |g(x)-g(y)| \leq L|x-y| \quad \forall x,y \in [a,b]
@@ -1263,14 +1264,14 @@ Notice that $p(x)$ does indeed interpolate $f$ at the data:
 \begin{theorem}[Error of Lagrange interpolation polynomial]
 	Suppose that $n\geq 0$ and the $f$ is a real-valued function, defined and continuous on the closed real interval $[a,b]$, such that derivative of $f$ or order $n+1$ exists and is continuous on $[a,b]$. Then, with $x \in [a,b]$, there exists $\xi = \xi(x)$ in $(a,b)$ such that
 	\begin{equation}
-		f(x) - p(x) = \frac{f^{(n+1)}(\xi)}{n!} \prod_{k=0}^n (x-x_k)
+		f(x) - p(x) = \frac{f^{(n+1)}(\xi)}{(n+1)!} \prod_{k=0}^n (x-x_k)
 	\end{equation}
 	is the interpolation error, where $p(x)$ is $n$-th order. 
 \end{theorem}
 \begin{proof}
 We denote the error as a function of $x$ as:
 \begin{equation}
-	E(x) = \frac{f^{(n+1)}(\xi)}{n!} \prod_{k=0}^n (x-x_k)
+	E(x) = \frac{f^{(n+1)}(\xi)}{(n+1)!} \prod_{k=0}^n (x-x_k)
 \end{equation}
 Define an auxiliary function $G(x)$ (and a fixed $t$) as 
 \begin{equation}
@@ -1287,7 +1288,7 @@ Further, evaluated at $t$, we have that
 Thus $G_t(x)$ has $n+2$ zeros.
 
 We then use the following lemma:
-\begin{lemma}
+\begin{lemma}[Rolle's Theorem]
 	If a function $f(x)$ has $k$ zeros, then its derivative $f'(x)$ has $k-1$ zeros. Similarly, $f''(x)$ has $k-2$ zeros, an so on.
 \end{lemma}
 \begin{proof}
@@ -1296,7 +1297,7 @@ We then use the following lemma:
 
 Thus, applying this lemma repeatedly, we have that $G^{(n+1)}$ has one zero, call it $\xi$, so that $G^{(n+1)}(\xi) = 0$. Further, by direct calculation,
 \begin{equation}
-	0 = G^{(n+1)}(\xi) = E^{(n+1)}(\xi) - \frac{n!}{\prod_{k=0}^n (t-x_k)}E(t)
+	0 = G^{(n+1)}(\xi) = E^{(n+1)}(\xi) - \frac{(n+1)!}{\prod_{k=0}^n (t-x_k)}E(t)
 \end{equation}
 Then notice that 
 \begin{equation}
@@ -1304,20 +1305,29 @@ Then notice that
 \end{equation}
 so that
 \begin{equation}
-	f^{(n+1)}(\xi) - \frac{(n!}{\prod_{k=0}^n (t-x_k)}E(t) = 0
+	f^{(n+1)}(\xi) - \frac{(n+1)!}{\prod_{k=0}^n (t-x_k)}E(t) = 0
 \end{equation}
 rearranging this equation gives the required expression for the error function.
 \end{proof}
 
 Observations:
 \begin{enumerate}
-	\item If $f(x) \in \mathbb{P}_{N-1}(x)$, then $f^{(N)}(\xi) = 0$, so that $E(t) = 0$ for all $t$.
+	\item If $f(x) \in \mathbb{P}_{n}(x)$, then $f^{(n+1)}(\xi) = 0$, so that $E(t) = 0$ for all $t$. In words, we can perfectly interpolate a polynomial of order $n$ with $n+1$ grid points.
 \end{enumerate}
 
-This error depends on
-\begin{enumerate}
-	\item 
-\end{enumerate}
+\begin{remark}
+	If we naively sample $x_i \in [a,b]$ evenly, then 
+	\begin{equation}
+		\sup_{t \in [a,b]} \bigg\lvert \prod_{k=0}^n (x-x_k) \bigg\rvert
+	\end{equation}
+	may be large. Further, we can encounter Runge's phenomenon of oscillation at the edges of an interval. This occurs when using polynomial interpolation with polynomials of high degree over a set of equispaced interpolation points. 
+	\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=.4]{runge_phenomenon.png}
+	\end{center}
+	\caption{Runge's phenomenon. Red curve is the Runge function. Blue curve is $5$-th order interpolating polynomial. Green curve is the $9$th-order interpolating polynomial.}
+\end{figure}
+\end{remark}
 
 We can use Chebyshev grid points to minimize error.
 \begin{theorem}[Chebyshev grid to minimize polynomial interpolation error]
@@ -1327,7 +1337,7 @@ We can use Chebyshev grid points to minimize error.
 	\end{equation}
 	is given by a Chebyshev grid:
 	\begin{equation}
-		x_i = \cos (\theta_i), \quad \theta_i = \frac{i\pi}{N}
+		x_i = \cos (\theta_i), \quad \theta_i = \frac{i\pi}{n}
 	\end{equation}
 \end{theorem}
 \subsection{Polynomial Projection}
@@ -1481,7 +1491,7 @@ where $A$ is the matrix of coefficients. We want to find the roots $\phi_{n+1}(x
 \end{equation}
 \end{theorem}
 
-\subsection{Approximation in the 2-norm}
+\subsection{Best Approximation in the 2-norm}
 Let $\{\phi_i\}_{i=0}^\infty$ be a set of orthogonal polynomials and $f \in \mathcal{C}^\infty$. Then we can write $f(x)$ as a linear combination of the orthogonal basis polynomials with projection coefficients $\{c_i\}_{i=0}^\infty$:
 \begin{equation}
 	f(x) = \sum_{k=0}^\infty c_k \phi_k(x)
@@ -1503,7 +1513,7 @@ where we approximate the coefficients
 	c_i \to \alpha_i = \sum_{k=0}^N f(x_k)\phi_k(x_k) w(x_k)
 \end{equation}
 
-\begin{theorem}
+\begin{theorem}[Exact integration of $f(x) \in \mathbb{P}_{2N+1}$ using $N+1$ grid points]
 	Suppose. $f(x) \in \mathbb{P}_{2N+1}$. Then 
 	\begin{equation}
 		\int_{a}^b f(x)w(x)dx = \sum_{i=0}^N f(x_k) w_k
@@ -1651,16 +1661,8 @@ for $n > N$ and
 for $n < N$.
 \end{theorem}
 \begin{proof}
-Todo.
+\textcolor{red}{Todo}.
 \end{proof}
-
-\subsection{Approximation in the infinity norm}
-\begin{theorem}
-If $f \in \mathbb{P}_{2N+1}$
-\begin{equation}
-	\int f(x)w(x)dx = \sum_{i=0}^N f(x_i)w_i 
-\end{equation}
-\end{theorem}
 
 \section{Numerical Integration}
 
@@ -1980,4 +1982,202 @@ We did not explicitly impose/include 3rd order terms, but if we did, our solutio
 \begin{equation}
 	f'' - Df = \mathcal{O}(h^2)
 \end{equation}
+
+\subsection{Forward Euler (FE)}
+We continue studying the initial value problem 
+\begin{equation}
+	\begin{cases}
+	u' = f(u) \\
+	u(t=0) = u_0
+	\end{cases}
+\end{equation}
+
+Let $u_n = u(t_n)$ be the true solution. Let $\mathcal{U}_n$ be the numerical solution. Then the forward euler method is
+\begin{equation}
+ 	u'(t_n) \to \frac{\mathcal{U}_n - \mathcal{U}_n}{\Delta t}
+\end{equation} 
+Thus at $t_n$, we have
+\begin{equation}
+	\begin{cases}
+		\frac{1}{\Delta t}(\U_{n+1} - \U_n) = f(\U_n) \\
+		\U_0 = u_0
+	\end{cases}
+\end{equation}
+Rearranging gives that 
+\begin{equation}
+	\U_{n+1} = \U_n + \Delta t f(\U_n)
+\end{equation}
+
+\begin{example}[Linear ODE]
+\begin{equation}
+	\begin{cases}
+		u' = \lambda u \\
+		u(t=0) = u_0
+	\end{cases}
+\end{equation}
+We know that the analytical solution to this IVP is
+\begin{equation}
+	u(t) = u_0 e^{\lambda t}
+\end{equation}
+FE is
+\begin{equation}
+	\frac{1}{\Delta t}(\U_{n+1} - \U_n) = \lambda \U_n
+\end{equation}
+Gathering terms gives that
+\begin{equation}
+	\frac{1}{\Delta t}\U_{n+1} - \left(\lambda + \frac{1}{\Delta t} \right)\U_n = 0
+\end{equation}
+Define
+\begin{equation}
+	\bm \U = 
+	\begin{pmatrix}
+	\U_1 \\ \U_2 \\ \vdots \\ \U_n
+	\end{pmatrix}
+\end{equation}
+We can combine these equations into matrix form
+\begin{equation}
+	\frac{1}{\Delta t}
+	\begin{pmatrix}
+	1 & 0 \\
+	- \left(1 + \lambda \Delta t \right) & 1 \\
+	0 & - \left(1 + \lambda \Delta t \right) & 1 \\
+	& & \ddots & \ddots \\
+	& & & - \left(1 + \lambda \Delta t \right) & 1
+	\end{pmatrix}
+	\begin{pmatrix}
+	\U_1 \\ \U_2 \\ \vdots \\ \\\vdots \\ \U_n
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+	\left(\lambda + \frac{1}{\Delta t} \right) u_0 \\ \vdots \\ \\\vdots \\ 0
+	\end{pmatrix}
+\end{equation}
+(notice this is a subdiagonal matrix, call it $A$). Then we have a linear system $AU = S$, $U = A^{-1}S$. For this particular example, we have an explicit formula for $A^{-1}$. Let $\mu = \left(1 + \lambda \Delta t \right)$.
+\begin{equation}
+	A^{-1} = 
+	\Delta t
+	\begin{pmatrix}
+	1 \\
+	\mu & 1 \\
+	\mu^2 & \mu & 1 \\
+	\vdots & \mu^2 & \mu & 1 \\
+	\vdots & & \ddots & \ddots &\ddots \\
+	\mu^{n-1} &\hdots & &\mu^2 & \mu & 1
+	\end{pmatrix}
+\end{equation}
+At the final time, $n$, we have that
+\begin{equation}
+	\U_n = (A^{-1} \cdot S)_n = \Delta t \left(1 + \lambda \Delta t \right)^{n-1} \cdot \left(\lambda + \frac{1}{\Delta t} \right) u_0
+\end{equation}
+which simplifies to
+\begin{equation}
+	\U_n = \left(1 + \lambda \Delta t \right)^{n} \cdot u_0
+\end{equation}
+Now assume that
+\begin{equation}
+	T = n \Delta t
+\end{equation}
+which means that
+\begin{equation}
+	\U_n = \left(1 + \frac{\lambda T}{n} \right)^{n} \cdot u_0 \to e^{\lambda T}, \quad n \to \infty
+\end{equation}
+
+\end{example}
+
+\begin{definition}[Local Truncation Error (LTE)]
+	The local truncation error is by how much the true solution fails to satisfy the approximation scheme, which can be written as
+	\begin{equation}
+		\tau_n = \frac{u_{n+1} - u_n}{\Delta t} - f(u_n)
+	\end{equation}
+\end{definition}
+
+\begin{definition}[Consistency]
+	We say a method is consistent is the LTE goes to 0 as $\Delta \to 0$.
+\end{definition}
+
+\begin{theorem}[Forward Euler (one-step) is consistent]
+	We take the equation for LTE 
+	\begin{equation}
+		\tau_n = \frac{u_{n+1} - u_n}{\Delta t} - f(u_n)
+	\end{equation}
+	and substitute in the Taylor expansion of $u_{n+1} = u(t_{n+1})$ around $u_n = u(t_n)$. This Taylor expansion is
+	\begin{equation}
+		u_{n+1} = u_n + 
+	\end{equation}
+	\textcolor{red}{Incomplete}
+\end{theorem}
+
+\subsection{Stability}
+
+\begin{example}[Stability of Linear ODE]
+	Using the Forward Euler method, our approximation to the solution of the linear ODE is $A \bm \U = \bm S$.
+	\textcolor{red}{Incomplete}
+\end{example}
+
+\section{Practice Problems}
+\begin{exercise}[Hermite Polynomials]
+	Hermite polynomials are a set of polynomials that are orthonormal with respect to a Gaussian weight function $w(x) = \frac{1}{\sqrt{\pi}} e^{-x^2}$ on the domain $(-\infty, \infty)$. Thus, if $H_m$ is the $m$-th order polynomials, then
+	\begin{equation}
+		\int_{-\infty}^\infty H_m(x)H_n(x)\frac{1}{\sqrt{\pi}} e^{-x^2} dx = \delta_{mn}
+	\end{equation}
+	The first three Hermite polynomials are
+	\begin{equation*}
+		H_0 = 1, \quad H_1 = \frac{2x}{\sqrt{2}}, \quad H_2 = \frac{4x^2 - 2}{\sqrt{8}}
+	\end{equation*}
+	Compute:
+	\begin{enumerate}
+		\item $\int_{-\infty}^\infty 2x^2 e^{-x^2}dx$
+		\item $\int_{-\infty}^\infty (4x^2 - 2x - 2) e^{-x^2}dx$
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	For the first integral, notice that
+	\begin{align*}
+		\int_{-\infty}^\infty 2x^2 e^{-x^2}dx &= \sqrt{\pi} \int_{-\infty}^\infty \frac{1}{\sqrt{\pi}} \frac{2x}{\sqrt{2}} \frac{2x}{\sqrt{2}} e^{-x^2}dx \\
+		&= \sqrt{\pi} \delta_{11} \\
+		&= \sqrt{\pi}
+	\end{align*}
+	For the second integral, notice that
+	\begin{align*}
+		\int_{-\infty}^\infty (4x^2 - 2x - 2) e^{-x^2}dx &= \sqrt{8\pi} \int_{-\infty}^\infty \left(\frac{4x^2 - 2}{\sqrt{8}} - \frac{2x}{\sqrt{8}}\right) \frac{1}{\sqrt{\pi}}e^{-x^2}dx \\
+		&= \sqrt{8\pi}\int_{-\infty}^\infty H_2H_0 w(x)dx -  \sqrt{2\pi}\int_{-\infty}^\infty H_1 H_0 w(x) dx \\
+		&= 0
+	\end{align*}
+	Notice how for the second integral, the key observation is that we can separate the integral into two, and then make use of $H_0 = 1$. 
+\end{solution}
+
+\begin{exercise}[Legendre Polynomials]
+	Legendre polynomials $\{p_n(x)\}$ are a set of orthogonal polynomials supported on $[-1,1]$ with weight $w(x) = 1$. It can be shown that 
+	\begin{equation}
+		Q[p_n] = \lambda_np_n
+	\end{equation}
+	where $Q = \frac{d}{dx}\left((1-x^2)\frac{d}{dx}\right)$ is a second order differential operator, and $\lambda_n = -n(n+1)$. Show that
+	\begin{enumerate}
+		\item $\inp{f}{p_n} = \frac{1}{\lambda_n} \inp{Q[f]}{p_n}$
+		\item Prove by induction, that if $f \in \mathcal{C}^{2\gamma}$, then $\inp{f}{p_n} = \frac{1}{\lambda_n^\gamma} \inp{Q^\gamma[f]}{p_n}$.
+		\item Show that if $f \in \mathcal{C}^{2\gamma}$, then $\inp{f}{p_n} = \mathcal{O}\left(\frac{1}{n^{2\gamma}}\right)$.
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	We show each item in turn. Beginning with (1): first notice that $p_n = \frac{Q[p_n]}{\lambda_n}$, so that we equivalently want to show that
+	\begin{equation}
+		\frac{1}{\lambda_n} \inp{f}{Q[p_n]} = \frac{1}{\lambda_n}\inp{Q[f]}{p_n}
+	\end{equation}
+	so we want to show that the two inner products are equal. We compute each inner product in turn to show equality:
+	\begin{align*}
+		\inp{f}{Q[p_n]} &= \int_{-1}^1 f [(1-x^2)p_n']' dx \\
+		&= \left(f(1-x^2)p_n'\right)\bigg\vert_{-1}^1 - \int_{-1}^1 f' (1-x^2)p_n' dx \\
+		&= \int_{-1}^1 f' (1-x^2)p_n dx \tag{the first term above evaluates to $0$}
+	\end{align*}
+	\begin{align*}
+		\inp{Q[f]}{p_n} &= \int_{-1}^1 p_n ((1-x^2)f')' dx \\
+		&= \left(p_n(1-x^2)f')\right)\bigg\vert_{-1}^1 - \int_{-1}^1 f' (1-x^2)p_n' dx \\
+		&= \int_{-1}^1 f' (1-x^2)p_n dx \tag{the first term above evaluates to $0$}
+	\end{align*}
+	Now, for (2), we have just proven the base case. Now assume that $\inp{f}{p_n} = \frac{1}{\lambda_n^\gamma} \inp{Q^\gamma[f]}{p_n}$. Then
+	\begin{align*}
+		 \frac{1}{\lambda_n^{\gamma+1}} \inp{Q^{\gamma+1}[f]}{p_n}
+	\end{align*}
+\end{solution}
+
 \end{document}

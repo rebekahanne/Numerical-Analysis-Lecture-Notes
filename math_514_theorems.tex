@@ -2,7 +2,7 @@
 %% This is file, `math_514_theorems.tex',
 %% generated with the extract package.
 %% 
-%% Generated on :  2018/11/20,16:38
+%% Generated on :  2018/11/23,10:49
 %% From source  :  "Math 514 Lecture Notes".tex
 %% Using options:  active,generate=Math_514_Theorems,extract-env={theorem,corollary,claim}
 %% 
@@ -24,6 +24,7 @@
 \newcommand{\D}{\Delta}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\U}{\mathcal{U}}
 \usepackage{mathtools}
 \DeclarePairedDelimiterX{\inp}[2]{\langle}{\rangle}{#1, #2}
 \newcommand{\norm}[1]{\lVert#1\rVert}
@@ -180,7 +181,7 @@ Simultaneous Iteration and the QR Algorithm generate identical sequences of matr
 \begin{theorem}[Error of Lagrange interpolation polynomial]
 Suppose that $n\geq 0$ and the $f$ is a real-valued function, defined and continuous on the closed real interval $[a,b]$, such that derivative of $f$ or order $n+1$ exists and is continuous on $[a,b]$. Then, with $x \in [a,b]$, there exists $\xi = \xi(x)$ in $(a,b)$ such that
 \begin{equation}
-f(x) - p(x) = \frac{f^{(n+1)}(\xi)}{n!} \prod_{k=0}^n (x-x_k)
+f(x) - p(x) = \frac{f^{(n+1)}(\xi)}{(n+1)!} \prod_{k=0}^n (x-x_k)
 \end{equation}
 is the interpolation error, where $p(x)$ is $n$-th order.
 \end{theorem}
@@ -192,7 +193,7 @@ The solution to
 \end{equation}
 is given by a Chebyshev grid:
 \begin{equation}
-x_i = \cos (\theta_i), \quad \theta_i = \frac{i\pi}{N}
+x_i = \cos (\theta_i), \quad \theta_i = \frac{i\pi}{n}
 \end{equation}
 \end{theorem}
 
@@ -255,7 +256,7 @@ where $A$ is the matrix of coefficients. We want to find the roots $\phi_{n+1}(x
 \end{equation}
 \end{theorem}
 
-\begin{theorem}
+\begin{theorem}[Exact integration of $f(x) \in \mathbb{P}_{2N+1}$ using $N+1$ grid points]
 Suppose. $f(x) \in \mathbb{P}_{2N+1}$. Then
 \begin{equation}
 \int_{a}^b f(x)w(x)dx = \sum_{i=0}^N f(x_k) w_k
@@ -335,13 +336,6 @@ for $n > N$ and
 for $n < N$.
 \end{theorem}
 
-\begin{theorem}
-If $f \in \mathbb{P}_{2N+1}$
-\begin{equation}
-\int f(x)w(x)dx = \sum_{i=0}^N f(x_i)w_i
-\end{equation}
-\end{theorem}
-
 \begin{theorem}[First mean value theorem for definite integrals]
 If $f:[a,b] \to \R$ is continuous and $g$ is an integrable function that does not change sign on $[a,b]$, then there exists $c \in [a,b]$ such that
 \begin{equation}
@@ -355,6 +349,18 @@ Any high order, non-autonomous ODE can be reduced to a 1st order, autonomous ODE
 
 \begin{theorem}[Uniqueness]
 If the force term $f(u)$ is uniformly Lipshitz, then the equation has a unique solution.
+\end{theorem}
+
+\begin{theorem}[Forward Euler (one-step) is consistent]
+We take the equation for LTE
+\begin{equation}
+\tau_n = \frac{u_{n+1} - u_n}{\Delta t} - f(u_n)
+\end{equation}
+and substitute in the Taylor expansion of $u_{n+1} = u(t_{n+1})$ around $u_n = u(t_n)$. This Taylor expansion is
+\begin{equation}
+u_{n+1} = u_n +
+\end{equation}
+\textcolor{red}{Incomplete}
 \end{theorem}
 
 \end{document}
