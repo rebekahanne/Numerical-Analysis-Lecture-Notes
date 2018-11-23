@@ -1,3 +1,2 @@
-\begin{XTRdefinition}[Consistency]
-We say a method is consistent is the LTE goes to 0 as $\Delta \to 0$.
-\end{XTRdefinition}
+\begin{XTRtheorem}[Forward Euler (one-step) is consistent]
+\end{XTRtheorem}
