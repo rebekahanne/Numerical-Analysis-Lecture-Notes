@@ -2,7 +2,7 @@
 %% This is file, `math_514_definitions.tex',
 %% generated with the extract package.
 %% 
-%% Generated on :  2018/11/20,16:38
+%% Generated on :  2018/11/23,11:01
 %% From source  :  "Math 514 Lecture Notes".tex
 %% Using options:  active,generate=Math_514_Definitions,extract-env={definition,algorithm}
 %% 
@@ -24,6 +24,7 @@
 \newcommand{\D}{\Delta}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\U}{\mathcal{U}}
 \usepackage{mathtools}
 \DeclarePairedDelimiterX{\inp}[2]{\langle}{\rangle}{#1, #2}
 \newcommand{\norm}[1]{\lVert#1\rVert}
@@ -45,7 +46,7 @@ x_{k+1} = g(x_k)
 is called simple iteration; the numbers $x_k$, $k \geq 0$, are referred to as iterates.
 \end{definition}
 
-\begin{definition}(Contraction)
+\begin{definition}[Contraction]
 Let $g$ be a real-valued function, defined and continuous on a bounded closed interval $[a,b]$ of the real line. Then, $g$ is said to be a contraction on $[a,b]$ if there exists a constant $L$ such that $0<L<1$ and
 \begin{equation}
 |g(x)-g(y)| \leq L|x-y| \quad \forall x,y \in [a,b]
@@ -260,6 +261,17 @@ L = |f'(u^*)|
 
 \begin{definition}[Uniformly Lipshitz continuous]
 If $L_u$ has an upper bound in the domain of $f$, then $f$ is uniformly Lipshitz continuous.
+\end{definition}
+
+\begin{definition}[Local Truncation Error (LTE)]
+The local truncation error is by how much the true solution fails to satisfy the approximation scheme, which can be written as
+\begin{equation}
+\tau_n = \frac{u_{n+1} - u_n}{\Delta t} - f(u_n)
+\end{equation}
+\end{definition}
+
+\begin{definition}[Consistency]
+We say a method is consistent is the LTE goes to 0 as $\Delta \to 0$.
 \end{definition}
 
 \end{document}

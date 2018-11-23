@@ -1,15 +1,15 @@
 \documentclass[12pt]{article}
 %\usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}
 
-% \usepackage[active,
-%             generate=Math_514_Definitions,
-%             %extract-cmd={section},
-%             extract-env={definition,algorithm}]{extract}
-
 \usepackage[active,
-            generate=Math_514_Theorems,
+            generate=Math_514_Definitions,
             %extract-cmd={section},
-            extract-env={theorem,corollary,claim}]{extract}
+            extract-env={definition,algorithm}]{extract}
+
+% \usepackage[active,
+%             generate=Math_514_Theorems,
+%             %extract-cmd={section},
+%             extract-env={theorem,corollary,claim}]{extract}
 
 \begin{extract*}
   \usepackage{amsthm}
@@ -2096,6 +2096,8 @@ which means that
 \end{definition}
 
 \begin{theorem}[Forward Euler (one-step) is consistent]
+\end{theorem}
+\begin{proof}
 	We take the equation for LTE 
 	\begin{equation}
 		\tau_n = \frac{u_{n+1} - u_n}{\Delta t} - f(u_n)
@@ -2105,7 +2107,7 @@ which means that
 		u_{n+1} = u_n + 
 	\end{equation}
 	\textcolor{red}{Incomplete}
-\end{theorem}
+\end{proof}
 
 \subsection{Stability}
 
@@ -2181,6 +2183,4 @@ which means that
 	\end{align*}
 \end{solution}
 
-=======
->>>>>>> 9cdbbb47e631aa2bbc12344e1335f22e48166eb5
 \end{document}
