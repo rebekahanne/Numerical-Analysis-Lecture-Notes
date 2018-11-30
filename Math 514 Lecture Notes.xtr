@@ -1,2 +1,3 @@
-\begin{XTRtheorem}[Forward Euler (one-step) is consistent]
+\begin{XTRtheorem}[Forward Euler convergent if forcing term Lipschitz]
+If $f(u)$ is Lipschitz in $u$ (with Lipschitz constant $\lambda$), then the Forward Euler method is a 1st-order convergent method.
 \end{XTRtheorem}

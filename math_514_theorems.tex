@@ -2,7 +2,7 @@
 %% This is file, `math_514_theorems.tex',
 %% generated with the extract package.
 %% 
-%% Generated on :  2018/11/23,11:03
+%% Generated on :  2018/11/29,18:06
 %% From source  :  "Math 514 Lecture Notes".tex
 %% Using options:  active,generate=Math_514_Theorems,extract-env={theorem,corollary,claim}
 %% 
@@ -189,7 +189,7 @@ is the interpolation error, where $p(x)$ is $n$-th order.
 \begin{theorem}[Chebyshev grid to minimize polynomial interpolation error]
 The solution to
 \begin{equation}
-\min_{\{x_i\}} \sup_{t \in [a,b]} \bigg\lvert \prod_{k=0}^n (x-x_k) \bigg\rvert
+\min_{\{x_i\}} \sup_{x \in [a,b]} \bigg\lvert \prod_{k=0}^n (x-x_k) \bigg\rvert
 \end{equation}
 is given by a Chebyshev grid:
 \begin{equation}
@@ -352,6 +352,14 @@ If the force term $f(u)$ is uniformly Lipshitz, then the equation has a unique s
 \end{theorem}
 
 \begin{theorem}[Forward Euler (one-step) is consistent]
+\end{theorem}
+
+\begin{theorem}[Trapezoidal method 2nd-order convergent]
+If $f(u)$ is Lipschitz (with constant $\lambda$), then the trapezoidal method is 2nd-order convergent.
+\end{theorem}
+
+\begin{theorem}[Forward Euler convergent if forcing term Lipschitz]
+If $f(u)$ is Lipschitz in $u$ (with Lipschitz constant $\lambda$), then the Forward Euler method is a 1st-order convergent method.
 \end{theorem}
 
 \end{document}

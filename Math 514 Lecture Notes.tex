@@ -1273,7 +1273,7 @@ We denote the error as a function of $x$ as:
 \begin{equation}
 	E(x) = \frac{f^{(n+1)}(\xi)}{(n+1)!} \prod_{k=0}^n (x-x_k)
 \end{equation}
-Define an auxiliary function $G(x)$ (and a fixed $t$) as 
+Define an auxiliary function $G_t(x)$ (and a fixed $t$) as 
 \begin{equation}
 	G_t(x) = E(x) - \frac{\prod_{k=0}^n (x-x_k)}{\prod_{k=0}^n (t-x_k)}E(t)
 \end{equation}
@@ -1281,6 +1281,8 @@ Note that at a grid point the auxiliary function is $0$:
 \begin{equation}
 	0 = G_t(x_j) 
 \end{equation}
+which gives $n+1$ zeros of $G$.
+
 Further, evaluated at $t$, we have that
 \begin{equation}
 	G_t(t) = E(t) - E(t) = 0
@@ -1333,7 +1335,7 @@ We can use Chebyshev grid points to minimize error.
 \begin{theorem}[Chebyshev grid to minimize polynomial interpolation error]
 	The solution to 
 	\begin{equation}
-		\min_{\{x_i\}} \sup_{t \in [a,b]} \bigg\lvert \prod_{k=0}^n (x-x_k) \bigg\rvert
+		\min_{\{x_i\}} \sup_{x \in [a,b]} \bigg\lvert \prod_{k=0}^n (x-x_k) \bigg\rvert
 	\end{equation}
 	is given by a Chebyshev grid:
 	\begin{equation}
@@ -1678,13 +1680,16 @@ Thus
 \begin{equation}
 	\int_a^b f(x)dx = \sum_{k=0}^{N-1} \int_{x_k}^{x_{k+1}} f(x) dx
 \end{equation}
+Ww will approximate $\int_{x_k}^{x_{k+1}} f(x) dx$ with polynomials we can easily integrate that interpolate $f$ at certain points.
 
 \subsection{Trapezoidal Rule}
-We will approximate $f(x)$ on the interval $[x_k,x_{k+1}]$ by a first order polynomial $p_1(x)$ which interpolates $f(x)$ at $x_k, x_{k+1}$:
+\textbf{Interpolation rule:} We will approximate $f(x)$ on the interval $[x_k,x_{k+1}]$ by a first order polynomial $p_1(x)$ which interpolates $f(x)$ at $x_k, x_{k+1}$:
 \begin{equation}
 	p_1(x) = f(x_k) + \frac{f(x_{k+1}) - f(x_k)}{x_{k+1} - x_k} (x - x_k)
 \end{equation}
-Then
+(notice that $p_1(x_k) = f(x_k)$ and $p_1(x_{k+1}) = f(x_{k+1})$).
+
+\textbf{Intergration of section:} Then
 \begin{equation}
 	\int_{x_k}^{x_{k+1}} f(x) dx \to \int_{x_k}^{x_{k+1}} p_1(x)dx = f(x_k) \Delta x + \frac{f(x_{k+1}) - f(x_k)}{\Delta x} \int_{x_k}^{x_{k+1}} (x-x_k) dx
 \end{equation}
@@ -1696,15 +1701,17 @@ Thus
 \begin{equation}
 	\int_{x_k}^{x_{k+1}} p_1(x)dx = \frac{\Delta x}{2} (f(x_k) + f(x_{k+1}))
 \end{equation}
-Putting these pieces together:
+
+\textbf{Sum intervals:} Putting these pieces together:
 \begin{align*}
 	\int_a^b f(x)dx = \sum_{k=0}^{N-1} \int_{x_k}^{x_{k+1}} f(x) dx &\to \sum_{k=0}^{N-1} \int_{x_k}^{x_{k+1}} p_1(x)dx \\
 	&= \sum_{k=0}^{N-1} \left(\frac{\Delta x}{2} (f(x_k) + f(x_{k+1})) \right) \\
 	&= \frac{\Delta x}{2} (f(x_0) + f(x_1) + f(x_1) + f(x_2) + \ldots ) \\
 	&= \frac{\Delta x}{2} (f(x) + 2 \sum_{k=1}^{N-1} f(x_k) + f(b))
 \end{align*}
+Observe that the endpoints have weight $\frac{1}{2}$ and the interior grid points have weight 1.
 
-We now find the error in $[x_k, x_{k+1}]$. We can apply the exact expression found for error in polynomial interpolation found before (derived using Taylor's theorem). In this context, $N=1$ (we're using a first order polynomial to interpolate). Thus 
+\textbf{Error analysis:} We now find the error in $[x_k, x_{k+1}]$. We can apply the exact expression found for error in polynomial interpolation in each section (derived using Taylor's theorem). In this context, $n=1$ (we're using two grid points). Thus 
 \begin{equation}
 	f(x) - p_1(x) = f''(\xi_x)(x - x_k)(x - x_{k+1})
 \end{equation}
@@ -1762,6 +1769,7 @@ Continuing,
 	&= c \Delta x^2 (f'(x_N) - f'(x_0)) + \mathcal{O}(\Delta x^4)\\
 	&= c \Delta x^2 (f'(b) - f'(a)) + \mathcal{O}(\Delta x^4) 
 \end{align*}
+
 \subsection{Midpoint Rule}
 We will approximate $f(x)$ on the interval $[x_k,x_{k+1}]$ by a $0$th order polynomial (i.e.\ a constant function), which interpolates $f(x)$ at $x_{k + \frac{1}{2}}$. Thus we use
 \begin{equation}
@@ -2109,6 +2117,117 @@ which means that
 	\textcolor{red}{Incomplete}
 \end{proof}
 
+\subsection{Trapezoidal Rule}
+The scheme for the trapezoidal rule is
+\begin{equation}
+	\frac{\U_{n+1}-\U_n}{h} = \frac{1}{2}\left(f(\U_n) + f(\U_{n+1})\right)
+\end{equation}
+
+\begin{remark}
+	This scheme is implicit. In general, we cannot solve for $\U_{n+1}$. 
+\end{remark}
+
+\begin{example}[Trapezoidal Rule for IVP]
+	Suppose $f(u) = u^2$. Then for this forcing term, the scheme of the trapezoidal rule is
+	\begin{equation}
+		\frac{\U_{n+1}-\U_n}{h} = \frac{1}{2}\left(\U_n^2 + \U_{n+1}^2\right)
+	\end{equation}
+	which gives
+	\begin{equation}
+		\U_{n+1} + \frac{1}{2}h\U_{n+1}^2 = \U_{n} + \frac{1}{2}h\U_{n}^2
+	\end{equation}
+	which we could then solve using a method like Newton's method etc. 
+\end{example}
+
+\subsubsection{Consistency of Trapezoidal Rule}
+The LTE is
+\begin{equation}
+	\tau_n = \frac{u_{n+1}-u_n}{h} - \frac{1}{2}\left(f(u_n) + f(u_{n+1})\right)
+\end{equation}
+We need to compute the Taylor expansion of $u_{n+1}$ and $f(u_{n+1})$:
+\begin{align*}
+	u_{n+1} &= u(t_{n+1}) = u(t_n + h) \\
+	&=  u_n + hu'_n + \frac{h^2}{2}u''_n + \mathcal{O}(h^3)
+\end{align*}
+and (computing a Taylor expansion of a Taylor expansion!)
+\begin{align*}
+	f(u_{n+1}) &= f(u_n + hu'_n + \frac{h}{2}u''_n + \mathcal{O}(h^3)) \tag{Taylor expansion of $u_{n+1}$} \\
+	&= f(u_n) + f'(u_n)\left(hu'_n + \frac{h^2}{2}u''_n + \mathcal{O}(h^3)\right) \\
+	& \quad + \frac{1}{2}f''(u_n)\left(hu'_n + \frac{h^2}{2}u''_n + \mathcal{O}(h^3)\right)^2 + \cdots 
+\end{align*}
+Substituting these terms in $\tau_n$ gives
+\begin{align*}
+	\tau_n &= \frac{1}{h}\left(u_n + {\color{red}hu'_n} + {\color{blue}\frac{h^2}{2}u''_n} + \mathcal{O}(h^3) - u_n\right) \\
+	&\quad - {\color{red}\frac{1}{2}f(u_n)} \\
+	&\quad - \frac{1}{2}\Bigg({\color{red}f(u_n)} + {\color{blue}f'(u_n)}\left({\color{blue}hu'_n} + \frac{h^2}{2}u''_n + \mathcal{O}(h^3)\right) \\
+	&\quad\quad\quad\quad + \frac{1}{2}f''(u_n)\left(hu'_n + \frac{h^2}{2}u''_n + \mathcal{O}(h^3)\right)^2 + \cdots \Bigg)
+\end{align*}
+the red terms cancel and the blue terms cancel, using the facts that $u'_n = f(u_n)$ and $u''_n = f'(u_n)f(u_n)$. Thus we are left with LTE of
+\begin{equation}
+	\tau_n = \mathcal{O}(h^2)
+\end{equation}
+
+\subsubsection{Convergence of Trapezoidal Rule}
+\begin{theorem}[Trapezoidal method 2nd-order convergent]
+	If $f(u)$ is Lipschitz (with constant $\lambda$), then the trapezoidal method is 2nd-order convergent. 
+\end{theorem}
+\begin{proof}
+	We use the following two pieces in the proof:
+	\begin{enumerate}
+		\item Numerical Scheme: $\U_{n+1} = \U_n + \frac{h}{2}\left(f(\U_n) + f(\U_{n+1})\right)$
+		\item True solution: $u_{n+1} = u_n + \frac{h}{2}\left(f(u_n) + f(u_{n+1})\right) + \mathcal{O}(h^3)$. This follows from the fact that the LTE is $\mathcal{O}(h^2)$. The result follows from solving for $u_{n+1}$ in the LTE expression. 
+	\end{enumerate}
+	Subtracting the expression in $(1)$ and $(2)$ gives
+	\begin{align*}
+		E_{n+1} &= E_n + \frac{h}{2}\left( f(\U_n) - f(u_n) + f(\U_{n+1}) - f_(u_{n+1})\right) + \mathcal{O}(h^3) \\
+		&\leq E_n + \frac{h}{2}(\lambda E_n + \lambda E_{n+1}) + \mathcal{O}(h^3) \tag{$f$ Lipschitz} \\
+		&= \frac{1 + \frac{\lambda h}{2}}{1 - \frac{\lambda h}{2}}E_n + \mathcal{O}(h^3)
+	\end{align*}
+	Thus we have that
+	\begin{align*}
+		E_n &\leq \left(\frac{1 + \frac{\lambda h}{2}}{1 - \frac{\lambda h}{2}}\right)^{n-1}E_1 + \mathcal{O}(nh^3) \\
+		&= \mathcal{O}(h^2)
+	\end{align*}
+\end{proof}
+
+\subsection{Convergence}
+\begin{definition}[Convergent Method]
+	Let $E_n = |\U_n - u_n|$ be the difference between the numerical solution and the analytical solution at time $n$. If $E_n \to 0$ (for all $n$) as $\Delta t \to 0$, then the method is called a convergent method. 
+\end{definition}
+
+\begin{theorem}[Forward Euler convergent if forcing term Lipschitz]
+	If $f(u)$ is Lipschitz in $u$ (with Lipschitz constant $\lambda$), then the Forward Euler method is a 1st-order convergent method.
+\end{theorem}
+\begin{proof}
+	For ease of notation let $h = \Delta t$. By the forward Euler method
+	\begin{equation}
+		\U_{n+1} = \U + hf(\U_n)
+	\end{equation}
+	and the analytical solution is
+	\begin{equation}
+		u_{n+1} = u(t_{n+1}) = u(t_n + h)
+	\end{equation}
+	The Taylor expansion of $u(t_n + h)$ around $t_n$ is
+	\begin{align*}
+		u_{n+1} = u(t_n + h) &= u(t_n) + u'(t_n)h + \frac{1}{2}u''(t_n)h^2 + \frac{1}{6}u'''(t_n)h^3 + \cdots \\
+		&= u(t_n) + f(u(t_n)) h + \mathcal{O}(h^2) \tag{since $u'(t_n) = f(u(t_n))$}
+	\end{align*}
+	Now
+	\begin{align*}
+		E_{n+1} &= \U_{n+1} - u_{n+1} \\
+		&= E_n +h (f(\U_n) - f(u(t_n))) + \mathcal{O}(h^2) \\
+		&\leq E_n + h\lambda |\U_n - u(t_n)| + \mathcal{O}(h^2) \tag{$f$ Lipshitz}\\ 
+		&= E_n + h \lambda E_n + \mathcal{O}(h^2) \\
+	\end{align*}
+	Thus
+	\begin{align*}
+		E_{n} &\leq (1 + h \lambda)E_{n-1} + \mathcal{O}(h^2) \\
+		&\leq (1 + h \lambda)((1 + h \lambda)E_{n-2} + \mathcal{O}(h^2)) + \mathcal{O}(h^2) \\
+		&\leq (1 + \lambda h)^{n-1} E_{1} + \mathcal{O}(n h^2)  
+	\end{align*}
+	Then $\mathcal{O}(n h^2) = \mathcal{O}(n h h)  = \mathcal{O}(Th) = \mathcal{O}(h)$.
+\end{proof}
+
 \subsection{Stability}
 
 \begin{example}[Stability of Linear ODE]
@@ -2116,7 +2235,161 @@ which means that
 	\textcolor{red}{Incomplete}
 \end{example}
 
-<<<<<<< HEAD
+\subsection{Runge-Kutta Methods}
+The forward Euler method has first-order accuracy. To calculate $\U_{n+1}$ from $\U_n$, we only evaluate the forcing term $f$ at one point. We can achieve higher-order accuracy by evaluating $f$ at points between $\U_{n+1}$ from $\U_n$.
+
+We will summarize Runge-Kutta Methods with a Butcher Tableau.
+
+\subsubsection{RK2: Midpoint Method}
+Consider to time steps $t_n$ and $t_{n+1}$. Suppose we also evaluate the forcing term halfway between these two time steps (call this $t_{n+\frac{1}{2}}$). The scheme is
+\begin{equation}
+	\U_{n+1} = \U_n + h f\left(\U_n + \frac{h}{2}f(\U_n)\right)
+\end{equation}
+
+We can also describe this method through a Butcher Tableau:
+\begin{equation}
+	\renewcommand\arraystretch{1.2}
+	\begin{array}
+	{c|cc}
+	0\\
+	\frac{1}{2} & \frac{1}{2}\\
+	\hline
+	& 0 & 1
+	\end{array}
+\end{equation}
+
+\begin{align*}
+	y_1 &= \U_n \\
+	y_2 &= \U_n + \frac{h}{2}f(y_1) 
+\end{align*}
+Then summing 
+\begin{equation}
+	\U_{n+1} = \U_n + h f(y_2)
+\end{equation}
+and substituting in $y_2$ and $y_1$ gives the method derived above:
+\begin{equation}
+	\U_{n+1} = \U_n + h f\left(\U_n + \frac{h}{2}f(\U_n)\right)
+\end{equation}
+
+This method is $\mathcal{O}(h^2)$. 
+
+\subsubsection{RK2: Heun's Method}
+\begin{equation}
+	\renewcommand\arraystretch{1.2}
+	\begin{array}
+	{c|cc}
+	0\\
+	1 & 1\\
+	\hline
+	& \frac{1}{2} & \frac{1}{2}
+	\end{array}
+\end{equation}
+
+\begin{align*}
+	y_1 &= \U_n \\
+	y_2 &= \U_n + hf(y_1) 
+\end{align*}
+
+\begin{equation}
+	\U_{n+1} = \U_n + \frac{1}{2}f(y_1) + \frac{1}{2}f(y_2)
+\end{equation}
+
+\subsubsection{RK2: Ralston Method}
+\begin{equation}
+	\renewcommand\arraystretch{1.2}
+	\begin{array}
+	{c|cc}
+	0\\
+	\frac{2}{3} & \frac{2}{3}\\
+	\hline
+	& \frac{1}{4} & \frac{3}{4}
+	\end{array}
+\end{equation}
+
+
+\subsubsection{RK2: General Form}
+We can write the general form of an RK2 method as follows
+\begin{equation}
+	\renewcommand\arraystretch{1.2}
+	\begin{array}
+	{c|cc}
+	0\\
+	\alpha & \alpha\\
+	\hline
+	& \beta & 1-\beta
+	\end{array}
+\end{equation}
+and the translation into a scheme is
+\begin{align*}
+	y_1 &= \U_n \\
+	y_2 &= \U_n + \alpha h f(\U_n) \\
+	\U_{n+1} &= \U_n + h[\beta f(y_1) + (1-\beta)f(y_2)]\\
+	&= \U_n + h[\beta f(\U_n) + (1-\beta)f(\U_n + \alpha h f(\U_n))]
+\end{align*}
+thus
+\begin{equation}
+	\frac{\U_{n+1}-\U_n}{h} = \beta f(\U_n) + (1-\beta)f(\U_n + \alpha h f(\U_n))
+\end{equation}
+
+\textbf{Local Truncation Error:} We analyze the LTE as follows
+\begin{equation}
+	\tau_n = \frac{u_{n+1}-u_n}{h} - \beta f(u_n) + (1-\beta)f(u_n + \alpha h f(u_n))
+\end{equation}
+We need to compute the Taylor expansion of $u_{n+1}$ and $f(u_n + \alpha h f(u_n))$:
+\begin{align*}
+	u_{n+1} &= u(t_{n+1}) = u(t_n + h) \\
+	&=  u_n + hu'_n + \frac{h}{2}u''_n + \mathcal{O}(h^3)
+\end{align*}
+and
+\begin{align*}
+	f(u_n + \alpha h f(u_n)) &= f(u_n) + h\alpha f(u_n)f'(u_n) + \frac{(\alpha f(u_n))^2}{2}f''(u_n) + \ldots 
+\end{align*}
+Substituting these expressions into $\tau_n$ gives
+\begin{align*}
+	\tau_n &= \frac{1}{h}\left(u_n + {\color{red}{hu'_n}} +  {\color{blue}\frac{h}{2}u''_n} + \mathcal{O}(h^3) - u_n \right) \\
+	&\quad -\beta{\color{red}f(u_n)} \\
+	&\quad - (1-\beta)\left({\color{red}f(u_n)} + {\color{blue}h\alpha f(u_n)f'(u_n)} + \frac{(h\alpha f(u_n))^2}{2}f''(u_n) + \ldots \right)
+\end{align*}
+We get the following cancellations:
+\begin{equation}
+	{\color{red}\frac{1}{h} h u'_n - \beta f(u_n) - (1-\beta)f(u_n) = 0}
+\end{equation}
+since $u'_n=f(u_n)$ and
+\begin{equation}
+	 {\color{blue}\frac{1}{h}\frac{h}{2}u''_n - (1-\beta)h\alpha f(u_n)f'(u_n) = 0}
+\end{equation}
+since $u''_n=f'(u_n)f(u_n)$, using the \textbf{assumption that} $\bm{\alpha(1-\beta) = \frac{1}{2}}$. 
+
+These cancellations leave
+\begin{equation}
+	\tau_n = \mathcal{O}(h^2)
+\end{equation}
+\subsubsection{RK4}
+
+\[
+\renewcommand\arraystretch{1.2}
+\begin{array}
+{c|cccc}
+0\\
+\frac{1}{2} & \frac{1}{2}\\
+\frac{1}{2} &0 &\frac{1}{2} \\
+1& 0& 0& 1\\
+\hline
+& \frac{1}{6} &\frac{1}{3} &\frac{1}{3} &\frac{1}{6} 
+\end{array}
+\]
+
+\begin{align*}
+	y_1 &= \U_n \\
+	y_2 &= \U_n + \frac{h}{2}f(y_1) \\
+	y_3 &= \U_n + \frac{h}{2}f(y_2) \\
+	y_4 &= \U_n + hf(y_3)
+\end{align*}
+
+\begin{remark}
+	RK4 is the highest order RK method where the stage number = order of accuracy.
+\end{remark}
+
 \section{Practice Problems}
 \begin{exercise}[Hermite Polynomials]
 	Hermite polynomials are a set of polynomials that are orthonormal with respect to a Gaussian weight function $w(x) = \frac{1}{\sqrt{\pi}} e^{-x^2}$ on the domain $(-\infty, \infty)$. Thus, if $H_m$ is the $m$-th order polynomials, then
@@ -2177,10 +2450,23 @@ which means that
 		&= \left(p_n(1-x^2)f')\right)\bigg\vert_{-1}^1 - \int_{-1}^1 f' (1-x^2)p_n' dx \\
 		&= \int_{-1}^1 f' (1-x^2)p_n dx \tag{the first term above evaluates to $0$}
 	\end{align*}
-	Now, for (2), we have just proven the base case. Now assume that $\inp{f}{p_n} = \frac{1}{\lambda_n^\gamma} \inp{Q^\gamma[f]}{p_n}$. Then
+	
+	Now, for (2), we have just proven the base case. Now assume that $f \in \mathcal{C}^{2\gamma}$ and $\inp{f}{p_n} = \frac{1}{\lambda_n^{\gamma-1}} \inp{Q^{\gamma-1}[f]}{p_n}$. Then
 	\begin{align*}
-		 \frac{1}{\lambda_n^{\gamma+1}} \inp{Q^{\gamma+1}[f]}{p_n}
+		 \frac{1}{\lambda_n^{\gamma}} \inp{Q^{\gamma}[f]}{p_n} &= \frac{1}{\lambda_n^{\gamma -1 }} \frac{1}{\lambda_n} \inp{Q[Q^{\gamma-1}[f]]}{p_n} \\
+		 &= \frac{1}{\lambda_n^{\gamma-1}} \inp{Q^{\gamma-1}[f]}{p_n} \tag{apply (1)} \\
+		 &= \inp{f}{p_n} \tag{inductive hypothesis}
 	\end{align*}
+	which proves (2). 
+
+	Now, for (3), we know that
+	\begin{equation}
+		\inp{f}{p_n} = \frac{1}{\lambda_n^\gamma} \inp{Q^\gamma[f]}{p_n}
+	\end{equation}
+	further
+	\begin{equation}
+		\frac{1}{\lambda_n^\gamma} = \frac{1}{(-n(n+1))^\gamma} = \mathcal{O}\left(\frac{1}{n^{2\gamma}}\right)
+	\end{equation}
 \end{solution}
 
 \end{document}
