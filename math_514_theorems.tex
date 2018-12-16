@@ -2,7 +2,7 @@
 %% This is file, `math_514_theorems.tex',
 %% generated with the extract package.
 %% 
-%% Generated on :  2018/11/29,18:06
+%% Generated on :  2018/12/14,18:37
 %% From source  :  "Math 514 Lecture Notes".tex
 %% Using options:  active,generate=Math_514_Theorems,extract-env={theorem,corollary,claim}
 %% 
@@ -360,6 +360,18 @@ If $f(u)$ is Lipschitz (with constant $\lambda$), then the trapezoidal method is
 
 \begin{theorem}[Forward Euler convergent if forcing term Lipschitz]
 If $f(u)$ is Lipschitz in $u$ (with Lipschitz constant $\lambda$), then the Forward Euler method is a 1st-order convergent method.
+\end{theorem}
+
+\begin{theorem}[Consistency of LMM]
+For consistency, we require that
+\begin{enumerate}
+\item $\rho(1) = 0$
+\item $\rho'(1) = \sigma(1)$
+\end{enumerate}
+\end{theorem}
+
+\begin{theorem}[Zero-Stability of LMM]
+If $\xi_i$ is a single root, then $|\xi_i| \leq 1$. If $\xi_i$ is a double root, then $|\xi_i| < 1$.
 \end{theorem}
 
 \end{document}

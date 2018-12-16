@@ -14,7 +14,7 @@
 \begin{extract*}
   \usepackage{amsthm}
   \usepackage{amsfonts, amsmath}
-  \usepackage[dvipsnames]{xcolor}
+  \usepackage[dvipsnames]{xcolor} 
   %\newtheorem{theorem}{Theorem}
   \theoremstyle{definition}
   \definecolor{Tm}{rgb}{0,0,0.80}
@@ -2390,6 +2390,73 @@ These cancellations leave
 	RK4 is the highest order RK method where the stage number = order of accuracy.
 \end{remark}
 
+\subsection{Linear Multi-Step Method (LMM)}
+
+\begin{definition}[LMM]
+	Given a grid of points $\{x_n\}$ with step size $h$, the general linear $r$-step method is
+	\begin{equation}
+		\frac{1}{n}\sum_{j=0}^r \alpha_i \U_{n+j} = \sum_{j=0}^r \beta_j f(\U_{n+j})
+	\end{equation}
+	If $\beta_r = 0$, then the method is explicit (i.e., in we can write $\U_{n+r}$ explicitly in terms of the previous values). If $\beta_r \neq 0$, then the method is implicit. 
+\end{definition}
+
+\begin{definition}[Characteristic Polynomials of LMM]
+\begin{equation}
+	\rho(\xi) = \sum_{j=0}^r \alpha_j \xi^j
+\end{equation}
+(thus $\rho(1) = \sum_{j=0}^r \alpha_j$)
+\begin{equation}
+	\sigma(\xi) = \sum_{j=0}^r \beta_j \xi^j
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Consistency of LMM]
+For consistency, we require that
+\begin{enumerate}
+	\item $\rho(1) = 0$
+	\item $\rho'(1) = \sigma(1)$
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+	The LTE is 
+	\begin{equation}
+		\tau_n = \frac{1}{n}\sum_{j=0}^r \alpha_i u_{n+j} - \sum_{j=0}^r \beta_j f(u_{n+j})
+	\end{equation}
+	We next compute Taylor expansions of the terms in $\tau_n$. For the terms in the first sum, notice that
+	\begin{equation}
+		u_{n+j} = u(t_{n+j}) = u(t_n + jh)
+	\end{equation}
+	Thus we compute that Taylor expansion of $u(t_n + jh)$ around $u(t_n)$ with perturbation $jh$:
+	\begin{equation}
+		u_{n+j} = u_n + (jh)u_n' + \frac{(jh)^2}{2}u''_n + \ldots 
+	\end{equation}
+	Next recall that
+	\begin{equation}
+		u'_{n+j} = f(u_{n+j})
+	\end{equation}
+	We define the change of variables
+	\begin{equation}
+		v_{n+j} = u'_{n+j} = f(u_{n+j})
+	\end{equation}
+	Then to compute the Taylor expansions of the forcing terms we can simply compute the expansion of $v_{n+j}$ around $v_n$ using perturbation $jh$:
+	\begin{equation}
+		v_{n+j} = v_n + (jh)v'_n + \frac{(jh)^2}{2}v''_n + \ldots 
+	\end{equation}
+	Then using the change of variables, 
+	\begin{equation}
+		u'_{n+j} = u'_n + (jh)u''_n(jh) + \frac{(jh)^2}{2}u'''_n + \ldots
+	\end{equation}
+	Substituting these expansions into our expression for LTE gives
+	\begin{align*}
+	\tau_n &= 
+	\end{align*}
+\end{proof}
+
+\begin{theorem}[Zero-Stability of LMM]
+If $\xi_i$ is a single root, then $|\xi_i| \leq 1$. If $\xi_i$ is a double root, then $|\xi_i| < 1$. 
+\end{theorem}
+
+
 \section{Practice Problems}
 \begin{exercise}[Hermite Polynomials]
 	Hermite polynomials are a set of polynomials that are orthonormal with respect to a Gaussian weight function $w(x) = \frac{1}{\sqrt{\pi}} e^{-x^2}$ on the domain $(-\infty, \infty)$. Thus, if $H_m$ is the $m$-th order polynomials, then
@@ -2467,6 +2534,59 @@ These cancellations leave
 	\begin{equation}
 		\frac{1}{\lambda_n^\gamma} = \frac{1}{(-n(n+1))^\gamma} = \mathcal{O}\left(\frac{1}{n^{2\gamma}}\right)
 	\end{equation}
+\end{solution}
+
+\begin{exercise}[Runge-Kutta Method]
+
+\end{exercise}
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}[LMM]
+
+\end{exercise}
+\begin{solution}
+Answering each question in turn: 
+\subsubsection*{Part (a)}
+The method is explicit since $\beta_{3} = 0$. 
+
+\subsubsection*{Part (b)}
+First note that
+\begin{equation}
+	\alpha_0 = 0, \quad \alpha_1 = 0, \quad \alpha_2 = -1, \quad \alpha_3 = 1
+\end{equation}
+and
+\begin{equation}
+	\beta_0 = \frac{5}{12}, \quad \beta_1 = \frac{-4}{3}, \quad \beta_2 = \frac{23}{12}, \quad \beta_3 = 0
+\end{equation}
+The characteristic functions are
+\begin{equation}
+	\rho(\epsilon) = \e^3 - \e^2
+\end{equation}
+and
+\begin{equation}
+	\sigma(\e) = \frac{23}{12} \e^2 - \frac{4}{3}\e + \frac{5}{12}
+\end{equation}
+
+\subsubsection*{Part (c)}
+Observe that
+\begin{equation}
+	\rho(1) = 0
+\end{equation}
+Next 
+\begin{equation}
+	\rho'(1) = 1 = \frac{23}{12} - \frac{4}{3} + \frac{5}{12} = \sigma(1)
+\end{equation}
+Thus the method is consistent. 
+
+\subsubsection*{Part (d)}
+Recall that
+\begin{equation}
+	\rho(\xi) = \xi^3 - \xi^2
+\end{equation}
+$\rho$ has single root of $1$ (which is $\leq 1$) and a double root of $0$ (which is $< 1$). Thus the method is zero-stable. 
+
 \end{solution}
 
 \end{document}
